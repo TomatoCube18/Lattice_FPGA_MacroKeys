@@ -9,7 +9,10 @@ Ideal for tech enthusiasts, students, and professionals, this macropad enables h
 
 ![Development-Board Overview](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter01-01-KeyPad_Overview.png?raw=true)
 
+
+
 ## \[ [Chapter 2](#Chapter2): Hardware \]
+
 ### [2.1](#Chapter2_1) Chosen FPGA Chip/Device & its data-sheet
 This development board features the Lattice [MachXO2-1200HC](https://www.latticesemi.com/en/Products/FPGAandCPLD/MachXO2) FPGA which offer internal clock generation & embedded Flash technology thus achieving a non-volatile boot-up self configurating operation in a single chip. 
 
@@ -18,13 +21,16 @@ This development board features the Lattice [MachXO2-1200HC](https://www.lattice
 > You can find out more information about the FPGA in the official [MachXO2 Family Data-Sheet](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/FPGA-DS-02056-4-3-MachXO2-Family-Data-Sheet.pdf)
 
 
+
 ### [2.2](#Chapter2_2) On-Board Peripherals
+
 Shown in the following diagrams is the Top & Bottom view of the board. The call-out indicates the locations of the various on-board peripherals we have on our development board.
- 
-#### [Top Layer]
+
+#### [2.2.1](#Chapter2_2_1) Macro-KeyPad PCB Top Layer:
 
 ![Top View](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter02-02-TopLayer.png?raw=true)
-*Peripherals*
+**Peripherals**
+
 1. micro-USB Connection
 2. Lattice MachxO2 FPGA
 3. FPGA JTAG connection
@@ -39,16 +45,27 @@ Shown in the following diagrams is the Top & Bottom view of the board. The call-
 12. i2C Temperature Sensor
 13. User OnBoard Tactile Button
 
-#### [Bottom Layer]
+
+
+#### [2.2.2](#Chapter2_2_2) Macro-KeyPad PCB Bottom Layer:
+
 ![Bottom View](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter02-03-BottomLayer.png?raw=true)
-*Peripherals*
+**Peripherals**
+
 14. NeoPixels
 
-#### [With Enclosure]
+
+
+#### [2.2.3](#Chapter2_2_3) Macro-KeyPad With Enclosure:
+
 And here is the completed KeyPad with 3 layers of acrylic forming the enclosure needed to protect the electronics.
+
 ![KeyPad with Enclosure](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter02-04-EnclosureKeyPad.png?raw=true)
 
+
+
 ### [2.3](#Chapter2_3) Macro-Keypad Onboard Peripherals Pin Assignments
+
 | Funtions/Peripherals | MachXO2-1200 FPGA Pin | TQFP100 Pin |
 |:--------------------:|:---------------------:|:-----------:|
 | UART (TX) - CH9329                 | PL3B  | 4  |
@@ -70,7 +87,10 @@ And here is the completed KeyPad with 3 layers of acrylic forming the enclosure 
 | Crystal (OSC_IN) [ _Optional_ ]      | PL9A  | 20 |
 | Crystal (OSC_OUT) [ _Optional_ ]     | PL9B  | 21 |
 
+
+
 ### [2.4](#Chapter2_4) FPGA JTAG Programming Hardware Dongles
+
 The KeyPad Dev Board utilize a modified JTAG connector to allow both programming & UART debugging option to greatly enhance experience of using the FPGA dev board.
 We have created 2 different dongles to caters to various seriousness of HDL develompent.
 
@@ -87,7 +107,9 @@ We have created 2 different dongles to caters to various seriousness of HDL deve
 3. *Programming 10-Way 1.27mm Harness*
 
 
+
 ### [2.5](#Chapter2_5) Programming Connector & Pins Specification
+
 ![Programming Pin](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter02-06-ProgrammingPins.png?raw=true)
 
 
@@ -121,22 +143,28 @@ Check your Email & place the attached _license.dat_ file in the `<path>\license`
 
 ### [3.3](#Chapter3_3) Running your Diamond Software
 
-After the installation and the license configuration, choose *Apps > Lattice Diamond 3.13 > Lattice Diamond* to launch Lattice Diamond Software.
+After the installation and the license configuration, choose `Apps > Lattice Diamond 3.13 > Lattice Diamond` to launch Lattice Diamond Software.
 
 ## \[ [Chapter 4](#Chapter4): Writing Code & Programming your FPGA ]
-### **HDL Code Tutorial #1**: Creating your first Lattice Diamond Project
-#### Reading Button Input & Driving Simple Output Device [Button & LED]
+### **[4.1](#Chapter4_1) HDL Code Tutorial #1**: Creating your first Lattice Diamond Project
+#### [4.1.1](#Chapter4_1_1) Reading Button Input & Driving Simple Output Device [Button & LED]
 We'll start our journey with a straightforward Verilog project to ensure that everything is set up and connected correctly up to this point, this includes verifying the software installation, software license, FPGA programming dongle + harness, and lastly the Macro-Keypad FPGA board are all set up correctly. 
 If all goes smoothly, the code will make the user LED flash at roughly one-second intervals, and anytime the user press the user button swith, this will cause the LED to stop flashing. 
 
-### [4.1](#Chapter4_1) Creating a new Project
+Below is the schematic for the user LED & Switch which we would be using in our HDL code. One will quickly realize that both peripherals are asserted-low & connected to a unique pin of the FPGA. 
+
+_The LED jumper is shorted by default, thus can be assumed as connected directly to the FPGA. HDL debouncing of the user Switch is not absolutely nescessary for our application & the 0.1µF capacitor should do a good enough job of cleaning up noise from the tactile switch _
+
+![User_LED_Switch](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-01-UserSwitch_LED.png?raw=true)
+
+#### [4.1.2](#Chapter4_1_2) Creating a new Project
 Launch the Lattice Diamond Software if it is not already running. Click on the *Project: New* option found in the *Start Page* panel.
 
-### ~~!! Missing ScreenShot !!~~
+![Diamond Main Screen](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-02-Diamond_mainWindow.png?raw=true)
 
-Hit *Next >* in the *New Project* Dialog window.
+Hit **Next >** in the *New Project* Dialog window.
 
-### ~~!! Missing ScreenShot !!~~
+![Diamond New Project Window](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-03-Diamond_newProject.png?raw=true)
 
 In the second *New Project - Project Name* Dialog window, populate the fields with the following information:
 - Project:
@@ -145,7 +173,9 @@ In the second *New Project - Project Name* Dialog window, populate the fields wi
 - Implementation:
     - Name: _LED_
 
-Hit *Next >* and since we are not importing any existing source code, we will  Hit *Next >* again.
+![Diamond Project File Name](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-04-Diamond_FileName.png?raw=true)
+
+Hit **Next >** and since we are not importing any existing source code, we will  Hit **Next >** again.
 
 In the *New Project - Select Device* Dialog window, populate the fields with the following information:
 - Select Device:
@@ -155,19 +185,28 @@ In the *New Project - Select Device* Dialog window, populate the fields with the
     - Performance Grade: _4_
     - Operating Condition: _Commercial_
 
-Verify the derrived Part number is _LCMXO2-1200HC-4TG100C_ which correspond to the printing on the FPGA on our Macro-KeyPad. Hit *Next >* 
+![Diamond Select FPGA device](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-06-Diamond_SelectDevice.png?raw=true)
 
-Leave the Systhesis Tool as _Lattice LSE_ when prompted by the *New Project - Select Synthesis Tool* Dialog window. Hit *Next >* 
+Verify the derrived Part number is _LCMXO2-1200HC-4TG100C_ which correspond to the printing on the FPGA on our Macro-KeyPad. Hit **Next >** 
 
-In the final dialog window *New Project - Project Information*, verify that all the information are entered correctly. Hit *Finish* & our Skeleton project has been created targetting our FPGA.
+![Diamond Select Synthesis Tool](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-07-Diamond_SynthesisTool.png?raw=true)
 
-### [4.2](#Chapter4_2) Creating & Editing the Source Code
+Leave the Systhesis Tool as _Lattice LSE_ when prompted by the *New Project - Select Synthesis Tool* Dialog window. Hit **Next >**
+
+![Diamond New Project Summary](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-08-Diamond_ProjectSummary.png?raw=true)
+
+In the final dialog window *New Project - Project Information*, verify that all the information are entered correctly. Hit **Finish** & our new skeleton project is created targetting our exact FPGA.
+
+#### [4.1.3](#Chapter4_1_3) Creating & Editing the Source Code
 
 With the Project created, we are now going to create our Top-level verilog file. Select *[Menu]File > New > File*, Choose _Verilog Files_ as the *Source File* type. 
 
-Give our file the name _LED_, and Hit *New*.
+![Diamond New Verilog File](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-09-Diamond_NewVerilog.png?raw=true)
+
+Give our file the name _LED_, verify the check-box on the _Add to Implementation_ is checked and Hit **New**.
 
 Populate the code editor with the following Top-Level file implementation & hit save.
+
 #### Verilog Top-level file (\*.v):
 ```verilog
 `timescale 1ns / 1ps
@@ -204,35 +243,48 @@ endmodule
 > For all availble output frequency of MachXO2's Internal Oscillator, Please refer to **Table 20.3** in the following Lattice Technical Note: [FPGA-TN-02157](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/FPGA-TN-02157-3-0-MachXO2-sysCLOCK-PLL-Design-and-User-Guide.pdf)
 
 #### Logical preference file (\*.lpf):
-Open the single file under the _LPF Contrained File_ tree drop-down, overwrite the file with the content from the following [Predefined board file](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Essential_Files/macrokeys.lpf). 
+Open the single file named _Tutorial1.lpf_ under the _LPF Contrained Files_ tree drop-down list, overwrite the file with the content from the following [Predefined board file](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Essential_Files/macrokeys.lpf). 
 
-> To connect our top-level verilog file (consisting of one push-button switch & an LED) to the real world, we would normally go through *"Synthesis"* once & pop into spreadsheet view _([Menu]Tools > Spreadsheet View)_ in order to assign each of the input & output bit from the top-level verilog file to a physical pins. But for simplicity sack, we just edited the _Logical preference file (\*.lpf)_ manually. 
+> To connect our top-level verilog file (consisting of one push-button switch & an LED) to the real world, we would normally go through *"Synthesis"* once & pop into spreadsheet view `([Menu]Tools > Spreadsheet View)` in order to assign each of the input & output bit from the top-level verilog file to a physical pins. But for simplicity sack, we just edited the _Logical preference file (\*.lpf)_ manually. 
 
-### [4.3](#Chapter4_3) Synthesis & Generating Configuration Bitstream
+![Diamond LPF File](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-11-Diamond_LPF_File.png?raw=true)
 
-Move on over from the *File List* tab to the *Process* tab. Put on check box on both _Place & Route Design > *Place & Route Trace*_ & _Export Files > *JEDEC File*_. 
-Verify all the check-box selection, follow by *Right-Clicking* on *JEDEC File* and choose *Rerun All* from the pop-up menu.
+#### [4.1.4](#Chapter4_1_4) Synthesis & Generating Configuration Bitstream
 
-### [4.4](#Chapter4_4) Programming/Writing JEDEC file to FPGA's Flash
+Move on over from the *File List* tab to the *Process* tab. Put on check box on both `Place & Route Design > Place & Route Trace` & `Export Files > JEDEC File`. 
+Verify all the check-box selection, follow by **Right-Clicking** on **JEDEC File** and choose **Rerun All** from the pop-up menu.
+
+![Diamond Synthesis & Generating](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-12-Diamond_ProcessTab.png?raw=true)
+
+#### [4.1.5](#Chapter4_1_5) Programming/Writing JEDEC file to FPGA's Flash
 
 With the JEDEC File sucessfully generated, it is now time to *Burn* the configuration into the FPGA's Flash memory.
 
-Click on  _([Menu]Tools > Programmer)_, in the *Programmer: Getting Started* dialog window, verify that the correct Cable is selected then Hit *Detect Cable*
+Click on  `([Menu]Tools > Programmer)`, in the *Programmer: Getting Started* dialog window, verify that the correct Cable is selected then Hit *Detect Cable*
 
 > When using the *Deluxe programming Dongle*, always pick *Cable A* when prompted about *Multiple Cable Detected*.
 
-Verify that *Import File to current Implementation* is selected, then Hit *OK*.
+![Diamond Select Programmer](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-12-Diamond_SelectingProgrammer.png?raw=true)
 
-Once we are back in Diamond's main Window, showing the programming interface windows, click on the *...* button under the *File Name* collumn. Choose the *.JED* file & Hit *Open*.
+Verify that *Import file to current implementation* is selected, then Hit **OK**.
 
-> If *Device* is not detected correctly, manually click & reselect the device in the programming window.
+Once we are back in Diamond's main Window, it will show the programming interface window *after much thinking*, 
+
+> If *Device* (FPGA Chip model) is not detected correctly, manually click the drop-down box & reselect the correct device. And if the programming _JEDEC file_ is not populated, click on the **...** button under the **File Name** column & choose the **.JED** file & Hit **Open**.
+
+![Diamond Burning Program](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-12-Diamond_JedecProgramming.png?raw=true)
 
 Hit the Green *Program* button in the *Programming window's ToolBar*. 
 Observe the Output Log window and check for the message *Info - Operation: sucessful.* 
 
 > Hint: Speed up the programming process? In development phase, it is possible to speed up the programming process by using *Bitstream File* (Instead of JEDEC) & choose Access Mode as _Static RAM Cell Mode_ under the *Operation* configuration.
 
+#### [4.1.6](#Chapter4_1_6) Observing the result on the Macro-KeyPad
+After the JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. You will be able to see the user LED flashing periodically & upon pressing on the user Button, the LED will switched off.
 
+Below is the location of the user LED & Switch on the Macro-KeyPad.
+
+![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-13-UserButton_LED_Location.png?raw=true)
 
 ## \[ [Chapter 5](#Chapter5): Software - SOC Development Tool - LatticeMico System]
 ### [5.1](#Chapter5_1) Installation of LatticeMico System in Windows
@@ -242,6 +294,6 @@ Once download is completed, *Double-click* on the LatticeMico System installer y
 
 ### [5.2](#Chapter5_2) Running your LatticeMico System Software
 
-After the installation, choose *Apps > Lattice Diamond 3.13 > LMS 1.1 for Diamond 3.12* to launch LatticeMico System Software.
+After the installation, choose `Apps > Lattice Diamond 3.13 > LMS 1.1 for Diamond 3.12` to launch LatticeMico System Software.
 
 [Lattice]:(https://www.latticesemi.com)
