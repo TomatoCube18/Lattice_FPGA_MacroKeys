@@ -288,11 +288,11 @@ Below is the location of the user LED & Switch on the Macro-KeyPad.
 
 ### [4.2](#Chapter4_2) Additional HDL Code Tutorial : Using the other peripherals onboard the Macro-KeyPad
 Tutorials to control the other components found onboard the Macro-Key have been spread out into their respective folder in the repository.
-* HDL Code Tutorial #2**: [Making a audible Warbling Siren [CherryMX Switch, Buzzer]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_2)**
-* HDL Code Tutorial #3**: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3)**
-* HDL Code Tutorial #4**: [Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4)**
-* HDL Code Tutorial #5**: [USB Custom HID upstream transfer using Python Code [UART RX from Host Python script through USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_5)**
-* HDL Code Tutorial #6**: [Reading & Writing of I2C EEPROM Memory [i2C EEPROM]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_6)** 
+* HDL Code Tutorial #2: [Making a audible Warbling Siren [CherryMX Switch, Buzzer]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_2/LatticeMacroKey-Tutorial-02.md)
+* HDL Code Tutorial #3: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3)
+* HDL Code Tutorial #4: [Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4)
+* HDL Code Tutorial #5: [USB Custom HID upstream transfer using Python Code [UART RX from Host Python script through USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_5)
+* HDL Code Tutorial #6: [Reading & Writing of I2C EEPROM Memory [i2C EEPROM]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_6)
 
 
 
