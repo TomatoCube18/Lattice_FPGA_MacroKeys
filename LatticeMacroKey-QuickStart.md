@@ -286,7 +286,7 @@ Below is the location of the user LED & Switch on the Macro-KeyPad.
 
 ![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-13-UserButton_LED_Location.png?raw=true)
 
-### **[4.2](#Chapter4_2) Additional HDL Code Tutorial **: Using the other peripherals onboard the Macro-KeyPad
+### [4.2](#Chapter4_2) Additional HDL Code Tutorial : Using the other peripherals onboard the Macro-KeyPad
 Tutorials to control the other components found onboard the Macro-Key has been spread out into their own respective folder in the repository.
 * HDL Code Tutorial #2**: [Making a audible Warbling Siren [CherryMX Switch, Buzzer]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_2)**
 * HDL Code Tutorial #3**: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3)**
