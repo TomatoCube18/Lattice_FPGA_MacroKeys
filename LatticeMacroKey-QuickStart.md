@@ -146,8 +146,8 @@ Check your Email & place the attached _license.dat_ file in the `<path>\license`
 After the installation and the license configuration, choose `Apps > Lattice Diamond 3.13 > Lattice Diamond` to launch Lattice Diamond Software.
 
 ## \[ [Chapter 4](#Chapter4): Writing Code & Programming your FPGA ]
-### **[4.1](#Chapter4_1) HDL Code Tutorial #1**: Creating your first Lattice Diamond Project
-#### [4.1.1](#Chapter4_1_1) Reading Button Input & Driving Simple Output Device [Button & LED]
+### [4.1](#Chapter4_1) Creating your first Lattice Diamond Project
+#### [4.1.1](#Chapter4_1_1) HDL Code Tutorial #1**: Reading Button Input & Driving LED Output [Button & LED]**
 We'll start our journey with a straightforward Verilog project to ensure that everything is set up and connected correctly up to this point, this includes verifying the software installation, software license, FPGA programming dongle + harness, and lastly the Macro-Keypad FPGA board are all set up correctly. 
 If all goes smoothly, the code will make the user LED flash at roughly one-second intervals, and anytime the user press the user button swith, this will cause the LED to stop flashing. 
 
@@ -155,9 +155,9 @@ Below is the schematic for the user LED & Switch which we would be using in our 
 
 _The LED jumper is shorted by default, thus can be assumed as connected directly to the FPGA. HDL debouncing of the user Switch is not absolutely nescessary for our application & the 0.1µF capacitor should do a good enough job of cleaning up noise from the tactile switch _
 
-![User_LED_Switch](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-01-UserSwitch_LED.png?raw=true)
+![User_LED_Switch](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_1/Images/Tutorial01-01-UserSwitch_LED.png?raw=true)
 
-#### [4.1.2](#Chapter4_1_2) Creating a new Project
+##### [Step 1:](#Chapter4_1_1_1) Creating a new Project
 Launch the Lattice Diamond Software if it is not already running. Click on the *Project: New* option found in the *Start Page* panel.
 
 ![Diamond Main Screen](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-02-Diamond_mainWindow.png?raw=true)
@@ -197,7 +197,7 @@ Leave the Systhesis Tool as _Lattice LSE_ when prompted by the *New Project - Se
 
 In the final dialog window *New Project - Project Information*, verify that all the information are entered correctly. Hit **Finish** & our new skeleton project is created targetting our exact FPGA.
 
-#### [4.1.3](#Chapter4_1_3) Creating & Editing the Source Code
+##### [Step 2:](#Chapter4_1_1_2) Creating & Editing the Source Code
 
 With the Project created, we are now going to create our Top-level verilog file. Select *[Menu]File > New > File*, Choose _Verilog Files_ as the *Source File* type. 
 
@@ -249,14 +249,14 @@ Open the single file named _Tutorial1.lpf_ under the _LPF Contrained Files_ tree
 
 ![Diamond LPF File](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-11-Diamond_LPF_File.png?raw=true)
 
-#### [4.1.4](#Chapter4_1_4) Synthesis & Generating Configuration Bitstream
+##### [Step 3:](#Chapter4_1_1_3) Synthesis & Generating Configuration Bitstream
 
 Move on over from the *File List* tab to the *Process* tab. Put on check box on both `Place & Route Design > Place & Route Trace` & `Export Files > JEDEC File`. 
 Verify all the check-box selection, follow by **Right-Clicking** on **JEDEC File** and choose **Rerun All** from the pop-up menu.
 
 ![Diamond Synthesis & Generating](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-12-Diamond_ProcessTab.png?raw=true)
 
-#### [4.1.5](#Chapter4_1_5) Programming/Writing JEDEC file to FPGA's Flash
+##### [Step 4:](#Chapter4_1_1_4) Programming/Writing JEDEC file to FPGA's Flash
 
 With the JEDEC File sucessfully generated, it is now time to *Burn* the configuration into the FPGA's Flash memory.
 
@@ -279,12 +279,22 @@ Observe the Output Log window and check for the message *Info - Operation: suces
 
 > Hint: Speed up the programming process? In development phase, it is possible to speed up the programming process by using *Bitstream File* (Instead of JEDEC) & choose Access Mode as _Static RAM Cell Mode_ under the *Operation* configuration.
 
-#### [4.1.6](#Chapter4_1_6) Observing the result on the Macro-KeyPad
+##### [Step 5:](#Chapter4_1_1_5) Observing the result on the Macro-KeyPad
 After the JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. You will be able to see the user LED flashing periodically & upon pressing on the user Button, the LED will switched off.
 
 Below is the location of the user LED & Switch on the Macro-KeyPad.
 
 ![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-13-UserButton_LED_Location.png?raw=true)
+
+### **[4.2](#Chapter4_2) Additional HDL Code Tutorial **: Using the other peripherals onboard the Macro-KeyPad
+Tutorials to control the other components found onboard the Macro-Key has been spread out into their own respective folder in the repository.
+* HDL Code Tutorial #2**: [Making a audible Warbling Siren [CherryMX Switch, Buzzer]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_2)**
+* HDL Code Tutorial #3**: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3)**
+* HDL Code Tutorial #4**: [Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4)**
+* HDL Code Tutorial #5**: [USB Custom HID upstream transfer using Python Code [UART RX from Host Python script through USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_5)**
+* HDL Code Tutorial #6**: [Reading & Writing of I2C EEPROM Memory [i2C EEPROM]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_6)** 
+
+
 
 ## \[ [Chapter 5](#Chapter5): Software - SOC Development Tool - LatticeMico System]
 ### [5.1](#Chapter5_1) Installation of LatticeMico System in Windows
@@ -295,5 +305,10 @@ Once download is completed, *Double-click* on the LatticeMico System installer y
 ### [5.2](#Chapter5_2) Running your LatticeMico System Software
 
 After the installation, choose `Apps > Lattice Diamond 3.13 > LMS 1.1 for Diamond 3.12` to launch LatticeMico System Software.
+
+
+## \[ [Chapter 6](#Chapter6): Creating a SoC using LatticeMico System ]
+### [6.1](#Chapter6_1) Creating your first SoC system using Lattice Mico8
+#### [6.1.1](#Chapter6_1_1) Mico8 Tutorial #1**: Reading Button Input & Driving LED Output with a C program [Button & LED]**
 
 [Lattice]:(https://www.latticesemi.com)
