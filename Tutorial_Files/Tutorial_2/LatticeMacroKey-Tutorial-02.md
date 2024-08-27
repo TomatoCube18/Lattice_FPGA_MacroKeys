@@ -1,4 +1,4 @@
-#### [4.2.1](#Chapter4_2_1) HDL Code Tutorial #2**: Making a audible Warbling Siren [CherryMX Switch, Buzzer]**
+#### [4.2.1](#Chapter4_2_1) HDL Code Tutorial #2: Making a audible Warbling Siren [CherryMX Switch, Buzzer]
 
 In this tutorial, we will try to play sound using our FPGA. We will mimic the Warbling Siren of a Police patrol car. We can toggle a pin (Square wave) rapidly at a constant rate to create a desired frequency, which is the fundamental basis when it comes to sound generation. But we are not going to do something basic 🤩; we will spice things up a bit by generating a ramp output frequency (Variable SawTooth frequency) from our internal oscilator by using HDL code logic.
 
