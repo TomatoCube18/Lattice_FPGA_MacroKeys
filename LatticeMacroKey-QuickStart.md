@@ -104,7 +104,12 @@ We have created 2 different dongles to cater to various seriousness of HDL devel
 
 1. *Low-cost TomatoCube FPGA Programming Dongle* with FTDI FT232H Module
 2. *Deluxe TomatoCube FPGA Programming Dongle* with FTDI FT2232H Module
-3. *Programming 10-Way 1.27mm Harness*
+3. *Programming 10-Way 1.27mm Harness* (align the horn of the mini IDC connectors when attaching harness to board)
+
+> Note: When using Low-cost TomatoCube FPGA Programming Dongle, you are required to manually toggle the mode switch on the Programming Dongle corresponding to the task you are trying to perform.
+> e.g. Push the slider switch towards **JTAG** when you are trying to configure/program the FPGA as illustrated below.
+>
+> ![Low-Cost Dongle JTAG Mode](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-14-Low_Cost_JTAG_Mode.png?raw=true)
 
 
 
@@ -279,7 +284,10 @@ Observe the Output Log window and check for the message *Info - Operation: succe
 
 > Hint: Speed up the FPGA programming process? In the development phase, it is possible to speed up the programming process by using *Bitstream File* (Instead of JEDEC) & choosing Access Mode as _Static RAM Cell Mode_ under the *Operation* configuration.
 
+
+
 ##### [Step 5:](#Chapter4_1_1_5) Observing the result on the Macro-KeyPad
+
 After the JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. You will be able to see the user LED flashing periodically & upon pressing on the user Button, the LED will switched off.
 
 Below is the location of the user LED & Switch on the Macro-KeyPad.
@@ -289,7 +297,7 @@ Below is the location of the user LED & Switch on the Macro-KeyPad.
 ### [4.2](#Chapter4_2) Additional HDL Code Tutorial : Using the other peripherals onboard the Macro-KeyPad
 Tutorials to control the other components found onboard the Macro-Key have been spread out into their respective folder in the repository.
 * HDL Code Tutorial #2: [Making a audible Warbling Siren [CherryMX Switch, Buzzer]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_2/LatticeMacroKey-Tutorial-02.md)
-* HDL Code Tutorial #3: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3)
+* HDL Code Tutorial #3: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3/LatticeMacroKey-Tutorial-03.md)
 * HDL Code Tutorial #4: [Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4)
 * HDL Code Tutorial #5: [USB Custom HID upstream transfer using Python Code [UART RX from Host Python script through USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_5)
 * HDL Code Tutorial #6: [Reading & Writing of I2C EEPROM Memory [i2C EEPROM]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_6)
