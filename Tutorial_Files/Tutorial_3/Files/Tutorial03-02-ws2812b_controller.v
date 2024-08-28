@@ -16,11 +16,11 @@ module ws2812b_controller (
     parameter SYS_FREQ = 12_090_000; 
 
     // WS2812B timing parameters (in clock cycles)
-    localparam T0H = 5;     // (CLK_FREQ * 0.4) / 1000000;  //  High time for "0" bit (0.4 �s)
-    localparam T1H = 10;    // (CLK_FREQ * 0.8) / 1000000;  //  High time for "1" bit (0.8 �s)
-    localparam T0L = 10;    // (CLK_FREQ * 0.85) / 1000000; //  Low time for "0" bit (0.85 �s)
-    localparam T1L = 5;     // (CLK_FREQ * 0.45) / 1000000; //  Low time for "1" bit (0.45 �s)
-    localparam RESET_TIME = 610; // CLK_FREQ * 50) / 1000000;   //  Reset time (50 �s)
+    localparam T0H = (SYS_FREQ * 4) / 10000000;			// (SYS_FREQ * 0.4) / 1000000;  //  High time for "0" bit (0.4 µs)
+    localparam T1H = (SYS_FREQ * 8) / 10000000;    		// (SYS_FREQ * 0.8) / 1000000;  //  High time for "1" bit (0.8 µs)
+    localparam T0L = (SYS_FREQ * 85) / 100000000;    	// (SYS_FREQ * 0.85) / 1000000; //  Low time for "0" bit (0.85 µs)
+    localparam T1L = (SYS_FREQ * 45) / 100000000;     	// (SYS_FREQ * 0.45) / 1000000; //  Low time for "1" bit (0.45 µs)
+    localparam RESET_TIME = (SYS_FREQ * 50) / 1000000; 	// (SYS_FREQ * 50) / 1000000;   //  Reset time (50 µs)
     
     reg [7:0] bit_counter;    // Counts the bits in the color data
     reg [15:0] clk_counter;   // Clock cycle counter for timing
@@ -114,7 +114,7 @@ module ws2812b_controller (
                 end
                 
                 RESET: begin
-                    // Hold data line low for 50 �s to reset the LED strip
+                    // Hold data line low for 50 µs to reset the LED strip
                     if (clk_counter < RESET_TIME) begin
                         data_out <= 0;
                         clk_counter <= clk_counter + 1;
