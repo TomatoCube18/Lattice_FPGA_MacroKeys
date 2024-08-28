@@ -52,7 +52,7 @@ inspective the controller reveals that, the whole operation is rather trivial & 
       SEND["SEND\nis shift-reg exhasted?"]--"No"-->SEND
       SEND--"Yes"-->NEXT_LED;
       NEXT_LED["NEXT_LED\nis (led_index==0)?"]--"Yes"-->IDLE;
-			NEXT_LED--"No"-->LOAD; 
+			NEXT_LED--"No\nled_index=1;"-->LOAD; 
       RESET--->IDLE;
       
 ````
