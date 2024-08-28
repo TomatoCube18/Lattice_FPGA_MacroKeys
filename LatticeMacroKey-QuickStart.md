@@ -150,7 +150,7 @@ Check your Email & place the attached _license.dat_ file in the `<path>\license`
 
 After the installation and the license configuration, choose `Apps > Lattice Diamond 3.13 > Lattice Diamond` to launch Lattice Diamond Software.
 
-> Note: If your Diamond Software fails to access/verify the `license.dat` file despite being configured correctly within the _Windows Environment Variables_, restart your system & try again🤯.
+> Note: If your Diamond Software fails to access/verify the `license.dat` file despite being configured correctly within the _Windows Environment Variables_. Restart your system & try again🤯.
 >
 > ![Failed License](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter03-01-License_Failed.jpg?raw=true)
 
