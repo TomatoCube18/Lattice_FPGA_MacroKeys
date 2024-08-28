@@ -20,7 +20,7 @@ Below are the schematics for the on-board Speaker & CherryMX Switch, which we wi
 
 Populate the code editor with the following Top-Level file implementation & hit **save**.
 
-#### Verilog Top-level file (\*.v):
+###### Verilog Top-level file (\*.v):
 ```verilog
 `timescale 1ns / 1ps
  

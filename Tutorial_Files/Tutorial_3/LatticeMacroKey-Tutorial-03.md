@@ -24,6 +24,7 @@ After transmitting the desired color data to the entire LED chain, a "latch" sig
 
 As we approach components which requires communication beyond the basic On/Off or PWM signal, it is recommended to split the source code into multiple files within the project, effectively abstracting the component specific code away from the main Top-Level HDL file. That is precisely what we would be doing with our NeoPixels components.
 
+###### NeoPixels Controller module file (\*.v):
 Grab the NeoPixels Controller source code from our [repository: ws2812b_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Files/Tutorial03-02-ws2812b_controller.v), place it into your Diamond project folder together with your Top-Level verilog file.
 
 To use the NeoPixels Controller code, you only need to know the Ports of our controller module & its respective functions. The names of the ports are chosen to be self-explanatory,  furthermore the source code is also heavily commented making it rather easy to follow.
@@ -73,7 +74,7 @@ inspective the controller reveals that, the whole operation is rather trivial & 
 
 Populate the code editor with the following Top-Level file implementation & hit **save**. The code will instantiate the NeoPixels controller module & in trurn send out data signal to drive our 2 NeoPixels on the Development board.
 
-#### Verilog Top-level file (\*.v):
+###### Verilog Top-level file (\*.v):
 ```verilog
 `timescale 1ns / 1ps
  
