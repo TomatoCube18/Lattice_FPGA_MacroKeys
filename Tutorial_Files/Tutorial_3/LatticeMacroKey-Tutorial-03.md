@@ -154,7 +154,12 @@ After the generated JEDEC has been programmed into the FPGA, the HDL configurati
 
 > Please rememberl that the **CherryMX Switch A** will be the top-right switch as you flip the Macro-KeyPad board around!
 
+###### Component-side View:
 ![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Images/Tutorial03-02-Neopixel_Location.png?raw=true)
+
+###### CherryMX-side View:
+![user LED & Button Location 2](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Images/Tutorial03-02-Neopixel_Location2.png?raw=true)
+
 
 ### [4.3.2](#Chapter4_3_2) Additional Challenge
 * ...
