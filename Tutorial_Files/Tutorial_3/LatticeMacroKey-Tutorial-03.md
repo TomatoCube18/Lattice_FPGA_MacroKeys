@@ -43,6 +43,20 @@ parameter SYS_FREQ = 12_090_000;
 
 inspective the controller reveals that, the whole operation is rather trivial & it consists nothing more than a 5 States state-machine.
 
+
+```mermaid
+  graph TD;
+      IDLE["IDLE\nis (start_n==0)?"]--"Yes\nled_index=0;\n"-->LOAD;
+      IDLE--"No"-->IDLE;
+      LOAD["LOAD"]-->SEND;
+      SEND["SEND\nis shift-reg exhasted?"]--"No"-->SEND
+      SEND--"Yes"-->NEXT_LED;
+      NEXT_LED["NEXT_LED\nis (led_index==0)?"]--"Yes"-->IDLE;
+			NEXT_LED--"No"-->LOAD; 
+      RESET--->IDLE;
+      
+````
+
 * **IDLE** : Initial State of the controller. When **start_n** is triggered, load the 1st set of RGB data into the Shift-register & move to **LOAD**
 
 * **LOAD**: Load 1st bit of the Shift-register into the output Pin.
