@@ -212,7 +212,7 @@ Give our file the name _LED_, verify that the _Add to Implementation_ checkbox i
 
 Populate the code editor with the following Top-Level file implementation & hit save.
 
-#### Verilog Top-level file (\*.v):
+###### Verilog Top-level file (\*.v):
 ```verilog
 `timescale 1ns / 1ps
  
@@ -247,7 +247,7 @@ endmodule
 
 > For all available output frequencies of MachXO2's Internal Oscillator, Please refer to **Table 20.3** in the following Lattice Technical Note: [FPGA-TN-02157](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/FPGA-TN-02157-3-0-MachXO2-sysCLOCK-PLL-Design-and-User-Guide.pdf)
 
-#### Logical preference file (\*.lpf):
+###### Logical preference file (\*.lpf):
 Open the single file named _Tutorial1.lpf_ under the _LPF Contrained Files_ tree drop-down list, overwrite the file with the content from the following [Predefined board file](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Essential_Files/macrokeys.lpf). 
 
 > To connect our top-level Verilog file (consisting of one push-button switch & an LED) to the real world, we would normally go through *"Synthesis"* once & pop into spreadsheet view `([Menu]Tools > Spreadsheet View)` in order to assign each of the input & output bit from the top-level verilog file to a physical pins. But for simplicity sack, we just edited the _Logical preference file (\*.lpf)_ manually. 
@@ -318,5 +318,6 @@ After the installation, choose `Apps > Lattice Diamond 3.13 > LMS 1.1 for Diamon
 ## \[ [Chapter 6](#Chapter6): Creating a SoC using LatticeMico System ]
 ### [6.1](#Chapter6_1) Creating your first SoC system using Lattice Mico8
 #### [6.1.1](#Chapter6_1_1) Mico8 Tutorial #1**: Reading Button Input & Driving LED Output with a C program [Button & LED]**
+### [6.2](#Chapter6_2) Additional Mico8 Tutorial : Using EFB & the other peripherals onboard the Macro-KeyPad
 
 [Lattice]:(https://www.latticesemi.com)
