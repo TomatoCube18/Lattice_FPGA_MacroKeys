@@ -1,7 +1,9 @@
-`timescale 1ns/1ps
-
-// i2c 24L0x EEProm Reading & Write 
-// Interface Code
+//
+// i2C Controller for TomatoCube 6-Key Macro-KeyPad
+// with support for 24L0x EEProm Reading & Write
+// Author: Percy Chen
+// Last Updated: 28th August 2024
+//
 
 module i2c_intf #(
     parameter SYS_FREQ = 12_090_000,
