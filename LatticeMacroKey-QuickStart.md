@@ -150,6 +150,10 @@ Check your Email & place the attached _license.dat_ file in the `<path>\license`
 
 After the installation and the license configuration, choose `Apps > Lattice Diamond 3.13 > Lattice Diamond` to launch Lattice Diamond Software.
 
+> Note: If your Diamond Software fails to access/verify the `license.dat` file despite being configured correctly within the _Windows Environment Variables_, restart your system & try again🤯.
+>
+> ![Failed License](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter03-01-License_Failed.jpg?raw=true)
+
 ## \[ [Chapter 4](#Chapter4): Writing Code & Programming your FPGA ]
 ### [4.1](#Chapter4_1) Creating your first Lattice Diamond Project
 #### [4.1.1](#Chapter4_1_1) HDL Code Tutorial #1**: Reading Button Input & Driving LED Output [Button & LED]**
@@ -312,7 +316,7 @@ Once download is completed, *Double-click* on the LatticeMico System installer y
 
 ### [5.2](#Chapter5_2) Running your LatticeMico System Software
 
-After the installation, choose `Apps > Lattice Diamond 3.13 > LMS 1.1 for Diamond 3.12` to launch LatticeMico System Software.
+After the installation, choose `Apps > Lattice Diamond 3.13 > LMS 1.2 for Diamond 3.13` to launch LatticeMico System Software.
 
 
 ## \[ [Chapter 6](#Chapter6): Creating a SoC using LatticeMico System ]
