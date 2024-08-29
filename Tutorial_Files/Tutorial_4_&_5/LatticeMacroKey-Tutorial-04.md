@@ -23,7 +23,7 @@ To understand more about the various modes supported by the CH9329 IC, you can r
 
 ##### Sequence for General Keyboard Operation:
 
-| Frame Header | Address | Command code | Data Length | Data Payload | Checksum |
+| Frame Header | Address | Command ID | Data Length | Data Payload | Checksum |
 |:------------:|:-------:|:------------:|:-----------:|:------------:|:-----------:|
 | 0x57 0xAB | 0x00  | 0x02  | 0x08 | 8 Bytes | 0x?? |
 
@@ -37,7 +37,8 @@ To understand more about the various modes supported by the CH9329 IC, you can r
 	0x00
 * Byte 3~8:
 	HID Code for each Key, Max of 6 simultaneous Keys.
-	Refer to **Page 15** of the [CH9239 comunication protocol specification](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-CH9329芯片串口通信协议-CommunicationProtocol.PDF)
+	
+	> Refer to **Page 15** of the [CH9239 comunication protocol specification](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-CH9329芯片串口通信协议-CommunicationProtocol.PDF)
 ###### Example
 
 * Emulating pressing & releasing the **"A"** Key:
@@ -65,7 +66,8 @@ To understand more about the various modes supported by the CH9329 IC, you can r
 | 0x57 0xAB | 0x00  | 0x03  | 0x04 | 4 Bytes | 0x?? |
 
 ##### Data Payload
-Refer to **Page 17** of the [CH9239 comunication protocol specification](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-CH9329芯片串口通信协议-CommunicationProtocol.PDF)
+> Refer to **Page 17** of the [CH9239 comunication protocol specification](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-CH9329芯片串口通信协议-CommunicationProtocol.PDF)
+
 ###### Example
 
 * Emulating pressing & releasing Multimeter **"Mute"** Key:
@@ -99,44 +101,32 @@ module ch9329_keystroke_sender (
     input wire clk,             // System clock
     input wire rst_n,           // Active low reset
     input wire start,           // Start signal to send keystroke
+    input wire [7:0] modifier,  // Keycode modifier e.g. Shift, Alt...
     input wire [7:0] keycode,   // Keycode to send (HID code)
+    input wire autorelease,     // Send a key-release after short delay
     output reg tx,              // UART transmit line
     output reg done             // Transmission complete
 );
 
-parameter SYS_FREQ = 12_090_000; 
+parameter SYS_FREQ = 12_090_000;  			// System clock frequency (12.09 MHz)
+parameter BAUD_RATE = 9600;     				// UART baud rate
+parameter DELAY_CYCLES = SYS_FREQ / 4;	// 0.25-second delay between keystroke and release
 ```
 
-inspective the controller reveals that, the whole operation is rather trivial & it consists nothing more than a 7 States state-machine.
+
+* Blah blah blah blah 🧛🏻
 
 
 
+##### [Step 2:](#Chapter4_4_1_2) Creating the Key-Press Demo Source Code
 
-* **IDLE** : 
-
-* **START_BIT**: 
-
-* **SEND_BYTE**: 
-
-* **STOP_BIT**: 
-
-* **DELAY**: 
-
-* **RELEASE_KEY**: 
-
-* **DONE**:
-
-
-
-##### [Step 2:](#Chapter4_4_1_2) Creating the NeoPixel Driving Source Code
-
-Populate the code editor with the following Top-Level file implementation & hit **save**. The code will instantiate the NeoPixels controller module & in trurn send out data signal to drive our 2 NeoPixels on the Development board.
+Populate the code editor with the following Top-Level file implementation & hit **save**. The code will instantiate the CH9329 KeyStroke Sender module & send the desired HID KeyCode whenever a CherryMX Switch/Button is pressed.
 
 ###### Verilog Top-level file (\*.v):
 ```verilog
 `timescale 1ns / 1ps
  
-module NeoPixel(swA,swB,swC,swD,swE,swF,swU,neopixel);
+module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
   input wire swA;	
   input wire swB;
   input wire swC;
@@ -145,15 +135,19 @@ module NeoPixel(swA,swB,swC,swD,swE,swF,swU,neopixel);
   input wire swF;	
   input wire swU;
   
-  output wire neopixel;
-  
+  input wire rx;
+  output wire tx;
+  output wire tx2;
+    
   parameter SYS_FREQ = 12_090_000;
    
-	// Neopixel
-  reg [11:0]neo_count;
-  wire neo_refresh = neo_count[11];
-  reg [23:0] test_color;/// = 24'b000000000001111100000000;
-  reg [23:0] test_color2;
+	//Uart Debugger Output
+  wire tx_wire;
+  assign tx2 = tx_wire;	// Cloning the UART TX to CH9329 for External Watcher
+  assign tx  = tx_wire;	
+  
+  // Flip Flop Key
+  reg key_out_ff2;
    
   // Internal OSC setting (12.09 MHz)
   OSCH #( .NOM_FREQ("12.09")) IOSC (
@@ -162,48 +156,31 @@ module NeoPixel(swA,swB,swC,swD,swE,swF,swU,neopixel);
         .SEDSTDBY()
   );
   
-  // Instatiate NeoPixel Controller
-  ws2812b_controller #(SYS_FREQ) ws2812b_controller_u (
-        .clk     	(clk    ), 
-    		.rst_n   	(swU    ),
-        .rgb_data_0	(test_color),		// RGB color data for LED 0 (8 bits for each of R, G, B)
-    		.rgb_data_1	(test_color2),	// RGB color data for LED 1
-				.start_n	(neo_refresh	),	// Start signal to send data
-				.data_out	(neopixel)				// WS2812B data line        
-  );
-  
-	// NeoPixel Control
-  always @(posedge clk) begin				// Stupid Code just to refresh the color!!
-			neo_count <= neo_count + 1;		// Proper way would be do detect Trasition of Switch State
-	end
-  
-	always @(posedge clk) begin
-    if (swD == 0) begin							//Pressing Switch-D will Copy Color from LED 0 -> LED 1
-			test_color2 <= test_color;		
-		end 
-		
-		if (swA == 0) begin
-			test_color <= 24'h00_00_3F;	//Blue		
-		end 
-    else if (swB == 0) begin
-			test_color <= 24'h00_3F_00;	//Green			
-		end 
-    else if (swC == 0) begin
-			test_color <= 24'h3F_00_00;	//Red 	
-		end 
-		else if (swE == 0) begin
-			test_color <= 24'h3F_00_3F;	//Red + Blue
-		end 
-    else if (swF == 0) begin
-			test_color <= 24'b0;	//Black -> Off
-		end 
+  // CH9329 KeyStroke Sender (UART)
+	always @(posedge clk or negedge swU) begin
+        if(swU == 0)
+            key_out_ff2 <= 0;
+        else
+            key_out_ff2 <= swB;
+  end
+	// Send Write Pulse when Falling-Edge detected on CherryMX Switch B
+  assign uartStart = !swB && key_out_ff2;			
 
-	end
+	ch9329_keystroke_sender #(SYS_FREQ) ch9329_keystroke_sender_u (
+    .clk	(clk	),						// System clock
+    .rst_n	(swU	),     			// Active low reset
+    .start	(uartStart	),		// Start signal to send keystroke
+    .modifier	(8'h02	),  		// Keycode modifier e.g. Shift, Alt...
+    .keycode	(8'h04	),   		// Keycode to send (HID code)
+    .autorelease	(1'b01	),	// Send a key-release after short delay
+    .tx		(tx_wire		),			// UART transmit line
+    .done	(	)            			// Transmission complete
+	);
  
 endmodule
 ```
 
-> NeoPixels are capable of shining super bright light, but just like everything in this universe, 'The flame that burns Twice as bright burns half as long.' Try not to use full-intensity on any of the color channel. And if you are diplaying white (or Grey), try to lower the combined intensity.
+
 
 
 

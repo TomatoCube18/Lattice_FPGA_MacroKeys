@@ -8,7 +8,9 @@ module ch9329_keystroke_sender (
     input wire clk,             // System clock
     input wire rst_n,           // Active low reset
     input wire start,           // Start signal to send keystroke
+    input wire [7:0] modifier,  // Keycode modifier e.g. Shift, Alt...
     input wire [7:0] keycode,   // Keycode to send (HID code)
+    input wire autorelease,     // Send a key-release after short delay
     output reg tx,              // UART transmit line
     output reg done             // Transmission complete
 );
@@ -37,7 +39,6 @@ module ch9329_keystroke_sender (
     reg [31:0] delay_counter; // Counter for delay
     reg [7:0] tx_data [NUM_BYTES-1:0]; // Array to hold the command sequence
 
-		
 
     // Function to calculate checksum
     function [7:0] calculate_checksum(input in);
@@ -69,20 +70,19 @@ module ch9329_keystroke_sender (
                     done <= 0;
                     if (start) begin
                         
-						tx_data[0]  <= 8'h57;    // Start byte
-						tx_data[1]  <= 8'hAB;    // Command identifier
-						tx_data[2]  <= 8'h00;    // Reserved
-						tx_data[3]  <= 8'h02;    // Reserved
-						tx_data[4]  <= 8'h08;    // Report ID
-						tx_data[5]  <= 8'h00;    // Reserved
-						tx_data[6]  <= 8'h00;    // Reserved
-						tx_data[7]  <= keycode;  // Keycode byte
-						tx_data[8]  <= 8'h00;    // Reserved
-						tx_data[9]  <= 8'h00;    // Reserved
-						tx_data[10] <= 8'h00;    // Reserved
-						tx_data[11] <= 8'h00;    // Reserved
-						tx_data[12] <= 8'h00;    // Reserved
-						
+						tx_data[0]  <= 8'h57;    // Start Byte (1)
+						tx_data[1]  <= 8'hAB;    // Start Byte (2)
+						tx_data[2]  <= 8'h00;    // Address
+						tx_data[3]  <= 8'h02;    // Command ID
+						tx_data[4]  <= 8'h08;    // Data Length
+						tx_data[5]  <= modifier; // Byte1-Key Modifier-Byte
+						tx_data[6]  <= 8'h00;    // Byte2-Reserved
+						tx_data[7]  <= keycode;  // Byte3-HID Keycode-Byte
+						tx_data[8]  <= 8'h00;    // Byte4-Reserved
+						tx_data[9]  <= 8'h00;    // Byte5-Reserved
+						tx_data[10] <= 8'h00;    // Byte6-Reserved
+						tx_data[11] <= 8'h00;    // Byte7-Reserved
+						tx_data[12] <= 8'h00;    // Byte8-Reserved
 						
 						state <= START_BIT;
                         clk_count <= 0;
@@ -134,8 +134,13 @@ module ch9329_keystroke_sender (
 							clk_count <= 0;
 							bit_index <= 0;
 						end else begin
-							state <= DELAY;
-							delay_counter <= 0;
+							if (autorelease) begin
+							    state <= DELAY;
+							    delay_counter <= 0;
+                            end else begin
+                                byte_index <= 0;
+							    state <= DONE;
+                            end
 						end
                     end
                 end
@@ -148,6 +153,7 @@ module ch9329_keystroke_sender (
 						
 						if (tx_data[7] != 8'h00) begin
 							// Generate key release command (only checksum differs)
+							tx_data[5] <= 8'h00; // No Modifier
 							tx_data[7] <= 8'h00; // No keycode
 							
 							byte_index <= 0;
