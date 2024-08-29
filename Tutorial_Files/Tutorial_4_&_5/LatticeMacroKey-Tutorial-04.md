@@ -248,23 +248,22 @@ The above code performs several functions: first, it detects the falling edge of
 2. Sending a fixed **"R-Shift" + "A"** key combination.
 3. Utilizing the auto-release feature of the `ch9329_keystroke_sender` module.
 
-Once you've confirmed that the above code works, please proceed with the following tasks:
-
-1. Detect both rising and falling edges of the CherryMX key press.
-2. Modify the code to send a key release only when the switch is released (instead of relying on a timer).
-3. Map HID codes to all six CherryMX switches on your development board.
-4. *(Optional)* Explore the possibility of sending multimedia/consumer UART command frames to the CH9329 IC.
-
 
 
 ##### [Step 3:](#Chapter4_3_1_3) Observing the result on the Macro-KeyPad
+
 After programming the generated JEDEC file into the FPGA, the HDL configuration will take effect. Ensure the micro-USB is connected to your computer. Upon pressing **CherryMX Switch B**, the Macro-KeyPad will send an **uppercase 'A'**to your computer.
 
 > Please note that **CherryMX Switch A** is the top-right switch when you flip the Macro-KeyPad board around, and **CherryMX Switch B** is the middle switch on the top row.
 > 
 
 ### [4.4.2](#Chapter4_4_2) Additional Challenge
-* ...
+Once you've confirmed that the above code works, please proceed with the following tasks:
+
+1. Detect both rising and falling edges of the CherryMX key press.
+2. Modify the code to send a key release only when the switch is released (instead of relying on a timer).
+3. Map HID codes to all six CherryMX switches on your development board.
+4. *(Optional)* Explore the possibility of sending multimedia/consumer UART command frames to the CH9329 IC.
 
 
 
