@@ -22,12 +22,12 @@ After transmitting the desired color data to the entire LED chain, a "latch" sig
 
 ##### [Step 1:](#Chapter4_3_1_1) Importing the NeoPixel Library Code into your project
 
-As we approach components which requires communication beyond the basic On/Off or PWM signal, it is recommended to split the source code into multiple files within the project, effectively abstracting the component specific code away from the main Top-Level HDL file. That is precisely what we would be doing with our NeoPixels components.
+As we approach components that require communication beyond the basic On/Off or PWM signal, it beyond basic On/Off or PWM signals, it's advisable to organize your source code by splitting it into multiple files within the project. This approach helps abstract the component-specific code from the main Top-Level HDL file, making the design more modular and easier to manage. This is precisely the approach we'll take with our NeoPixels component.
 
 ###### NeoPixels Controller module file (\*.v):
-Grab the NeoPixels Controller source code from our [repository: ws2812b_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Files/Tutorial03-02-ws2812b_controller.v), place it into your Diamond project folder together with your Top-Level verilog file.
+Download the NeoPixels Controller source code from our [repository: ws2812b_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Files/Tutorial03-02-ws2812b_controller.v) and place it into your Diamond project folder alongside your Top-Level Verilog file _(Which might not yet exist, if you are starting a brand new project )_.
 
-To use the NeoPixels Controller code, you only need to know the Ports of our controller module & its respective functions. The names of the ports are chosen to be self-explanatory,  furthermore the source code is also heavily commented making it rather easy to follow.
+To use the NeoPixels Controller code, you only need to understand the Ports of our controller module & their respective functions. The port names are intentionally descriptive, and the source code is heavily commented, making it easy to follow.
 
 ```verilog
 module ws2812b_controller (
@@ -44,58 +44,47 @@ parameter SYS_FREQ = 12_090_000;
 
 **State Machine:**
 
-inspective the controller reveals that, the whole operation is rather trivial & it consists nothing more than a 5 States state-machine.
+inspective the controller reveals a straightforward operation consisting of a 5-state state machine.
 
-
-```mermaid
-  graph TD;
-      IDLE["IDLE\nis (start_n==0)?"]--"Yes\nled_index=0;\n"-->LOAD;
-      IDLE--"No"-->IDLE;
-      LOAD["LOAD"]-->SEND;
-      SEND["SEND\nis shift-reg exhasted?"]--"No"-->SEND
-      SEND--"Yes"-->NEXT_LED;
-      NEXT_LED["NEXT_LED\nis (led_index==0)?"]--"Yes"-->IDLE;
-			NEXT_LED--"No\nled_index=1;"-->LOAD; 
-      RESET--->IDLE;
-      
-````
 
 ````mermaid
 stateDiagram-v2
-    [*] --> IDLE
-    IDLE --> RESET: start
-    RESET --> SEND_BIT_HIGH: led_index < NUM_LEDS and color_index < 24
-    SEND_BIT_HIGH --> SEND_BIT_LOW: sending high bit
-    SEND_BIT_LOW --> NEXT_BIT: sending low bit
-    NEXT_BIT --> SEND_BIT_HIGH: bit_index < 24
-    NEXT_BIT --> RESET: bit_index == 24 and led_index < NUM_LEDS-1
-    NEXT_BIT --> DONE: bit_index == 24 and led_index == NUM_LEDS-1
-    DONE --> IDLE: transmission complete
+    RESET --> IDLE
+    IDLE --> START: start_n==0
+    START --> LOAD
+    LOAD --> SEND
+    SEND --> NEXT_LED: shift-reg content \nexhausted
+    state LED_INDEX <<choice>>
+    NEXT_LED --> LED_INDEX
+    LED_INDEX --> IDLE: led_index > 0
+    LED_INDEX --> LOAD: led_index==0
+    %%direction LR
+   
 
     state IDLE {
-        direction LR
-        state "Waiting for start signal" as IDLE_STATE
+    		state "Waiting for start signal (start_n)" as IDLE_STATE   
     }
-    state RESET {
-        direction LR
-        state "Resetting WS2812B" as RESET_STATE
+    
+    state START {
+    		state "led_index=0" as RESETLEDCNT_STATE 
+    		state "reset shift-reg counter" as RESETSR_STATE
+    		RESETLEDCNT_STATE --> RESETSR_STATE
     }
-    state SEND_BIT_HIGH {
-        direction LR
-        state "Sending logic high for the current bit" as SEND_BIT_HIGH_STATE
+    
+    state LOAD {
+    		state "Check led_index & Push rgb_data_0 \nor rgb_data_1 into shift-reg" as LOAD_STATE   
     }
-    state SEND_BIT_LOW {
-        direction LR
-        state "Sending logic low for the current bit" as SEND_BIT_LOW_STATE
+    
+    state SEND {
+    		state "Generate pulses & Pop shift-reg content \naccording to WS2812b timing requirements" as SEND_STATE   
+        state "Check if we have send all content of ShiftRegister" as CHECKSR_STATE
+        SEND_STATE --> CHECKSR_STATE
+        CHECKSR_STATE --> SEND_STATE
+        
     }
-    state NEXT_BIT {
-        direction LR
-        state "Move to the next bit or LED" as NEXT_BIT_STATE
-    }
-    state DONE {
-        direction LR
-        state "Transmission complete" as DONE_STATE
-    }
+    
+    
+    
 
 ````
 
@@ -117,7 +106,7 @@ stateDiagram-v2
 
 ##### [Step 2:](#Chapter4_3_1_2) Creating the NeoPixel Driving Source Code
 
-Populate the code editor with the following Top-Level file implementation & hit **save**. The code will instantiate the NeoPixels controller module & in trurn send out data signal to drive our 2 NeoPixels on the Development board.
+Populate the code editor with the following Top-Level file implementation & hit **save**. The code will instantiate the NeoPixels controller module &, in turn, send out data signals needed to drive the two NeoPixels on the development board.
 
 ###### Verilog Top-level file (\*.v):
 ```verilog
@@ -196,9 +185,9 @@ endmodule
 
 ##### [Step 3:](#Chapter4_3_1_3) Setting Top-Level Unit
 
-As your design grew, it will inherently grew in size to consist of several modules within the project folder. Although Lattice Diamond will try its best to choose the most suitable Top-Level Unit/Module, it is more of a hit or miss. And if you are lucky, your project will work fine, but occasionally Lattice Diamond will choose the wrong Verilog file as its Top-Level Unit, and you will spend hours wondering what went wrong.
+As your design grew, it will inherently expand to include several modules within the project folder. While Lattice Diamond will try its best to automatically select the most appropriate(likely) Top-Level Unit/Module, this process can be hit or miss. If you're fortunate, your project will work fine, but occasionally, Lattice Diamond might choose the wrong Verilog file/module as the Top-Level Unit, leading to confusion and many hours of lost troubleshooting time.
 
-So it is a good practice to manually set the **Top-Level Unit** through the _Project properties_. Bring up the Project properties dialog through the `[Menu]Project > Property Pages ` , select your Implementation name _(mine is LED)_ and click on the drop down box next to the **Top-Level Unit**, pick the Top level module name picked up by Lattice Diamond Synthesis Engine. And click **OK** when done.
+To avoid this, it's good practice to manually set the **Top-Level Unit** through the _Project properties_. Open the Project properties dialog window through the `[Menu]Project > Property Pages ` , select your Implementation name _(mine is LED)_ and choose the correct Top-Level Module from the drop-down box next to **Top-Level Unit**. Click **OK** when you're done.
 
 ![Choosing Top-level Unit](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Images/Tutorial03-03-Neopixel_TopLevel.png?raw=true)
 
@@ -208,7 +197,7 @@ Proceed to generate your JEDEC file.
 
 
 ##### [Step 4:](#Chapter4_3_1_3) Observing the result on the Macro-KeyPad
-After the generated JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. Pressing the **CherryMX Switch A-C, E & F** with change the color of NeoPixel #1; Pressing the **CherryMX Switch D** with copy the color of NeoPixel #1 → NeoPixel #2
+After programming the generated JEDEC file into the FPGA, the HDL configuration will take effect. Pressing **CherryMX Switches A-C, E & F** will change the color of NeoPixel #1, while pressing the **CherryMX Switch D** with copy the color of NeoPixel #1 → NeoPixel #2
 
 > Please rememberl that the **CherryMX Switch A** will be the top-right switch as you flip the Macro-KeyPad board around!
 
