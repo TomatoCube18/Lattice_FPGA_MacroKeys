@@ -139,7 +139,7 @@ Populate the code editor with the following Top-Level file implementation & hit 
     // Neopixel
     reg [11:0]neo_count;
     wire neo_refresh = neo_count[11];
-    reg [23:0] test_color;/// = 24'b000000000001111100000000;
+    reg [23:0] test_color;	/// = 24'b000000000001111100000000;
     reg [23:0] test_color2;
 
     // Internal OSC setting (12.09 MHz)
@@ -160,12 +160,12 @@ Populate the code editor with the following Top-Level file implementation & hit 
     );
 
     // NeoPixel Control
-    always @(posedge clk) begin				// Stupid Code just to refresh the color!!
-    		neo_count <= neo_count + 1;		// Proper way would be do detect State Trasition
+    always @(posedge clk) begin			// Stupid Code just to refresh the color!!
+    		neo_count <= neo_count + 1;	// Proper way would be do detect State Trasition
     end
 
     always @(posedge clk) begin
-        if (swD == 0) begin				//Pressing Switch-D will Copy Color from LED 0 -> LED 1
+        if (swD == 0) begin			//Pressing Switch-D will Copy Color from LED 0 -> LED 1
 		test_color2 <= test_color;		
         end 
 
