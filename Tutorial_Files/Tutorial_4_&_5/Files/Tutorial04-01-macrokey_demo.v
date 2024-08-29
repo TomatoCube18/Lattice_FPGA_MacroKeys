@@ -15,7 +15,7 @@ module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
     
   parameter SYS_FREQ = 12_090_000;
    
-	//Uart Debugger Output
+  //Uart Debugger Output
   wire tx_wire;
   assign tx2 = tx_wire;	// Cloning the UART TX to CH9329 for External Watcher
   assign tx  = tx_wire;	
@@ -31,16 +31,16 @@ module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
   );
   
   // CH9329 KeyStroke Sender (UART)
-	always @(posedge clk or negedge swU) begin
+  always @(posedge clk or negedge swU) begin
         if(swU == 0)
             key_out_ff2 <= 0;
         else
             key_out_ff2 <= swB;
   end
-	// Send Write Pulse when Falling-Edge detected on CherryMX Switch B
+  // Send Write Pulse when Falling-Edge detected on CherryMX Switch B
   assign uartStart = !swB && key_out_ff2;			
 
-	ch9329_keystroke_sender #(SYS_FREQ) ch9329_keystroke_sender_u (
+  ch9329_keystroke_sender #(SYS_FREQ) ch9329_keystroke_sender_u (
     .clk	(clk	),						// System clock
     .rst_n	(swU	),     			// Active low reset
     .start	(uartStart	),		// Start signal to send keystroke
