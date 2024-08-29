@@ -89,12 +89,13 @@ To understand more about the various modes supported by the CH9329 IC, you can r
 
 ##### [Step 1:](#Chapter4_4_1_1) Importing the KeyStroke Library Code into your project
 
-With the information gathered above, it makes a lot of sence to abstract away the nity-grity details on how to format the command frame according to the CH9329 communication protocol. The KeyStroke sender module does 2 things. (1) Handle the UART transmission at a baud rate of 9600 Bps (2) Construct command frame according to the CH9329 communication protocol (3) Handle auto key release if nessessary. 
+Given the Chip-specific protocol information we read above, it makes sense to abstract the complexities of formatting the command frame to keep the Top-Level HDL code concise. Creating a dedicated module not only simplifies the code but also reduces redundancy, as each keystroke press will requires sending a similar command frame.
+The KeyStroke sender module is designed to handle three primary tasks: (1) managing UART transmission signaling at a baud rate of 9600 bps, (2) constructing the command frames according to the CH9329 communication protocol, and (3) handling automatic key release when necessary.
 
 ###### CH9329 KeyStroke sender module file (\*.v):
-Grab the CH9329 Keystroke sender source code from our [repository: ch9329_keystroke_sender.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_%26_5/Files/Tutorial04-02-ch9329_keystroke_sender.v), place it into your Diamond project folder together with your Top-Level verilog file.
+Download the CH9329 KeyStroke sender source code from our [repository: ch9329_keystroke_sender.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_%26_5/Files/Tutorial04-02-ch9329_keystroke_sender.v) and place it into your Diamond project folder alongside your Top-Level Verilog file _(Which might not yet exist, if you are starting a brand new project )_.
 
-To use the KeyStroke sender code, you only need to know the Ports of our controller module & its respective functions. The names of the ports are chosen to be self-explanatory,  furthermore the source code is also heavily commented making it rather easy to follow.
+To use the KeyStroke sender code, you only need to understand the Ports of our KeyStroker sender module & their respective functions. The port names are self-explanatory, and the source code is thoroughly commented, making it easy to follow.
 
 ```verilog
 module ch9329_keystroke_sender (
@@ -113,7 +114,9 @@ parameter BAUD_RATE = 9600;     				// UART baud rate
 parameter DELAY_CYCLES = SYS_FREQ / 4;	// 0.25-second delay between keystroke and release
 ```
 
-inspective the KeyStroke sender module reveals that, the whole operation is rather trivial & it consists of 7 States state-machine.
+**State Machine:**
+
+An inspection of the KeyStroke sender module reveals a straightforward operation consisting of a 7-state state machine.
 
 
 ```mermaid
@@ -179,7 +182,7 @@ You can adjust the `DELAY_CYCLES` parameter to control the delay between the key
 
 ##### [Step 2:](#Chapter4_4_1_2) Creating the Key-Press Demo Source Code
 
-Populate the code editor with the following Top-Level file implementation & hit **save**. The code will instantiate the CH9329 KeyStroke Sender module & send the desired HID KeyCode whenever a CherryMX Switch/Button is pressed.
+Populate the code editor with the following Top-Level file implementation & hit **save**. This code will instantiate the CH9329 KeyStroke Sender module and send the desired HID KeyCode whenever a CherryMX switch/button is pressed.
 
 ###### Verilog Top-level file (\*.v):
 ```verilog
@@ -239,19 +242,25 @@ module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
 endmodule
 ```
 
-The above code does a couple of things, first we perform Falling-Edge detection on our **CherryMX Switch B**, once triggered, a clock pulse is send via `uartStart` to our ``ch9329_keystroke_sender`` module to start the UART transmission towards the CH9329 IC. To keep the demo code simple, I have taken the liberty to (1) Only detect the Falling-Edge of the CherryMX Switch (2) Send a fix **"R-Shift"+"A"** Keys (3) Use the auto-release feature on the  ``ch9329_keystroke_sender`` module. After you have verified the above code is working, I will need you to do the following:
+The above code performs several functions: first, it detects the falling edge of **CherryMX Switch B**. Once triggered, a clock pulse is sent via `uartStart` to the `ch9329_keystroke_sender` module to begin UART transmission to the CH9329 IC. To keep the demo code simple, I have taken the liberty on a couple of things:
 
-(1) Detect both Rising & Falling Edges of the CherryMX KeyPress
-(2) Map the above condition to only send key release when the switch is release. (Instead of relying on a timer)
-(3) Map a HID-Code to all 6 of the CherryMX Switches on your Development Board.
-(4) _(Optional)_ Explore possibility of Sending Multimedia/Consumer Uart Command Frames to the CH9329 IC. 
+1. Detecting only the falling edge of the CherryMX switch.
+2. Sending a fixed **"R-Shift" + "A"** key combination.
+3. Utilizing the auto-release feature of the `ch9329_keystroke_sender` module.
+
+Once you've confirmed that the above code works, please proceed with the following tasks:
+
+1. Detect both rising and falling edges of the CherryMX key press.
+2. Modify the code to send a key release only when the switch is released (instead of relying on a timer).
+3. Map HID codes to all six CherryMX switches on your development board.
+4. *(Optional)* Explore the possibility of sending multimedia/consumer UART command frames to the CH9329 IC.
 
 
 
 ##### [Step 3:](#Chapter4_3_1_3) Observing the result on the Macro-KeyPad
-After the generated JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. Makesure the micro-USB is hooked up to your computer, and upon pressing the **CherryMX Switch B**, the Macro-KeyPad will sent a **upper-case 'A'** to your computer.
+After programming the generated JEDEC file into the FPGA, the HDL configuration will take effect. Ensure the micro-USB is connected to your computer. Upon pressing **CherryMX Switch B**, the Macro-KeyPad will send an **uppercase 'A'**to your computer.
 
-> Please rememberl that the **CherryMX Switch A** will be the top-right switch as you flip the Macro-KeyPad board around! **CherryMX Switch B** will be the middle switch on the top-row.
+> Please note that **CherryMX Switch A** is the top-right switch when you flip the Macro-KeyPad board around, and **CherryMX Switch B** is the middle switch on the top row.
 > 
 
 ### [4.4.2](#Chapter4_4_2) Additional Challenge
