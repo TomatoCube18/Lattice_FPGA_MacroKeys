@@ -210,9 +210,9 @@ module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
 
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC (
-        .STDBY(1'b0),
-        .OSC(clk),
-        .SEDSTDBY()
+        .STDBY		(1'b0	),
+        .OSC		(clk	),
+        .SEDSTDBY	(	)
     );
 
     // CH9329 KeyStroke Sender (UART)
@@ -226,14 +226,14 @@ module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
     assign uartStart = !swB && key_out_ff2;			
 
     ch9329_keystroke_sender #(SYS_FREQ) ch9329_keystroke_sender_u (
-        .clk	(clk	),		// System clock
-        .rst_n	(swU	),     		// Active low reset
-        .start	(uartStart	),	// Start signal to send keystroke
+        .clk		(clk	),	// System clock
+        .rst_n		(swU	),     	// Active low reset
+        .start		(uartStart),	// Start signal to send keystroke
         .modifier	(8'h02	),  	// Keycode modifier e.g. Shift, Alt...
         .keycode	(8'h04	),   	// Keycode to send (HID code)
         .autorelease	(1'b01	),	// Send a key-release after short delay
         .tx		(tx_wire),	// UART transmit line
-        .done	(	)            	// Transmission complete
+        .done		(	)	// Transmission complete
     );
 
 endmodule
