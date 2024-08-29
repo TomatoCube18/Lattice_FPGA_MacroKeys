@@ -149,7 +149,20 @@ endmodule
 
 
 
-##### [Step 3:](#Chapter4_3_1_3) Observing the result on the Macro-KeyPad
+##### [Step 3:](#Chapter4_3_1_3) Setting Top-Level Unit
+
+As your design grew, it will inherently grew in size to consist of several modules within the project folder. Although Lattice Diamond will try its best to choose the most suitable Top-Level Unit/Module, it is more of a hit or miss. And if you are lucky, your project will work fine, but occasionally Lattice Diamond will choose the wrong Verilog file as its Top-Level Unit, and you will spend hours wondering what went wrong.
+
+So it is a good practice to manually set the **Top-Level Unit** through the _Project properties_. Bring up the Project properties dialog through the `[Menu]Project > Property Pages ` , select your Implementation name _(mine is LED)_ and click on the drop down box next to the **Top-Level Unit**, pick the Top level module name picked up by Lattice Diamond Synthesis Engine. And click **OK** when done.
+
+![Choosing Top-level Unit](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Images/Tutorial03-03-Neopixel_TopLevel.png?raw=true)
+
+Proceed to generate your JEDEC file.
+
+
+
+
+##### [Step 4:](#Chapter4_3_1_3) Observing the result on the Macro-KeyPad
 After the generated JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. Pressing the **CherryMX Switch A-C, E & F** with change the color of NeoPixel #1; Pressing the **CherryMX Switch D** with copy the color of NeoPixel #1 → NeoPixel #2
 
 > Please rememberl that the **CherryMX Switch A** will be the top-right switch as you flip the Macro-KeyPad board around!
