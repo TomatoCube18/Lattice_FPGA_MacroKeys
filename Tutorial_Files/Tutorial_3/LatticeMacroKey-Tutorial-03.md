@@ -154,9 +154,9 @@ Populate the code editor with the following Top-Level file implementation & hit 
         .clk     	(clk    ), 
         .rst_n   	(swU    ),
         .rgb_data_0	(test_color),		// RGB color data for LED 0 (8 bits for each of R, G, B)
-        .rgb_data_1	(test_color2),	// RGB color data for LED 1
+        .rgb_data_1	(test_color2),		// RGB color data for LED 1
         .start_n	(neo_refresh	),	// Start signal to send data
-        .data_out	(neopixel)				// WS2812B data line        
+	.data_out	(neopixel)		// WS2812B data line        
     );
 
     // NeoPixel Control
@@ -165,24 +165,24 @@ Populate the code editor with the following Top-Level file implementation & hit 
     end
 
     always @(posedge clk) begin
-        if (swD == 0) begin							//Pressing Switch-D will Copy Color from LED 0 -> LED 1
-        		test_color2 <= test_color;		
+        if (swD == 0) begin				//Pressing Switch-D will Copy Color from LED 0 -> LED 1
+		test_color2 <= test_color;		
         end 
 
         if (swA == 0) begin
-        		test_color <= 24'h00_00_3F;	//Blue		
+		test_color <= 24'h00_00_3F;	//Blue		
         end 
         else if (swB == 0) begin
-        		test_color <= 24'h00_3F_00;	//Green			
+		test_color <= 24'h00_3F_00;	//Green			
         end 
         else if (swC == 0) begin
-        		test_color <= 24'h3F_00_00;	//Red 	
+		test_color <= 24'h3F_00_00;	//Red 	
         end 
         else if (swE == 0) begin
-        		test_color <= 24'h3F_00_3F;	//Red + Blue
+		test_color <= 24'h3F_00_3F;	//Red + Blue
         end 
         else if (swF == 0) begin
-        		test_color <= 24'b0;	//Black -> Off
+		test_color <= 24'b0;		//Black -> Off
         end 
 
     end
