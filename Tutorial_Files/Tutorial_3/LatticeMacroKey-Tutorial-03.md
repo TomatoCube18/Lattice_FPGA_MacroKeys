@@ -155,7 +155,7 @@ Populate the code editor with the following Top-Level file implementation & hit 
         .rst_n   	(swU    ),
         .rgb_data_0	(test_color),		// RGB color data for LED 0 (8 bits for each of R, G, B)
         .rgb_data_1	(test_color2),		// RGB color data for LED 1
-        .start_n	(neo_refresh	),	// Start signal to send data
+        .start_n	(neo_refresh),		// Start signal to send data
 	.data_out	(neopixel)		// WS2812B data line        
     );
 
