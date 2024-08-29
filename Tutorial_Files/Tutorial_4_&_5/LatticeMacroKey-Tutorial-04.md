@@ -226,14 +226,14 @@ module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
     assign uartStart = !swB && key_out_ff2;			
 
     ch9329_keystroke_sender #(SYS_FREQ) ch9329_keystroke_sender_u (
-        .clk	(clk	),						// System clock
-        .rst_n	(swU	),     			// Active low reset
-        .start	(uartStart	),		// Start signal to send keystroke
-        .modifier	(8'h02	),  		// Keycode modifier e.g. Shift, Alt...
-        .keycode	(8'h04	),   		// Keycode to send (HID code)
+        .clk	(clk	),		// System clock
+        .rst_n	(swU	),     		// Active low reset
+        .start	(uartStart	),	// Start signal to send keystroke
+        .modifier	(8'h02	),  	// Keycode modifier e.g. Shift, Alt...
+        .keycode	(8'h04	),   	// Keycode to send (HID code)
         .autorelease	(1'b01	),	// Send a key-release after short delay
-        .tx		(tx_wire		),			// UART transmit line
-        .done	(	)            			// Transmission complete
+        .tx		(tx_wire),	// UART transmit line
+        .done	(	)            	// Transmission complete
     );
 
 endmodule
