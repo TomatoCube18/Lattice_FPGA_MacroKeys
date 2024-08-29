@@ -15,10 +15,11 @@ module MacroKeyDemo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2);
 
   parameter SYS_FREQ = 12_090_000;
 
-  //Uart Debugger Output
+  // Uart Debugger Output
   wire tx_wire;
   assign tx2 = tx_wire;	// Cloning the UART TX to CH9329 for External Watcher
   assign tx  = tx_wire;	
+  wire uartStart;
 
   // Flip Flop Key
   reg key_out_ff2;

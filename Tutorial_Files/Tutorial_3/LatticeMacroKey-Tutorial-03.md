@@ -42,6 +42,8 @@ module ws2812b_controller (
 parameter SYS_FREQ = 12_090_000; 
 ```
 
+**State Machine:**
+
 inspective the controller reveals that, the whole operation is rather trivial & it consists nothing more than a 5 States state-machine.
 
 
@@ -58,17 +60,60 @@ inspective the controller reveals that, the whole operation is rather trivial & 
       
 ````
 
-* **IDLE** : Initial State of the controller. When **start_n** is triggered, load the 1st set of RGB data into the Shift-register & move to **LOAD**
+````mermaid
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE --> RESET: start
+    RESET --> SEND_BIT_HIGH: led_index < NUM_LEDS and color_index < 24
+    SEND_BIT_HIGH --> SEND_BIT_LOW: sending high bit
+    SEND_BIT_LOW --> NEXT_BIT: sending low bit
+    NEXT_BIT --> SEND_BIT_HIGH: bit_index < 24
+    NEXT_BIT --> RESET: bit_index == 24 and led_index < NUM_LEDS-1
+    NEXT_BIT --> DONE: bit_index == 24 and led_index == NUM_LEDS-1
+    DONE --> IDLE: transmission complete
 
-* **LOAD**: Load 1st bit of the Shift-register into the output Pin.
+    state IDLE {
+        direction LR
+        state "Waiting for start signal" as IDLE_STATE
+    }
+    state RESET {
+        direction LR
+        state "Resetting WS2812B" as RESET_STATE
+    }
+    state SEND_BIT_HIGH {
+        direction LR
+        state "Sending logic high for the current bit" as SEND_BIT_HIGH_STATE
+    }
+    state SEND_BIT_LOW {
+        direction LR
+        state "Sending logic low for the current bit" as SEND_BIT_LOW_STATE
+    }
+    state NEXT_BIT {
+        direction LR
+        state "Move to the next bit or LED" as NEXT_BIT_STATE
+    }
+    state DONE {
+        direction LR
+        state "Transmission complete" as DONE_STATE
+    }
 
-* **SEND**: Traverse through the shift-register & sending Pulse in accordance to WS2812b signalling requirments.
+````
 
-* **NEXT_LED**: Load in the 2nd set of RGB data & return to **LOAD**, else go to **IDLE**
+* **IDLE** : Waits for the start signal. Once received, it loads the color data for the first LED (color_data_0).
 
-* **RESET**
+* **LOAD**: Loads the most significant bit (MSB) of the color data into the data_out line and prepares to send the rest.
 
+* **SEND**: Sends out the color data bit by bit, following the timing protocol for 1 and 0 bits.
 
+* **NEXT_LED**: After finishing the transmission for the first LED, it loads the color data for the second LED (color_data_1) and repeats the process. If both LEDs have been handled, it moves to the RESET state.
+
+* **RESET**: After all data is sent, it holds the data_out line low for at least 50 µs to reset the LEDs.
+
+**Usage:**
+
+- Provide `color_data_0` and `color_data_1` (each a 24-bit RGB value) for the two LEDs.
+- Assert the `start` signal, and the module will send the data to the two WS2812B LEDs sequentially.
+- The `data_out` line should be connected to the data input of the first LED in the strip.
 
 ##### [Step 2:](#Chapter4_3_1_2) Creating the NeoPixel Driving Source Code
 
