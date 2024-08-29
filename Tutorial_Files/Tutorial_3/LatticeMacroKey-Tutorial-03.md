@@ -144,9 +144,9 @@ Populate the code editor with the following Top-Level file implementation & hit 
 
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC (
-        .STDBY(1'b0),
-        .OSC(clk),
-        .SEDSTDBY()
+        .STDBY		(1'b0	),
+        .OSC		(clk	),
+        .SEDSTDBY	(	)
     );
 
     // Instatiate NeoPixel Controller
