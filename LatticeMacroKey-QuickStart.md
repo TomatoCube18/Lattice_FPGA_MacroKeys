@@ -302,8 +302,8 @@ Below is the location of the user LED & Switch on the Macro-KeyPad.
 Tutorials to control the other components found onboard the Macro-Key have been spread out into their respective folder in the repository.
 * HDL Code Tutorial #2: [Making a audible Warbling Siren [CherryMX Switch, Buzzer]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_2/LatticeMacroKey-Tutorial-02.md)
 * HDL Code Tutorial #3: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3/LatticeMacroKey-Tutorial-03.md)
-* HDL Code Tutorial #4: [Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4_&_5/LatticeMacroKey-Tutorial-04.md)
-* HDL Code Tutorial #5: [USB Custom HID upstream transfer using Python Code [UART RX from Host Python script through USB HID IC interfacing CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4_&_5/LatticeMacroKey-Tutorial-05.md)
+* HDL Code Tutorial #4: [Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4_&_5/LatticeMacroKey-Tutorial-04.md)
+* HDL Code Tutorial #5: [USB Custom HID upstream transfer using Python Code [UART RX from USB HID IC CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4_&_5/LatticeMacroKey-Tutorial-05.md)
 * HDL Code Tutorial #6: [Reading & Writing of I2C EEPROM Memory [i2C EEPROM]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_6/LatticeMacroKey-Tutorial-06.md)
 
 
