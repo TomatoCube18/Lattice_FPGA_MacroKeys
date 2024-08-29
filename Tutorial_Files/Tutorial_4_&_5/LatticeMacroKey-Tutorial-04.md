@@ -1,4 +1,4 @@
-### [4.4.1](#Chapter4_4_1) HDL Code Tutorial #4: Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC interfacing CH9329
+### [4.4.1](#Chapter4_4_1) HDL Code Tutorial #4: Using Standard Serial Protocol to send a KeyStroke [UART TX to USB HID IC CH9329]
 
 When we last checked the marketing brochure, the Lattice MachXO2 Family of FPGA chips doesn't come with any peripherals for USB interfacing. So, how are we interfacing our FPGA through USB & sending keystrokes to our computers or smart devices? 
 The solution lies in the use of a specialized USB interfacing IC, the **CH9329** from WCH. This chip allows any device capable of Serial/UART communication to be recognized as a standard USB keyboard, mouse, or custom HID device when plugged into a USB port of a HID-capable device or computer.
@@ -87,7 +87,7 @@ To understand more about the various modes supported by the CH9329 IC, you can r
 
 
 
-##### [Step 1:](#Chapter4_4_1_1) Importing the KeyStroke Library Code into your project
+##### [Step 1:](#Chapter4_4_1_1) Importing the KeyStroke Sending Module Code into your project
 
 Given the Chip-specific protocol information we read above, it makes sense to abstract the complexities of formatting the command frame to keep the Top-Level HDL code concise. Creating a dedicated module not only simplifies the code but also reduces redundancy, as each keystroke press will requires sending a similar command frame.
 The KeyStroke sender module is designed to handle three primary tasks: (1) managing UART transmission signaling at a baud rate of 9600 bps, (2) constructing the command frames according to the CH9329 communication protocol, and (3) handling automatic key release when necessary.
