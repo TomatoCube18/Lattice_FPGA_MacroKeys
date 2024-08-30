@@ -248,6 +248,10 @@ The above code performs several functions: first, it detects the falling edge of
 2. Sending a fixed **"R-Shift" + "A"** key combination.
 3. Utilizing the auto-release feature of the `ch9329_keystroke_sender` module.
 
+> 🚓 Sometimes, it is really useful to be able to observe the UART transaction data when doing embedded development. The additional FPGA pin which is extended over our programming connector is there for that very reason. Using those pins, you can effectively clone & monitor the UART transaction over on your computer using a Serial/UART terminal program.
+>
+> One such example is a [Freeware CoolTerm](https://freeware.the-meiers.org) which is available for all major operating system. 
+
 
 
 ##### [Step 3:](#Chapter4_3_1_3) Observing the result on the Macro-KeyPad
