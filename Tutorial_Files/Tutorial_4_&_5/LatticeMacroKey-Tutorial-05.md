@@ -1,10 +1,10 @@
-### [4.5.1](#Chapter4_4_1) HDL Code Tutorial #5: USB Custom HID upstream transfer using Python Code [UART RX from USB HID IC CH9329]
+### [4.5.1](#Chapter4_4_1) HDL Code Tutorial #5: USB Custom HID upstream transfer using Python [UART RX from USB HID IC CH9329]
 
-In the previous tutorial, we use the USB HID IC **CH9329** in the obvious purpose - as a USB keyboard or mouse. Little did we know, after reading through the [CH9329 official data-sheet](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-Ch9329_Datasheet.pdf) and the [CH9239 comunication protocol specification](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-CH9329芯片串口通信协议-CommunicationProtocol.PDF) (available only in Chinese), the **CH9329** IC has a secret skills up its sleeve. It is capable of receiving bytes of data from the computer (Upstream transfer). And before you ask, the answer is **"YES"**, you will need a custom apps running on your computer capable of connecting to a custom USB HID device & pushing custom bytes of data towards the USB device.
+In our previous tutorial, we used the USB HID IC **CH9329** for its most obvious functions—as a USB keyboard or mouse. However, after thoroughly reviewing the functionality of the **CH9329** through the [CH9329 official data sheet](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-Ch9329_Datasheet.pdf) and the [CH9329 communication protocol specification](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-CH9329芯片串口通信协议-CommunicationProtocol.PDF) (available only in Chinese), we discovered that the **CH9329** IC has another skills up its sleeve: _it can receive data from the computer (Upstream transfer)_. And before you ask—**yes**, you will need a custom application running on your computer that can connect to a custom USB HID device and push data to it.
 
-A couple of modern programming language comes to mind when deciding on which path to take to write the USB HID sender, each with the pros & cons. I finally settled on using Python, mainly due to the popularity among students, its vibrant and up-to-date library support & needless to say the ability to run across multiple platforms. 
+When deciding on how to write the USB HID sender, I considered a few modern programming languages, each with its pros and cons. I ultimately chose **Python**🐍 due to its popularity among the academia, vibrant and up-to-date library support, and lastly, the cross-platform compatibility.
 
-The hardware configuration for this tutorial remains the same. The Python software running on the computer will send custom  package of bytes through the USB to the **CH9329** IC, the data will be encapsulated within **CH9329** Data Frame format to pass on towards our FPGA via the UART (RX). Finally after decoding (Stripping away of the header signature), the message will reveal 3 bytes which would be used to control the intensity of the Red, Green & Blue components to drive the NeoPixel LEDs.
+The hardware setup for this tutorial remains the same. The Python software running on your computer will send a custom package of bytes through USB to the **CH9329** IC. The data will be encapsulated within the **CH9329** Data Frame format and passed to our FPGA via UART (RX). After decoding (stripping away the header), the message will reveal our **three-bytes** used to control the Red, Green, and Blue intensity of the NeoPixel LEDs (The goal of this tutorial).
 
 ```mermaid
 flowchart LR
@@ -16,7 +16,7 @@ flowchart LR
       
 ````
 
-I will assume, your development board is still staying on the default configuration, "Protocol Transmission Mode". Custom USB HID message passing is only possible using the "Protocol Transmission Mode". 
+‼️ I’ll assume your development board is still using the default configuration, "Protocol Transmission Mode." Custom USB HID message passing is only possible in this mode.
 
 
 
@@ -28,20 +28,22 @@ I will assume, your development board is still staying on the default configurat
 |:------------:|:-------:|:------------:|:-----------:|:------------:|:-----------:|
 | 0x57 0xAB | 0x00  | 0x87 | N (Max 64) | N Bytes | 0x?? |
 
-##### Data Payload (Self Defined - Percy's RGB LED Magic Header Signature)
+##### Data Payload (Self-Defined - Percy's RGB LED Magic Header Signature)
 
-CH9329 doesn't care what the Data Payload holds, it just deligently add in the Prefixes and N-lenght Bytes payload with a calculated CheckSum and happily send it off through the UART. The following is just a special Magic header Signature we designed to help with filtering & locating the 3 bytes we need for the NeoPixel LEDs.
+The CH9329 doesn’t care what the Data Payload contains; it simply adds the prefixes, the N-length payload, and a calculated checksum before sending it through the UART. 
+
+Below is a custom **"4-Magic Header Signature"** we designed to filter and easily locate the **three-bytes** needed for the NeoPixel LEDs.
 
 * Byte 1: 0xDE
 * Byte 2: 0xAD
 * Byte 3: 0xBE
 * Byte 4: 0xEF
-* Byte 5: **0xRR**
-* Byte 6: **0xGG**
-* Byte 7: **0xBB**
+* Byte 5: **0xRR** [Red intensity]
+* Byte 6: **0xGG** (Green intensity)
+* Byte 7: **0xBB** (Blue Intensity)
 ###### Example
 
-* Sending a Red of 0x1F intensity + Blue of 0x0F intensity through the USB HID channel
+* Sample transaction of sending a Red of 0x1F intensity + Blue of 0x0F intensity through the USB HID channel
 
   _(Computer→CH9329)_ 0x07 0xDE 0xAD 0xBE 0xEF **0x1F 0x00 0x0F**  
 
@@ -59,12 +61,13 @@ CH9329 doesn't care what the Data Payload holds, it just deligently add in the P
 
 ##### [Step 1:](#Chapter4_5_1_1) Importing the HID Receiving Module Code into your project
 
-To keep things simple, my code will ignore CH9329's Frame header and continuously wait for the 4 Magic Bytes 𐂌🥩 (0xDE, 0xAD, 0xBE, 0xEF) to arrive through the UART to signal our FPGA to expect the subsequence 3 bytes as the color components for the NeoPixels.
+To keep things simple, my module code will ignore the CH9329’s Frame header and continuously receive & wait for the **4- Magic Header Signature 𐂌🥩 **(0xDE, 0xAD, 0xBE, 0xEF) to arrive through the UART. This will signal the FPGA to expect the subsequent three bytes as the color components for the NeoPixels.
 
-###### CH9329 KeyStroke sender module file (\*.v):
-Download the CH9329 HID receiver source code from our [repository: ch9329_HID_receiver.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_%26_5/Files/Tutorial04-04-ch9329_HID_receiver.v) and place it into your Diamond project folder alongside your Top-Level Verilog file _(Which might not yet exist, if you are starting a brand new project )_.
+###### CH9329 HID Receiver Module File (*.v):
 
-To use the HID receiver code, you only need to understand the Ports of our HID receiver module & their respective functions. The port names are self-explanatory, and the source code is thoroughly commented, making it easy to follow.
+Download the CH9329 HID receiver source code from our [repository: ch9329_HID_receiver.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_%26_5/Files/Tutorial04-04-ch9329_HID_receiver.v) and place it into your Diamond project folder alongside your Top-Level Verilog file _(Which might not yet exist, if you are starting a brand new project)_.
+
+To use the HID receiver code, you only need to understand the ports of our HID receiver module and their respective functions. The port names are self-explanatory, and the source code is thoroughly commented, making it easy to follow.
 
 ```verilog
 module ch9329_HID_receiver (
@@ -85,18 +88,18 @@ parameter BAUD_RATE = 9600;         // Baud rate for UART
 
 ##### [Step 2:](#Chapter4_5_1_2) Importing the NeoPixel Library Code into your project
 
-We also need the Neopixel Controller module code as our project will need to send the color data to our NeoPixels. You can read more about it in:
-HDL Code Tutorial #3: [Reading Third-Party Component Data-sheets & Driving two Neopixel LEDs [WS2812b]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3/LatticeMacroKey-Tutorial-03.md)
+You’ll also need the NeoPixel Controller module code since our project will need to send the color data to the NeoPixels. You can find more information in:
 
->**NeoPixels Controller module file (\*.v):**
-Here is the NeoPixels Controller source code from our [repository: ws2812b_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Files/Tutorial03-02-ws2812b_controller.v) for your convenience.
+HDL Code Tutorial #3: [Reading Third-Party Component Data-sheets & Driving Two NeoPixel LEDs ](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_3/LatticeMacroKey-Tutorial-03.md)
+
+> **NeoPixels Controller Module File (\*.v):** Here is the NeoPixels Controller source code from our [repository: ws2812b_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Files/Tutorial03-02-ws2812b_controller.v) for your convenience.
 
 
 
 
 ##### [Step 3:](#Chapter4_5_1_3) Creating the USB controlled RGB Light Source Code
 
-Populate the code editor with the following Top-Level file implementation & hit **save**. This code will instantiate both the CH9329 HID Receiver module and NeoPixel Library Code which together will decode the UART signals, decipher the RGB color intesity & configure the Neopixels accordingly.
+Populate the code editor with the following Top-Level file implementation and hit **save**. This code will instantiate both the CH9329 HID Receiver module and the NeoPixel Library Code, which together will decode the UART signals, decipher the RGB color intensity, and configure the NeoPixels accordingly.
 
 ###### Verilog Top-level file (\*.v):
 ```verilog
@@ -171,23 +174,25 @@ endmodule
 
 ##### [Step 4:](#Chapter4_5_1_4) Executing the Python Script/Program
 
-Python3 & its library will be needed for this step.
+You’ll need Python3 and its libraries for this step.
 
 ###### CH9329 HID Sender (\*.py):
 Download the CH9329 HID Sender source code from our [repository: CH9329_HIDSender.py](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Essential_Files/Python_HID/CH9329_HIDSender.py) and execute it.
 
-###### Converting Python script to executable (\*.exe):
 
-[PyInstaller](https://pypi.org/project/pyinstaller/)
 
 ##### [Step 5:](#Chapter4_5_1_5) Observing the result on the Macro-KeyPad
 
-After programming the generated JEDEC file into the FPGA, the HDL configuration will take effect. Ensure the micro-USB is connected to your computer. Send the following string of text **0x07 0xDE 0xAD 0xBE 0xEF 0x1F 0x00 0x0F** after connecting to the Macro-KeyPad & observe the color change on the NeoPixels. 
+After programming the generated JEDEC file into the FPGA, the HDL configuration will take effect. Ensure the micro-USB is connected to your computer. 
+
+Using our **CH9329_HIDSender** Python script to the Macro-KeyPad. send the following string of bytes **0x07 0xDE 0xAD 0xBE 0xEF 0x1F 0x00 0x0F** which consists of (1) **N** Data payload Byte length, (2) the **"4-Magic Header Signature"** and lastly (3) the **three-bytes** color data information needed for the NeoPixel LEDs. Observe the color change on the NeoPixels whenever a new HID message is send to the Macro-KeyPad in accoring to the **three-bytes** data payload we sent.
 
 ![CH9329 HID Sender](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_&_5/Images/Tutorial04-03-CH9329_HIDSender_Py.png?raw=true)
 
 ### [4.5.2](#Chapter4_5_2) Additional Challenge
-....
+###### Converting Python script to executable (\*.exe):
+
+Use [PyInstaller](https://pypi.org/project/pyinstaller/) to convert the Python script into an executable file if needed.
 
 
 
