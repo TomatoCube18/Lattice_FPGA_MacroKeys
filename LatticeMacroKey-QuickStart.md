@@ -312,9 +312,11 @@ Tutorials to control the other components found onboard the Macro-Key have been 
 ### [5.1](#Chapter5_1) Installation of LatticeMico System in Windows
 ~~The Lattice MicoSystem software is available for download from the [LatticeMico System Development Tools web page](https://www.latticesemi.com/Products/DesignSoftwareAndIP/EmbeddedDesignSoftware/LatticeMicoSystem).  Scroll down to the download section for the Windows Operating System &~~ Click on the [LatticeMico System for Diamond 3.13 Windows](https://www.latticesemi.com/FileExplorer?media=%7B958D44F3-065D-4BB4-81B4-3F4002E2791E%7D&document_id=54020) download link.
 
+Once download is completed, *Double-click* on the LatticeMico System installer you downloaded to launch the installation process. Following through each of the steps & choose the default selections if possible to prevent unnecessary headaches. 
+
 > 🐧 If you are running on Linux & having a hard time locating the LatticeMico Installer, here s the link to it. [LatticeMico System for Diamond 3.13 Linux](https://www.latticesemi.com/FileExplorer?media=%7B9FAD2513-DF9A-4DBD-8575-B438139D03CB%7D&document_id=54021) download link.
 
-Once download is completed, *Double-click* on the LatticeMico System installer you downloaded to launch the installation process. Following through each of the steps & choose the default selections if possible to prevent unnecessary headaches. 
+
 
 ### [5.2](#Chapter5_2) Running your LatticeMico System Software
 
