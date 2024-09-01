@@ -1,8 +1,20 @@
-//
-// NeoPixel Controller for TomatoCube 6-Key Macro-KeyPad
-// Author: Percy Chen
-// Last Updated: 28th August 2024
-//
+/********************************Copyright Statement**************************************
+**
+** TomatoCube & Minoyo
+**
+**----------------------------------File Information--------------------------------------
+** File Name: Tutorial03-02-ws2812b_controller.v
+** Creation Date: 28th August 2024
+** Function Description: 2 Biji NeoPixel Controller code
+** Operation Process:
+** Hardware Platform: TomatoCube 6-Key Macro-KeyPad with MachXO2 FPGA
+** Copyright Statement: This code is an IP of TomatoCube and can only for non-profit or
+**                      educational exchange.
+**---------------------------Related Information of Modified Files------------------------
+** Modifier: Percy Chen
+** Modification Date: 31st August 2024       
+** Modification Content:
+******************************************************************************************/
 
 module ws2812b_controller (
     input clk,                      // System clock

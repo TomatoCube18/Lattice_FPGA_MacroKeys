@@ -1,8 +1,20 @@
-//
-// CH9329 KeyStroke Sender for TomatoCube 6-Key Macro-KeyPad
-// Author: Percy Chen
-// Last Updated: 28th August 2024
-//
+/********************************Copyright Statement**************************************
+**
+** TomatoCube & Minoyo
+**
+**----------------------------------File Information--------------------------------------
+** File Name: Tutorial04-02-ch9329_keystroke_sender.v
+** Creation Date: 28th August 2024
+** Function Description: KeyStroke Sender for WCH CH9239 Chip communicating on Mode-1
+** Operation Process:
+** Hardware Platform: TomatoCube 6-Key Macro-KeyPad with MachXO2 FPGA
+** Copyright Statement: This code is an IP of TomatoCube and can only for non-profit or
+**                      educational exchange.
+**---------------------------Related Information of Modified Files------------------------
+** Modifier: Percy Chen
+** Modification Date: 31st August 2024       
+** Modification Content:
+******************************************************************************************/
 
 module ch9329_keystroke_sender (
     input wire clk,             // System clock

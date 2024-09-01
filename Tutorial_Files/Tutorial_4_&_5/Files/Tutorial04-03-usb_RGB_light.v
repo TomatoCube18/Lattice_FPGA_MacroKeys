@@ -1,3 +1,21 @@
+/********************************Copyright Statement**************************************
+**
+** TomatoCube & Minoyo
+**
+**----------------------------------File Information--------------------------------------
+** File Name: Tutorial04-03-usb_RGB_light.v
+** Creation Date: 28th August 2024
+** Function Description: Top-level for a USB controlled RGB LED Light with the KeyPad
+** Operation Process:
+** Hardware Platform: TomatoCube 6-Key Macro-KeyPad with MachXO2 FPGA
+** Copyright Statement: This code is an IP of TomatoCube and can only for non-profit or
+**                      educational exchange.
+**---------------------------Related Information of Modified Files------------------------
+** Modifier: Percy Chen
+** Modification Date: 31st August 2024       
+** Modification Content:
+******************************************************************************************/
+
 `timescale 1ns / 1ps
  
 module USB_RGB_Light(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel);
@@ -21,12 +39,13 @@ module USB_RGB_Light(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel);
     wire [7:0] r_color;
     wire [7:0] g_color;
     wire [7:0] b_color;
+	wire data_valid;
+	reg data_valid_prev;
   
   	// Neopixel
-    reg [11:0]neo_count;
-    wire neo_refresh = neo_count[11];
+	reg neo_refresh;
     reg [23:0] test_color;	/// = 24'b000000000001111100000000;
-    reg [23:0] test_color2;
+    //reg [23:0] test_color2;
 
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC (
@@ -46,9 +65,14 @@ module USB_RGB_Light(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel);
     );
 
     // NeoPixel Control
-    always @(posedge clk) begin			// Stupid Code just to refresh the color!!
-    		neo_count <= neo_count + 1;	// Proper way would be do detect State Trasition
+    always @(posedge clk) begin	
+    	if (!swU) begin		// Reset aka Button_U pressed
+			data_valid_prev <= 0;
+        end else begin
+			data_valid_prev <= data_valid;
+            neo_refresh <= !(data_valid && !data_valid_prev);
     		test_color <= {r_color[7:0], g_color[7:0], b_color[7:0]};
+		end
     end
     
   	// UART Receiver	
@@ -59,7 +83,7 @@ module USB_RGB_Light(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel);
         .data_byte1	(r_color	),	// Array to store 3 bytes of data
         .data_byte2	(g_color	), 
         .data_byte3	(b_color	), 
-        .data_valid	(       )       // Flag to indicate valid data reception 
+        .data_valid	(data_valid )	// Flag to indicate valid data reception 
     );
 
 endmodule

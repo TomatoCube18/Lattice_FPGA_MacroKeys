@@ -1,3 +1,21 @@
+/********************************Copyright Statement**************************************
+**
+** TomatoCube & Minoyo
+**
+**----------------------------------File Information--------------------------------------
+** File Name: Tutorial02-01-siren.v
+** Creation Date: 28th August 2024
+** Function Description: Siren Warbling sound (Ramp) from the build in onBoard Speaker
+** Operation Process:
+** Hardware Platform: TomatoCube 6-Key Macro-KeyPad with MachXO2 FPGA
+** Copyright Statement: This code is an IP of TomatoCube and can only for non-profit or
+**                      educational exchange.
+**---------------------------Related Information of Modified Files------------------------
+** Modifier: Percy Chen
+** Modification Date: 31st August 2024       
+** Modification Content:
+******************************************************************************************/
+
 `timescale 1ns / 1ps
  
 module SIREN (swA,spk);

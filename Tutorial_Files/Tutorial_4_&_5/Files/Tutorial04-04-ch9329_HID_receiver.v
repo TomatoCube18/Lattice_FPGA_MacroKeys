@@ -1,8 +1,22 @@
-//
-// CH9329 3 Bytes HID Receiver for TomatoCube 6-Key Macro-KeyPad
-// Author: Percy Chen
-// Last Updated: 31st August 2024
-//
+/********************************Copyright Statement**************************************
+**
+** TomatoCube & Minoyo
+**
+**----------------------------------File Information--------------------------------------
+** File Name: Tutorial04-04-ch9329_HID_receiver.v
+** Creation Date: 28th August 2024
+** Function Description: 3 Bytes HID Receiver with DEAD-BEEF Magic signature from 
+**                       WCH CH9329 IC.
+** Operation Process:
+** Hardware Platform: TomatoCube 6-Key Macro-KeyPad with MachXO2 FPGA
+** Copyright Statement: This code is an IP of TomatoCube and can only for non-profit or
+**                      educational exchange.
+**---------------------------Related Information of Modified Files------------------------
+** Modifier: Percy Chen
+** Modification Date: 31st August 2024       
+** Modification Content:
+******************************************************************************************/
+
 
 module ch9329_HID_receiver (
     input clk,                  // System clock

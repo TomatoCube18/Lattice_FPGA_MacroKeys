@@ -1,3 +1,22 @@
+/********************************Copyright Statement**************************************
+**
+** TomatoCube & Minoyo
+**
+**----------------------------------File Information--------------------------------------
+** File Name: Tutorial03-01-neopixel.v
+** Creation Date: 28th August 2024
+** Function Description: Check CherryMX Switch Activity & Change the Nopixel #1,
+**                       Button Swich D will copy the color of Nopixel #1 to Nopixel #2.
+** Operation Process:
+** Hardware Platform: TomatoCube 6-Key Macro-KeyPad with MachXO2 FPGA
+** Copyright Statement: This code is an IP of TomatoCube and can only for non-profit or
+**                      educational exchange.
+**---------------------------Related Information of Modified Files------------------------
+** Modifier: Percy Chen
+** Modification Date: 31st August 2024       
+** Modification Content:
+******************************************************************************************/
+
 `timescale 1ns / 1ps
  
 module NeoPixel(swA,swB,swC,swD,swE,swF,swU,neopixel);

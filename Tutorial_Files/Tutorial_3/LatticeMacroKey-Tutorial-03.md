@@ -22,7 +22,7 @@ After transmitting the desired color data to the entire LED chain, a "latch" sig
 
 ##### [Step 1:](#Chapter4_3_1_1) Importing the NeoPixel Library Code into your project
 
-As we approach components that require communication beyond the basic On/Off or PWM signal, it beyond basic On/Off or PWM signals, it's advisable to organize your source code by splitting it into multiple files within the project. This approach helps abstract the component-specific code from the main Top-Level HDL file, making the design more modular and easier to manage. This is precisely the approach we'll take with our NeoPixels component.
+As we approach components that require communication beyond the basic On/Off or PWM signal, it's advisable to organize your source code by splitting it into multiple files within the project. This approach helps abstract the component-specific code from the main Top-Level HDL file, making the design more modular and easier to manage. This is precisely the approach we'll take with our NeoPixels component.
 
 ###### NeoPixels Controller module file (\*.v):
 Download the NeoPixels Controller source code from our [repository: ws2812b_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Files/Tutorial03-02-ws2812b_controller.v) and place it into your Diamond project folder alongside your Top-Level Verilog file _(Which might not yet exist, if you are starting a brand new project )_.
