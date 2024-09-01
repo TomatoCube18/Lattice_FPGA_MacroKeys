@@ -1,7 +1,7 @@
 //
 // CH9329 3 Bytes HID Receiver for TomatoCube 6-Key Macro-KeyPad
 // Author: Percy Chen
-// Last Updated: 28th August 2024
+// Last Updated: 31st August 2024
 //
 
 module ch9329_HID_receiver (
@@ -74,7 +74,9 @@ module ch9329_HID_receiver (
                                     data_valid <= 1;
                                     flag_detected <= 0;
                                     byte_counter <= 0;
-                                end
+                                end else begin		 	
+									data_valid <= 0;	// Pull Data Valid Flag low while collect data
+								end
                             end else begin
                                 if (rx_data == FLAG_SEQ[flag_byte_counter]) begin
                                     flag_byte_counter <= flag_byte_counter + 1;
