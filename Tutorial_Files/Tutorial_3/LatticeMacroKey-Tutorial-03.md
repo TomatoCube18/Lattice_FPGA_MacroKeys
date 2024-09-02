@@ -134,18 +134,18 @@ Populate the code editor with the following Top-Level file implementation & hit 
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC (
         .STDBY		(1'b0	),
-        .OSC		(clk	),
+        .OSC			(clk	),
         .SEDSTDBY	(	)
     );
 
     // Instatiate NeoPixel Controller
     ws2812b_controller #(SYS_FREQ) ws2812b_controller_u (
-        .clk     	(clk    ), 
-        .rst_n   	(swU    ),
+        .clk     		(clk    ), 
+        .rst_n   		(swU    ),
         .rgb_data_0	(test_color),		// RGB color data for LED 0 (8 bits for each of R, G, B)
-        .rgb_data_1	(test_color2),		// RGB color data for LED 1
-        .start_n	(neo_refresh),		// Start signal to send data
-	.data_out	(neopixel)		// WS2812B data line        
+        .rgb_data_1	(test_color2),	// RGB color data for LED 1
+      	.start_n		(!neo_refresh),	// Start signal to send data
+				.data_out		(neopixel)			// WS2812B data line        
     );
 
     // NeoPixel Control
