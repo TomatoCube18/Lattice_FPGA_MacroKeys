@@ -1,4 +1,4 @@
-### [4.5.1](#Chapter4_4_1) HDL Code Tutorial #5: USB Custom HID upstream transfer using Python [UART RX from USB HID IC CH9329]
+### [4.5.1](#Chapter4_5_1) HDL Code Tutorial #5: USB Custom HID upstream transfer using Python [UART RX from USB HID IC CH9329]
 
 In our previous tutorial, we used the USB HID IC **CH9329** for its most obvious functions—as a USB keyboard or mouse. However, after thoroughly reviewing the functionality of the **CH9329** through the [CH9329 official data sheet](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-Ch9329_Datasheet.pdf) and the [CH9329 communication protocol specification](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WCH-CH9329芯片串口通信协议-CommunicationProtocol.PDF) (available only in Chinese), we discovered that the **CH9329** IC has another skills up its sleeve: _it can receive data from the computer (Upstream transfer)_. And before you ask—**yes**, you will need a custom application running on your computer that can connect to a custom USB HID device and push data to it.
 
@@ -55,7 +55,7 @@ Below is a custom **"4-Magic Header Signature"** we designed to filter and easil
 
 ##### Schematic of the CH9329 USB interface and its connection to the FPGA via the UART pins 
 
-![Speaker_Driver](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_&_5/Images/Tutorial04-01-USB_HID_CH9329.png?raw=true)
+![CH9329 Schematic](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_&_5/Images/Tutorial04-01-USB_HID_CH9329.png?raw=true)
 
 
 
