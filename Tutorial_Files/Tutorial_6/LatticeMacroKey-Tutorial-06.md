@@ -61,9 +61,11 @@ parameter I2C_FREQ = 100_000      	// I2C clock frequency (in Hz)
 
 Now that we have our I2C Master controller  and EEPROM Interface modules, we can write the Top-Level HDL code that ties everything together. This code will instantiate the necessary modules and orchestrate the reading and writing of data to the EEPROM.
 
+> **I2C 24C0X EEPROM:** Here is the I2C EEPROM Datasheet from our [repository: Microchip_Atmel-doc0180-AT24C04_Datasheet.pdf](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/Microchip_Atmel-doc0180-AT24C04_Datasheet.pdf) for your convenience.
 
 
-##### [Step 2:](#Chapter4_5_1_2) Importing the NeoPixel Library Code into your project
+
+##### [Step 2:](#Chapter4_6_1_2) Importing the NeoPixel Library Code into your project
 
 You’ll also need the NeoPixel Controller module code since our project will need to send the color data to the NeoPixels. You can find more information in:
 
@@ -73,10 +75,23 @@ HDL Code Tutorial #3: [Reading Third-Party Component Data-sheets & Driving Two N
 
 
 
+##### [Step 3:](#Chapter4_6_1_3) Importing the CH9329 HID Receiver Module Library Code into your project
 
-##### [Step 3:](#Chapter4_5_1_3) Creating the USB controlled RGB Light Source Code
+On top of the NeoPixel Library code, you’ll also need the CH9329 HID Receiver Module code & the HID Sender Python script since our project will need to receive data payload from the Computer via the Python Script. You can find more information in:
 
-Populate the code editor with the following Top-Level file implementation and hit **save**. This code will instantiate both the CH9329 HID Receiver module and the NeoPixel Library Code, which together will decode the UART signals, decipher the RGB color intensity, and configure the NeoPixels accordingly.
+HDL Code Tutorial #5: [USB Custom HID upstream transfer using Python ](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4_&_5/LatticeMacroKey-Tutorial-05.md)
+
+> **NeoPixels Controller Module File (\*.v):** Here is the NeoPixels Controller source code from our [repository: ws2812b_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_3/Files/Tutorial03-02-ws2812b_controller.v) for your convenience.
+
+And here is the Python script that goes along with it.
+
+> **CH9329 HID Sender (\*.py):** Here is the CH9329 HID Sender source code from our [repository: CH9329_HIDSender.py](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Essential_Files/Python_HID/CH9329_HIDSender.py) for your convenience.
+
+
+
+##### [Step 4:](#Chapter4_5_1_4) Creating the ???
+
+???.
 
 ###### Verilog Top-level file (\*.v):
 ```verilog
@@ -157,7 +172,7 @@ endmodule
 
 
 
-##### [Step 4:](#Chapter4_6_1_4) Testing the Design & observing the result on the Macro-KeyPad
+##### [Step 5:](#Chapter4_6_1_5) Testing the Design & observing the result on the Macro-KeyPad
 
 After programming the generated JEDEC file into the FPGA, the HDL configuration will take effect. Ensure the micro-USB is connected to your computer. 
 
