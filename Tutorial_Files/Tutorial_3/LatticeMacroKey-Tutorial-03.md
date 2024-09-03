@@ -30,16 +30,16 @@ Download the NeoPixels Controller source code from our [repository: ws2812b_cont
 To use the NeoPixels Controller code, you only need to understand the Ports of our controller module & their respective functions. The port names are intentionally descriptive, and the source code is heavily commented, making it easy to follow.
 
 ```verilog
-module ws2812b_controller (
+module ws2812b_controller #(
+    parameter SYS_FREQ = 12_090_000    	// System clock frequency (in Hz - Def:12.09 MHz)
+)(
     input clk,                      // System clock
     input rst_n,                    // Active low reset
-    input [23:0] rgb_data_0,      	// RGB color data for LED 0 (8 bits for each of R, G, B)
-    input [23:0] rgb_data_1,      	// RGB color data for LED 1
-  	input start_n,                	// Start signal to send data
+    input [23:0] rgb_data_0,      // RGB color data for LED 0 (8 bits for each of R, G, B)
+    input [23:0] rgb_data_1,      // RGB color data for LED 1
+    input start_n,                    // Start signal to send data
     output reg data_out             // WS2812B data line
 );
-
-parameter SYS_FREQ = 12_090_000; 
 ```
 
 **State Machine:**

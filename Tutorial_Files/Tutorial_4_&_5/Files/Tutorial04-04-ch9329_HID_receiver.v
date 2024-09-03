@@ -18,7 +18,10 @@
 ******************************************************************************************/
 
 
-module ch9329_HID_receiver (
+module ch9329_HID_receiver #(
+    parameter SYS_FREQ = 12_090_000,    	// System clock frequency (in Hz - Def:12.09 MHz)
+    parameter BAUD_RATE = 9600     		// UART baud rate
+)(
     input clk,                  // System clock
     input rst_n,                // Active low reset
     input rx,                   // UART receive pin
@@ -27,9 +30,6 @@ module ch9329_HID_receiver (
     output [7:0] data_byte3, 
     output reg data_valid       // Flag to indicate valid data reception 
 );
-
-    parameter SYS_FREQ = 12_090_000;    // System clock frequency (12.09 MHz)
-    parameter BAUD_RATE = 9600;         // Baud rate for UART
 
     localparam BAUD_TICK_CNT = SYS_FREQ / BAUD_RATE;
 

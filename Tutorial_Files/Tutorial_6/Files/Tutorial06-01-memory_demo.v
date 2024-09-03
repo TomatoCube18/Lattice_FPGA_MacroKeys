@@ -46,18 +46,20 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
     wire [7:0] data_out;
 	wire done;
     reg [3:0] state;
-    reg [1:0] byte_counter;   // To keep track of the 3 bytes
+    reg [3:0] byte_counter;   // To keep track of the 3 bytes
 	reg [7:0] r_color_reg;
 	reg [7:0] g_color_reg;
 	reg [7:0] b_color_reg;
 	
-    reg btn1_prev, btn2_prev, data_valid_prev;
+    reg [3:0] btn1_buff;
+	reg [3:0] btn2_buff;
+	reg data_valid_prev;
 
     // States
     localparam IDLE = 4'd0;
     localparam WRITE = 4'd1;
     localparam READ = 4'd2;
-    localparam DISPLAY = 4'd3;
+	localparam DISPLAY = 4'd3;
 
 	// Uart Receiver
 	wire [7:0] r_color;
@@ -103,83 +105,89 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
             data_in <= 8'h00;
             address <= 8'h00;
             byte_counter <= 0;
-            btn1_prev <= 1;
-            btn2_prev <= 1;
+            btn1_buff <= 4'h0F;
+			btn2_buff <= 4'h0F;
+			
 			data_valid_prev <= 0;
         end else begin
-            btn1_prev <= swC;
-            btn2_prev <= swA;
-			data_valid_prev <= data_valid;
+            btn1_buff <= {btn1_buff[2:0],swC};	//for SwitchC Debouncing & State Change
+            btn2_buff <= {btn2_buff[2:0],swA}; //for SwitchA Debouncing & State Change
 			
-			if (data_valid && !data_valid_prev) begin
-				r_color_reg <= r_color[7:0];
-				g_color_reg <= g_color[7:0];
-				b_color_reg <= b_color[7:0];
-				
-			//	test_color <= {r_color[7:0], g_color[7:0], b_color[7:0]};
-			//end else begin
-			//	test_color <= {r_color_reg, g_color_reg, b_color_reg};	
-			end
+			data_valid_prev <= data_valid;
+			if (data_valid && !data_valid_prev) 
+				begin
+					r_color_reg <= r_color[7:0];
+					g_color_reg <= g_color[7:0];
+					b_color_reg <= b_color[7:0];
+				end
 			test_color <= {r_color_reg, g_color_reg, b_color_reg};
 
             case (state)
                 IDLE: begin
-                    if (!swC && btn1_prev) begin
-                        address <= 8'h01; // Set EEPROM address to 0x01
-                        data_in <= r_color;  // First byte to write, Red Intensity
+                    if ((btn1_buff == 4'h03) ) begin
+                        address <= 8'h05; // Set EEPROM address to 0x01
+                        data_in <= r_color;  // First byte to write, dummy  Intensity
                         rw <= 0;           // Write operation
                         start <= 1;
                         state <= WRITE;
-                        byte_counter <= 0;
-                    end else if (!swA && btn2_prev) begin
-                        address <= 8'h01; // Start reading from address 0x01
+                        byte_counter <= 1;
+                    end else if ((btn2_buff == 4'h03) ) begin
+                        address <= 8'h05; // Start reading from address 0x01
                         rw <= 1;          // Read operation
                         start <= 1;
                         state <= READ;
                         byte_counter <= 0;
-						
-                    end
+					end	
+					
                 end
 
                 WRITE: begin
                     start <= 0;
                     if (done) begin
-                        byte_counter <= byte_counter + 1;
-                        if (byte_counter == 2) begin
+						
+						if (byte_counter == 3) begin
                             state <= IDLE;
                         end else begin
+							
                             case (byte_counter)
                                 1: data_in <= g_color;  // Second byte to write, Green
                                 2: data_in <= b_color;  // Third byte to write, Blue
                             endcase
                             address <= address + 1;
+							byte_counter <= byte_counter + 1;
                             start <= 1;
-                        end
-                    end
+							state <= WRITE;
+                        end 
+						
+                    end 
                 end
 
                 READ: begin
                     start <= 0;
                     if (done) begin
-                        case (byte_counter)
+						
+						if (byte_counter == 2) begin
+							b_color_reg <= data_out;  // Third byte to write, Blue
+                            state <= IDLE;
+                        end else begin
+							case (byte_counter)
 								0: r_color_reg <= data_out;  // First byte to read, Red
                                 1: g_color_reg <= data_out;  // Second byte to write, Green
-                                2: b_color_reg <= data_out;  // Third byte to write, Blue
-						endcase
-                        byte_counter <= byte_counter + 1;
-                        if (byte_counter == 2) begin
-                            state <= DISPLAY;
-                        end else begin
+							endcase
+						
                             address <= address + 1;
-                            start <= 1;
+							byte_counter <= byte_counter + 1;
+                            rw <= 1;          // Read operation
+							start <= 1;
+							state <= READ;
                         end
+						
                     end 
                 end
+				
 
                 DISPLAY: begin
-                    //if (swC || swA) state <= IDLE; // Return to IDLE on button press
-					//led <= data_out;  // Display the read data on LEDs
-					state <= IDLE; // Return to IDLE on button press
+                    state <= IDLE; // Return to IDLE on button press
 					
                 end
 
@@ -195,14 +203,13 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
         .rst_n   		(swU    ),
         .rgb_data_0	(test_color),		// RGB color data for LED 0 (8 bits for each of R, G, B)
         .rgb_data_1	(test_color),		// RGB color data for LED 1
-        .start_n		(neo_refresh),	// Start signal to send data
-				.data_out		(neopixel)			// WS2812B data line        
+        .start_n		(!neo_refresh),	// Start signal to send data
+		.data_out		(neopixel)		// WS2812B data line        
     );
 
     // NeoPixel Control
     always @(posedge clk) begin			// Stupid Code just to refresh the color!!
-    		neo_count <= neo_count + 1;	// Proper way would be do detect State Trasition
-			//test_color <= {r_color[7:0], g_color[7:0], b_color[7:0]};	// Test_color to be handled by memory Test Code
+		neo_count <= neo_count + 1;	// Proper way would be do detect State Trasition
     end
     
   	// UART Receiver	

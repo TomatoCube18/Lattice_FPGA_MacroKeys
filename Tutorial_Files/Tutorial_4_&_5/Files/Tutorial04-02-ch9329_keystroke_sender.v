@@ -16,7 +16,11 @@
 ** Modification Content:
 ******************************************************************************************/
 
-module ch9329_keystroke_sender (
+module ch9329_keystroke_sender #(
+    parameter SYS_FREQ = 12_090_000,    	// System clock frequency (in Hz - Def:12.09 MHz)
+    parameter BAUD_RATE = 9600,     		// UART baud rate
+    parameter DELAY_CYCLES = SYS_FREQ / 4	// 0.25-second delay between keystroke and release
+)(
     input wire clk,             // System clock
     input wire rst_n,           // Active low reset
     input wire start,           // Start signal to send keystroke
@@ -26,10 +30,6 @@ module ch9329_keystroke_sender (
     output reg tx,              // UART transmit line
     output reg done             // Transmission complete
 );
-
-    parameter SYS_FREQ = 12_090_000;  // System clock frequency (12.09 MHz)
-    parameter BAUD_RATE = 9600;     // UART baud rate
-    parameter DELAY_CYCLES = SYS_FREQ / 4; // 0.25-second delay between keystroke and release
 
     localparam BIT_PERIOD = SYS_FREQ / BAUD_RATE; // Clock cycles per UART bit
     localparam NUM_BYTES = 14;  // Number of bytes in the keystroke command

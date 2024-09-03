@@ -42,21 +42,21 @@ Download the I2C Memory Controller source code from our [repository: i2c_control
 This module takes care of generating the I2C clock, managing data transfers, and handling start/stop conditions—all essential components of I2C communication, on top of that, the module will also be responsible for sending the correct sequence of I2C commands to access the EEPROM's memory, abstracting away the intricacies of the I2C protocol. With that said, It is not going to be a universal I2C Master controller like the others in the market as this code is designed with the purpose of keeping it consise & specific to our EEPROM in order to keep it simple for our digital design tutorial. 
 
 ```verilog
-module i2c_eeprom (
-    input wire clk,            	// System clock
-    input wire rst_n,          	// Active low reset
-    input wire start,          	// Start signal
-    input wire rw,             	// Read/Write signal (1 = Read, 0 = Write)
-    input wire [7:0] address,  	// EEPROM memory address
-    input wire [7:0] data_in,  	// Data to write
+module i2c_eeprom #(
+    parameter SYS_FREQ = 12_090_000;    // System clock frequency (in Hz - Def:12.09 MHz)
+    parameter I2C_FREQ = 100_000      // I2C clock frequency (in Hz)
+)(
+    input wire clk,            // System clock
+    input wire rst_n,          // Active low reset
+		input wire start,          // Start signal
+    input wire rw,             // Read/Write signal (1 = Read, 0 = Write)
+    input wire [7:0] address,  // EEPROM memory address
+    input wire [7:0] data_in,  // Data to write
     output wire [7:0] data_out, // Data read from EEPROM
-    output reg done,           	// Operation complete signal
-    inout wire sda,            	// I2C data line (bidirectional)
+    output reg done,           // Operation complete signal
+    inout wire sda,            // I2C data line (bidirectional)
     output wire scl             // I2C clock line
 );
-
-parameter SYS_FREQ = 12_090_000;    // System clock frequency (12.09 MHz)
-parameter I2C_FREQ = 100_000      	// I2C clock frequency (in Hz)
 ```
 
 Now that we have our I2C Master controller  and EEPROM Interface modules, we can write the Top-Level HDL code that ties everything together. This code will instantiate the necessary modules and orchestrate the reading and writing of data to the EEPROM.

@@ -98,7 +98,11 @@ Download the CH9329 KeyStroke sender source code from our [repository: ch9329_ke
 To use the KeyStroke sender code, you only need to understand the Ports of our KeyStroker sender module & their respective functions. The port names are self-explanatory, and the source code is thoroughly commented, making it easy to follow.
 
 ```verilog
-module ch9329_keystroke_sender (
+module ch9329_keystroke_sender #(
+    parameter SYS_FREQ = 12_090_000,    	// System clock frequency (in Hz - Def:12.09 MHz)
+    parameter BAUD_RATE = 9600,     			// UART baud rate
+    parameter DELAY_CYCLES = SYS_FREQ / 4	// 0.25-second delay between keystroke and release
+)(
     input wire clk,             // System clock
     input wire rst_n,           // Active low reset
     input wire start,           // Start signal to send keystroke
@@ -108,10 +112,6 @@ module ch9329_keystroke_sender (
     output reg tx,              // UART transmit line
     output reg done             // Transmission complete
 );
-
-parameter SYS_FREQ = 12_090_000;  			// System clock frequency (12.09 MHz)
-parameter BAUD_RATE = 9600;     				// UART baud rate
-parameter DELAY_CYCLES = SYS_FREQ / 4;	// 0.25-second delay between keystroke and release
 ```
 
 **State Machine:**

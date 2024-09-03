@@ -22,7 +22,7 @@ module i2c_eeprom #(
 )(
     input wire clk,            // System clock
     input wire rst_n,          // Active low reset
-    input wire start,          // Start signal
+	input wire start,          // Start signal
     input wire rw,             // Read/Write signal (1 = Read, 0 = Write)
     input wire [7:0] address,  // EEPROM memory address
     input wire [7:0] data_in,  // Data to write
@@ -117,6 +117,8 @@ module i2c_eeprom #(
 	parameter     ACK4    = 4'd10;
 	parameter     STOP1     = 4'd11;
 	parameter     STOP2     = 4'd12;
+	
+	//parameter     RESET     = 4'd13;
 	 
 	reg [3:0] cstate;     // State register
 	reg sda_r;            // Output data register
@@ -137,6 +139,7 @@ module i2c_eeprom #(
 				IDLE:    begin
 						sda_link <= 1'b1;            // Data line SDA is output
 						sda_r <= 1'b1;
+						done <= 1'b0;
 						if(start) begin    //Start detected    
 							done <= 1'b0;
 							db_r <= `DEVICE_WRITE;    // Send device address (write operation)
@@ -175,16 +178,15 @@ module i2c_eeprom #(
 											4'd7: sda_r <= db_r[0];
 											default: ;
 											endcase
-								//        sda_r <= db_r[4'd7-num];    //Delivering Device Address
+								
 									end
 							end
-				//        else if(`SCL_POS) db_r <= {db_r[6:0],1'b0};    //Shifting Device Address
+				
 						else cstate <= ADD1;
 					end
 				ACK1:    begin
 						if(/*!sda*/`SCL_HIG) begin    // Note: 24C01/02/04/08/16 devices may not need to consider the acknowledge bit
 								if (sda) begin			// Device not ready
-									done <= 1'b0;
 									db_r <= `DEVICE_WRITE;    // Send device address (write operation)
 									cstate <= START1;     
 								end else begin
@@ -225,18 +227,21 @@ module i2c_eeprom #(
 						else cstate <= ADD2;                
 					end
 				ACK2:    begin
-						if(/*!sda*/`SCL_NEG) begin        // Slave response signal
-							if (rw == 0) begin        // execute write (1 = Read, 0 = Write)
-									sda_link <= 1'b1;
-									sda_r <= 1'b0; 
-									cstate <= DATA;     //Write Operation
-									db_r <= data_in;//`WRITE_DATA;    // Send write data                           
-								end    
-							else begin				// execute read
-									db_r <= `DEVICE_READ;     // Send device address (read operation)
-									cstate <= START2;        // Slave response signal
+						if(/*!sda*/`SCL_HIG) begin        // Slave response signal
+							if (!sda) begin
+								if (rw == 0) begin        // execute write (1 = Read, 0 = Write)
+										sda_link <= 1'b1;
+										sda_r <= 1'b0; 
+										cstate <= DATA;     //Write Operation
+										db_r <= data_in;//`WRITE_DATA;    // Send write data                           
+									end    
+								else begin				// execute read
+										db_r <= `DEVICE_READ;     // Send device address (read operation)
+										cstate <= START2;        // Slave response signal
+									end
 								end
-							end
+							end 
+							
 						else cstate <= ACK2;    // Wait for slave response signal
 					end
 				START2: begin    //2nd Start for Read operation
@@ -380,11 +385,22 @@ module i2c_eeprom #(
 						if(`SCL_LOW) sda_r <= 1'b1;
 						else if(cnt_20ms==20'hffff0) 
 						begin	
+							//cstate <= RESET;
 							cstate <= IDLE;
 							done <= 1'b1;
 						end
 						else cstate <= STOP2;
 					end
+				//RESET:	begin
+						//if(cnt_20ms==20'hffff0) 
+						//begin
+							//cstate <= IDLE;
+							//sda_r <= 1'b1;
+							//sda_link <= 1'b0;
+							//num <= 4'd0;
+							//done <= 1'b0;
+						//end
+					//end
 				default: cstate <= IDLE;
 				endcase
 	end

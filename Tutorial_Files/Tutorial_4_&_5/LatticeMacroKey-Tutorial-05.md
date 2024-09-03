@@ -70,7 +70,10 @@ Download the CH9329 HID receiver source code from our [repository: ch9329_HID_re
 To use the HID receiver code, you only need to understand the ports of our HID receiver module and their respective functions. The port names are self-explanatory, and the source code is thoroughly commented, making it easy to follow.
 
 ```verilog
-module ch9329_HID_receiver (
+module ch9329_HID_receiver #(
+    parameter SYS_FREQ = 12_090_000,		// System clock frequency (in Hz - Def:12.09 MHz)
+    parameter BAUD_RATE = 9600     			// UART baud rate
+)(
     input clk,                  // System clock
     input rst_n,                // Active low reset
     input rx,                   // UART receive pin
@@ -79,9 +82,6 @@ module ch9329_HID_receiver (
     output [7:0] data_byte3, 
     output reg data_valid       // Flag to indicate valid data reception 
 );
-
-parameter SYS_FREQ = 12_090_000;    // System clock frequency (12.09 MHz)
-parameter BAUD_RATE = 9600;         // Baud rate for UART
 ```
 
 

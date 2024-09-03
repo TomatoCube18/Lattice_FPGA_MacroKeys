@@ -16,7 +16,9 @@
 ** Modification Content:
 ******************************************************************************************/
 
-module ws2812b_controller (
+module ws2812b_controller #(
+    parameter SYS_FREQ = 12_090_000    	// System clock frequency (in Hz - Def:12.09 MHz)
+)(
     input clk,                      // System clock
     input rst_n,                    // Active low reset
     input [23:0] rgb_data_0,      // RGB color data for LED 0 (8 bits for each of R, G, B)
@@ -24,8 +26,6 @@ module ws2812b_controller (
     input start_n,                    // Start signal to send data
     output reg data_out             // WS2812B data line
 );
-
-    parameter SYS_FREQ = 12_090_000; 
 
     // WS2812B timing parameters (in clock cycles)
     localparam T0H = (SYS_FREQ * 4) / 10000000;			// (SYS_FREQ * 0.4) / 1000000;  //  High time for "0" bit (0.4 µs)
