@@ -195,7 +195,12 @@ Using our **CH9329_HIDSender** Python script to the Macro-KeyPad. send the follo
 
 ![CH9329 HID Sender](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_&_5/Images/Tutorial04-03-CH9329_HIDSender_Py.png?raw=true)
 
+> ‼️ Those keen-eyes individual might have noticed the Data Length "N+1" prefixed infront of our data payload (String), it is unexplainable why Microsoft Window will chomp up one byte from the incoming HID messages, but anywho... with our **"4-Magic Header Signature"**, we do not have to worry too much about which OS you are running.
+
+
+
 ### [4.5.2](#Chapter4_5_2) Additional Challenge
+
 ###### Converting Python script to executable (\*.exe):
 
 Use [PyInstaller](https://pypi.org/project/pyinstaller/) to convert the Python script into an executable file if needed.
