@@ -367,7 +367,7 @@ In the second *New Project - Project Name* Dialog window, populate the fields wi
   - Name: _platform1_
   - Location: _Folder of your choice, e.g. \<Path\>/mico8_blink/platform1_
 
-![MSB_Diamond Project File Name]()
+![MSB_Diamond Project File Name](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-01-MSB_Diamond_Project_File_Name.png?raw=true)
 
 Hit **Next >** and since we are not importing any existing source code, we will  Hit **Next >** again.
 
@@ -406,15 +406,15 @@ In the *Workspace Launcher* Dialog window, populate the fields with the followin
 
 - Workspace: _Folder of your choice, e.g. \<Path\>/mico8_blink/MSBEnvironment_
 
-![MSB_MSBEnvironment]()
+![MSB_MSBEnvironment](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_MSBEnvironment.png?raw=true)
 
 Hit **OK** to launch us to the LatticeMico System interface.
 
 
 
-In the LatticeMico System interface, ensure **MSB** is selected in the upper left-hand corner (not **C/C++**) to access the MSB perspective.
+In the LatticeMico System interface, ensure **LMS 1.0 D3.11** is selected in the upper left-hand corner (not **C/C++**) to access the MSB perspective.
 
-![MSB_MSBWindow_MSB_Perspective]()
+![MSB_MSBWindow_MSB_Perspective](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_MSBWindow_MSB_Perspective.png?raw=true)
 
 
 
@@ -431,7 +431,7 @@ Choose `[Menu]File > New Platform`, In the **New Platform Wizard** dialog box, p
 - Package Type: _TQFP100_
 - Platform Templates: _blank_ [verify]
 
-![MSB_NewPlatform Wizard]()
+![MSB_NewPlatform Wizard](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_NewPlatformWizard.png?raw=true)
 
 Hit **Finish** , The MSB perspective now appears, with a bunch of selections to construct your Mico8 SoC.
 
@@ -446,11 +446,11 @@ Scratchpad Settings
 -  Internal ScratchPad:  _Checked ✔︎_
 - Size: _0x0000800_
 
-![MSB_NewLatticeMico8]()
+![MSB_NewLatticeMico8](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_NewLatticeMico8.png?raw=true)
 
 Hit **OK** to add our component with the desired configuration into our skeleton system, When you are back in the MSB main window, You'll see the new **LM8** component appear under the **platform1** tab.
 
-![MSB_LatticeMico8_LM8]()
+![MSB_LatticeMico8_LM8](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_LatticeMico8_LM8.png?raw=true)
 
 Now we proceed to add the peripheral components to our mico8 SoC. First, we will add the memory-mapped WISHBONE based **GPIO**(general-purpose I/O) for driving the LED through our microcontroller into our system. To add the **GPIO** to the platform, In the **Available Components** tab under **IO**, double-click **GPIO**. When prompted with the **Add GPIO** dialog pop-up, please populate the textfields with the following information. 
 
@@ -459,7 +459,7 @@ Now we proceed to add the peripheral components to our mico8 SoC. First, we will
 -  Data Width: _1_
 -  WISHBONE Data Bus Width: _8_
 
-![MSB_GPIO WishBone]()
+![MSB_GPIO WishBone](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_GPIO%20WishBone.png?raw=true)
 
 Hit **OK** to allow MSB to add the GPIO Module to our system configuration. Now I want you to add 2 additional **GPIO** modules, one for our on-board buttons & another for our on-board speaker. Lastly, we will also add in an **UART** core while we are at it. 
 
@@ -485,7 +485,7 @@ Use the following configuration to complete those components/modules.
 
 After completing these components, the MSB system should look like this:
 
-![MSB_Completed_b4_connection]()
+![MSB_Completed_b4_connection](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_Completed_b4_connection.png?raw=true)
 
 Next, you need to connect the **master** and **slave** ports between your components in your SoC:
 
@@ -494,7 +494,7 @@ Next, you need to connect the **master** and **slave** ports between your compon
 
 Once done, the MSB should appear as follows:
 
-![MSB_Completed_after_connection]()
+![MSB_Completed_after_connection](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-02-MSB_Completed_after_connection.png?raw=true)
 
 Now instead of manually setting all the connection parameters between Master & Slave, you can streamline the process using MSB's automatic generation/assignment feature. At the top of the MSB interface, below the menu bar, you will find four buttons labeled **A**, **I**, **D**, and **G**. These are located at the end of the row of graphical menu buttons.
 
@@ -505,7 +505,7 @@ Now instead of manually setting all the connection parameters between Master & S
 - **D:** Perform a Design rule check, it is for verifying that components in the platform have valid base addresses & interrupt request values, which they most definitely are.
 - **G**: Generate the microcontroller SoC Platform.
 
-Click the buttons  in the following sequence **A**→ **I**→ **D**→ **G**, and you are all good to go! (Well, at least check the **Console** tab to verify that the generation is completed sucessfully with the following message, **Finish Generation**)
+Click the buttons  in the following sequence **A**→ **I**→ **D**→ **G**, and you are all good to go! (Well, at least check the **Console** tab to verify that the generation is completed sucessfully with the following message, **Finish Generator**)
 
 Let's take a peek at the generated HDL for our mico8 SoC system. Navigate to the following folder on your computer
 `Folder of your choice, e.g. \<Path\>/mico8_blink/platform1/soc` locate a file call `platform1.v` that will be the entry point to your mico8 SoC.
@@ -514,9 +514,9 @@ Let's take a peek at the generated HDL for our mico8 SoC system. Navigate to the
 
 [Step 3:](#Chapter6_1_3_1) Creating the software Application code
 
-Return to the LatticeMico System interface and switch from the **MSB** perspective to the **C/C++** perspective. This allows you to access the tools needed for C/C++ software development. You can find the perspective selection in the upper left-hand corner of the MSB main interface.
+Return to the LatticeMico System interface and switch from the **LMS** perspective to the **C/C++** perspective. This allows you to access the tools needed for C/C++ software development. You can find the perspective selection in the upper left-hand corner of the MSB main interface.
 
-![MSB_MSBWindow_MSB_Perspective]()
+![MSB_MSBWindow_MSB_Perspective](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-03-MSB_MSBWindow_MSB_Perspective.png?raw=true)
 
 To create a new **C**/C++ project, choose `[Menu]File > New > Mico Managed Make C Project`, In the New Project dialog box, make the following selections:
 
@@ -527,7 +527,7 @@ New Project:
 - MSB System: _<Folder>\mico8_blink\platform1\soc\platform1.msb_
 - Select Project Template: _LM8 LEDTest_
 
-![MSB_NewC_Project]()
+![MSB_NewC_Project](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-03-MSB_NewC_Project.png?raw=true)
 
 Click **Finish**. A basic template code will appear in the center pane. You'll need to replace this code with the source code that matches the hardware you're using. Paste your C source code into the editor and save the file.
 
@@ -590,7 +590,7 @@ If the build is successful, the output will be an **executable linked format (EL
 
 In the C/C++ perspective, select **LEDTest** and choose `[Menu]Tools > Software Deployment`. When the Software Deployment Tools dialog box appears, Select **Mico8 Memory Deployment**, and click on **New** button.
 
-![MSB_SoftwareDeploymentsTool]()
+![MSB_SoftwareDeploymentsTool](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-04-MSB_SoftwareDeploymentsTool.png?raw=true)
 
 When the **Software Deployment Tools** dialog now displays a Mico8 memory deployment configuration in the right pane, populate the textfields with the following.
 
@@ -609,7 +609,7 @@ Scratchpad Settings
 
 *  Initialization File Name: _<Folder>\mico8_blink\LEDTest\scratchpad_init.mem_
 
-![MSB_Modify Mico8 System]()
+![MSB_Modify Mico8 System](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-04-MSB_Modify%20Mico8%20System.png?raw=true)
 
 Regenerate the hardware platform by clicking on the graphical **G** (Generate) button. The LatticeMico8 Verilog source code is now configured to use the **prom_init.mem** and **data_init.mem** files that implement **LEDTest**.
 
@@ -647,7 +647,7 @@ module platform1_top
   	wire [6:0] button_in = {swU,swF,swE,swD,swC,swB,swA};
  
     // MachX02 internal oscillator generates platform clock
-    wire clk_in;
+    wire clk;
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC
     (
@@ -659,7 +659,7 @@ module platform1_top
  
     platform1 platform1_u
     (
-        .clk_i 				(clk_in),
+        .clk_i 				(clk),
         .reset_n 			(swU	),
         .LEDPIO_OUT 	(led	),
         .BUTTONPIO_IN (button_in),
@@ -677,7 +677,7 @@ Open the single file named _platform1.lpf_ under the _LPF Contrained Files_ tree
 Move on over from the *File List* tab to the *Process* tab. Put a tick on both `Place & Route Design > Place & Route Trace` & `Export Files > JEDEC File` checkboxes. 
 Verify all the check-box selections, followed by **Right-Clicking** on **JEDEC File** and choosing **Rerun All** from the pop-up menu.
 
-![MSB-Diamond Synthesis & Generating]()
+![MSB-Diamond Synthesis & Generating](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-05-MSB-Diamond%20SynthesisGenerating.png?raw=true)
 
 
 
@@ -687,7 +687,7 @@ With the JEDEC File sucessfully generated, it is now time to *Burn* the configur
 
 Click on  `([Menu]Tools > Programmer)`, in the *Programmer: Getting Started* dialog window, verify that the correct Cable is selected then Hit *Detect Cable*
 
-![MSB-Burning JED]()
+![MSB-Burning JED](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-06-MSB-BurningJED%20Cable.png?raw=true)
 
 After the JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. You will be able to see the user LED flashing periodically & upon pressing on the user Button, the rate of the LED flashes will change.
 
