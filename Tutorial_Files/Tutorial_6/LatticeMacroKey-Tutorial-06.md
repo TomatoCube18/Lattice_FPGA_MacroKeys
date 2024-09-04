@@ -110,29 +110,29 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
     output wire tx;
     output wire tx2;
   
-  	output wire neopixel;
+    output wire neopixel;
 	
-		output wire scl;
-		inout wire sda;
+    output wire scl;
+    inout wire sda;
 
     parameter SYS_FREQ = 12_090_000;
 	
-		// I2C Memory
-		reg start;
-    reg rw;                    // 0 = Write, 1 = Read
+    // I2C Memory
+    reg start;
+    reg rw;		// 0 = Write, 1 = Read
     reg [7:0] data_in;
     reg [7:0] address;
     wire [7:0] data_out;
-		wire done;
+    wire done;
     reg [3:0] state;
     reg [3:0] byte_counter;   // To keep track of the 3 bytes
-		reg [7:0] r_color_reg;
-		reg [7:0] g_color_reg;
-		reg [7:0] b_color_reg;
+    reg [7:0] r_color_reg;
+    reg [7:0] g_color_reg;
+    reg [7:0] b_color_reg;
 	
     reg [3:0] btn1_buff;
-		reg [3:0] btn2_buff;
-		reg data_valid_prev;
+    reg [3:0] btn2_buff;
+    reg data_valid_prev;
 
     // States
     localparam IDLE = 4'd0;
@@ -145,7 +145,7 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
     wire [7:0] b_color;
     wire data_valid;
   
-  	// Neopixel
+    // Neopixel
     reg [11:0]neo_count;
     wire neo_refresh = neo_count[11];
     reg [23:0] test_color;	/// = 24'b000000000001111100000000;
@@ -154,22 +154,22 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC (
         .STDBY		(1'b0	),
-        .OSC			(clk	),
+        .OSC		(clk	),
         .SEDSTDBY	(	)
     );
 	
 	// Instatiate i2c Memory Controller
 	i2c_eeprom #(SYS_FREQ) eeprom_u (
         .clk		(clk	),		// System clock
-        .rst_n	(swU	),		// Active low reset
-        .start	(start),		// Start signal
-        .rw			(rw		),		// Read/Write signal (1 = Read, 0 = Write)
+        .rst_n		(swU	),		// Active low reset
+        .start		(start	),		// Start signal
+        .rw		(rw	),		// Read/Write signal (1 = Read, 0 = Write)
         .address	(address	),	// EEPROM memory address
         .data_in	(data_in	),	// Data to write
-				.data_out	(data_out	),	// Data read from EEPROM
-				.done		(done	),		// Operation complete signal	
+        .data_out	(data_out	),	// Data read from EEPROM
+        .done		(done	),		// Operation complete signal	
         .scl		(scl	),		// I2C clock line
-				.sda		(sda	)			// I2C data line   
+        .sda		(sda	)		// I2C data line   
     );
 	
 	// i2c Memory Demo Code
@@ -182,12 +182,12 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
             address <= 8'h00;
             byte_counter <= 0;
             btn1_buff <= 4'h0F;
-						btn2_buff <= 4'h0F;
+            btn2_buff <= 4'h0F;
 			
-						data_valid_prev <= 0;
+            data_valid_prev <= 0;
         end else begin
             btn1_buff <= {btn1_buff[2:0],swC};	//for SwitchC Debouncing & State Change
-            btn2_buff <= {btn2_buff[2:0],swA}; //for SwitchA Debouncing & State Change
+            btn2_buff <= {btn2_buff[2:0],swA};	//for SwitchA Debouncing & State Change
 			
             data_valid_prev <= data_valid;
             if (data_valid && !data_valid_prev) 
@@ -213,23 +213,23 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
                         start <= 1;
                         state <= READ;
                         byte_counter <= 0;
-										end	
+                    end	
                 end
 
                 WRITE: begin
                     start <= 0;
                     if (done) begin
-												if (byte_counter == 3) begin
+                        if (byte_counter == 3) begin
                             state <= IDLE;
                         end else begin
-														case (byte_counter)
+                            case (byte_counter)
                                 1: data_in <= g_color;  // Second byte to write, Green
                                 2: data_in <= b_color;  // Third byte to write, Blue
                             endcase
                             address <= address + 1;
-														byte_counter <= byte_counter + 1;
+                                byte_counter <= byte_counter + 1;
                             start <= 1;
-														state <= WRITE;
+                                state <= WRITE;
                         end 
                     end 
                 end
@@ -237,8 +237,8 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
                 READ: begin
                     start <= 0;
                     if (done) begin
-												if (byte_counter == 2) begin
-															b_color_reg <= data_out;  // Third byte to write, Blue
+                        if (byte_counter == 2) begin
+                            	b_color_reg <= data_out;  // Third byte to write, Blue
                             	state <= IDLE;
                         end else begin
                               case (byte_counter)
@@ -251,7 +251,7 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
                               rw <= 1;          // Read operation
                               start <= 1;
                               state <= READ;
-												end
+                        end
                     end 
                 end
 
@@ -263,24 +263,24 @@ module Memory_Demo(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel,scl,sda);
 
   	// Instatiate NeoPixel Controller
     ws2812b_controller #(SYS_FREQ) ws2812b_controller_u (
-        .clk     		(clk    ), 
-        .rst_n   		(swU    ),
+        .clk     	(clk    ), 
+        .rst_n   	(swU    ),
         .rgb_data_0	(test_color),		// RGB color data for LED 0 (8 bits for each of R, G, B)
         .rgb_data_1	(test_color),		// RGB color data for LED 1
-        .start_n		(!neo_refresh),	// Start signal to send data
-				.data_out		(neopixel)			// WS2812B data line        
+        .start_n	(!neo_refresh),		// Start signal to send data
+        .data_out	(neopixel)		// WS2812B data line        
     );
 
     // NeoPixel Control
     always @(posedge clk) begin			// Stupid Code just to refresh the color!!
-				neo_count <= neo_count + 1;	// Proper way would be do detect State Trasition
+        neo_count <= neo_count + 1;	// Proper way would be do detect State Trasition
     end
     
   	// UART Receiver	
 		ch9329_HID_receiver #(SYS_FREQ) ch9329_HID_receiver_u (
-        .clk				(clk	),			// System clock
-        .rst_n			(swU	),			// Active low reset
-        .rx					(rx		),			// UART receive pin
+        .clk		(clk	),		// System clock
+        .rst_n		(swU	),		// Active low reset
+        .rx		(rx	),		// UART receive pin
         .data_byte1	(r_color	),	// Array to store 3 bytes of data
         .data_byte2	(g_color	), 
         .data_byte3	(b_color	), 
