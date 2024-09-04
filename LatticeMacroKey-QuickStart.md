@@ -617,15 +617,83 @@ Regenerate the hardware platform by clicking on the graphical **G** (Generate) b
 
 [Step 5:](#Chapter6_1_5_1) Creating a user Top level Module for our SoC
 
+The next step is to generate the micro8 SoC bitstream from our verilog HDL Implementation using Lattice Diamond Tool. This bitstream will then pogrammed to the FPGA on the Macro-KeyPad. Return to the Lattice Diamond tool & click on `[Menu]File > New > SourceFile > Verilog` & Populate the dialog box will the following.
+
+* Name: _platform1_top_
+* Location: _<Folder>\mico8_blink\platform1\soc_
+
+Click **New**. Populate the code editor with the following Top-Level file implementation & hit **save**.
+
+###### Verilog Top-level file - platform1_top (\*.v):
+
+```verilog
+`timescale 1ns / 1ps
+`include "../soc/platform1.v"
+ 
+module platform1_top
+(
+    input swA,
+    input swB,
+    input swC,
+    input swD,
+    input swE,
+    input swF,
+    input swU,
+    input rx,
+    output tx,
+    output led
+);
+ 
+  	wire [6:0] button_in = {swU,swF,swE,swD,swC,swB,swA};
+ 
+    // MachX02 internal oscillator generates platform clock
+    wire clk_in;
+    // Internal OSC setting (12.09 MHz)
+    OSCH #( .NOM_FREQ("12.09")) IOSC
+    (
+        .STDBY		(1'b0),
+        .OSC			(clk),
+        .SEDSTDBY	(		)
+    );
+    
+ 
+    platform1 platform1_u
+    (
+        .clk_i 				(clk_in),
+        .reset_n 			(swU	),
+        .LEDPIO_OUT 	(led	),
+        .BUTTONPIO_IN (button_in),
+        .uartSIN 			(rx		),
+        .uartSOUT 		(tx		)
+    );
+ 
+endmodule
+```
+
+###### Logical preference file (\*.lpf):
+
+Open the single file named _platform1.lpf_ under the _LPF Contrained Files_ tree drop-down list, overwrite the file with the content from the following [Predefined board file](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Essential_Files/macrokeys.lpf). 
+
+Move on over from the *File List* tab to the *Process* tab. Put a tick on both `Place & Route Design > Place & Route Trace` & `Export Files > JEDEC File` checkboxes. 
+Verify all the check-box selections, followed by **Right-Clicking** on **JEDEC File** and choosing **Rerun All** from the pop-up menu.
+
+![MSB-Diamond Synthesis & Generating]()
+
 
 
 [Step 6:](#Chapter6_1_6_1) Programming/Writing JEDEC file to FPGA's Flash
 
+With the JEDEC File sucessfully generated, it is now time to *Burn* the configuration into the FPGA's Flash memory.
 
+Click on  `([Menu]Tools > Programmer)`, in the *Programmer: Getting Started* dialog window, verify that the correct Cable is selected then Hit *Detect Cable*
 
+![MSB-Burning JED]()
 
+After the JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. You will be able to see the user LED flashing periodically & upon pressing on the user Button, the rate of the LED flashes will change.
 
+Below is the location of the user LED & Switch on the Macro-KeyPad.
 
+![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-13-UserButton_LED_Location.png?raw=true)
 
 ### [6.2](#Chapter6_2) Additional Mico8 Tutorial : Using EFB & the other peripherals onboard the Macro-KeyPad
 
