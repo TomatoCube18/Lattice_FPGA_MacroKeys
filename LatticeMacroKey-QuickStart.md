@@ -507,15 +507,119 @@ Now instead of manually setting all the connection parameters between Master & S
 
 Click the buttons  in the following sequence **A**→ **I**→ **D**→ **G**, and you are all good to go! (Well, at least check the **Console** tab to verify that the generation is completed sucessfully with the following message, **Finish Generation**)
 
+Let's take a peek at the generated HDL for our mico8 SoC system. Navigate to the following folder on your computer
+`Folder of your choice, e.g. \<Path\>/mico8_blink/platform1/soc` locate a file call `platform1.v` that will be the entry point to your mico8 SoC.
+
+
+
 [Step 3:](#Chapter6_1_3_1) Creating the software Application code
 
+Return to the LatticeMico System interface, switch the perspective from **MSB** over to **C/C++** to access the C/C++ software development perspective. (Perspective selection is found in the upper left-hand corner of the MSB main Interface) 
+
+![MSB_MSBWindow_MSB_Perspective]()
+
+To create a new **C**/C++ project, we will create a new source file. Choose `[Menu]File > New > Mico Managed Make C Project`, In the New Project dialog box, make the following selections:
+
+New Project:
+
+- Project Name: _LEDTest_
+- Location: _<Folder>\mico8_blink\LEDTest_
+- MSB System: _<Folder>\mico8_blink\platform1\soc\platform1.msb_
+- Select Project Template: _LM8 LEDTest_
+
+![MSB_NewC_Project]()
+
+Hit **Finish**, a boilerplate barebone code will be presented to us in the center pane. We will be replacing the source code to reflect the hardware we are using. 
+
+Populate the code editor with the following C Source code & hit save.
+
+###### new LM8_LEDTest file (\*.c):
+
+```c
+/**************************************************************
+ * This example Blink LED on 6-Key Macro-KeyPad Development   *
+ * board.                                                     *
+ --------------------------------------------------------------
+ * PREREQUISITES:                                             *
+ * - GPIO with 1-bit output named LED connected to the        *
+ *   board's LED pins.                                        *
+ *                                                            *       
+ **************************************************************/
+#include "MicoUtils.h"
+#include "MicoGPIO.h"
+#include "DDStructs.h"
+ 
+int main(void)
+{
+   unsigned char ledVal = 0x01;
+   unsigned char buttonsVal = 0x00;
+ 
+   /* Fetch GPIO instance named "LED" */
+   MicoGPIOCtx_t *led = &gpio_LED;
+   if(led == 0){
+      return(0);
+   }
+   /* Fetch GPIO instance named "BUTTON" */
+ 	 MicoGPIOCtx_t *buttons = &gpio_BUTTON;
+   if(buttons == 0){
+       return(0);
+   }
+    
+   /* Blink the LEDs, every 100 or 250 msecs controlled by Button_U forever */
+   while(1){
+          MICO_GPIO_WRITE_DATA_BYTE0 (led->base, ledVal);
+     			MICO_GPIO_READ_DATA_BYTE0 (buttons->base, buttonsVal);
+     
+          MicoSleepMilliSecs((buttonsVal & 0x40)?100:250);
+
+          if(ledVal == 0x01){
+             ledVal = 0x00;
+          }else{
+             ledVal = 0x01;
+          }
+   }
+   
+   /* all done */
+   return(0);
+}
+```
+
+The next step is to build the project, in which tool compiles, assembles, and links your application code using mico8 GCC compiler toolchain. Choose `[Menu]Project > Build Project`. If everything is completed sucessfully, the resulting **LEDTest** application which is generated as an **executable linked format** (ELF) will contains both, code and data (Think EXE for Windows). This ELF file will then be converted in to hexadecimal initialization files, one each for code and data. The initialization file that contains **LEDTest** code is called **prom_init.hex** and is used to initialize the LatticeMico8 PROM. The initialization file that contains LEDTest data is called **scratchpad_init.hex** and is used to initialize the LatticeMico8 Scratchpad.
+
+[Step 4:](#Chapter6_1_4_1) Deploy the software to our SoC
+
+In the C/C++ perspective, select **LEDTest** and choose `[Menu]Tools > Software Deployment`. When the Software Deployment Tools dialog box appears, Select **Mico8 Memory Deployment**, and click on **New** button.
+
+![MSB_SoftwareDeploymentsTool]()
+
+When the **Software Deployment Tools** dialog now displays a Mico8 memory deployment configuration in the right pane, populate the textfields with the following.
+
+* Name: _LEDTest_
+* Save Memory Initialization Files...: _<Folder>\mico8_blink\LEDTest_
+
+Hit on **Apply** follow with **Start**. The two initialization files **prom_init.mem** and **scratchpad_init.mem** should now be saved within the output folder specified. We will now initialize LatticeMico8 with **LEDTest** initialization files. 
+
+Return to the **MSB** perspective & Double-click on **LM8** instance within the platform. In the **Modifiy LatticeMico8** dialog box window, make changes to the PROM & Scratchpad settings as follows.
+
+PROM Settings
+
+* Initialization File Name: _<Folder>\mico8_blink\LEDTest\prom_init.mem_
+
+Scratchpad Settings
+
+*  Initialization File Name: _<Folder>\mico8_blink\LEDTest\scratchpad_init.mem_
+
+![MSB_Modify Mico8 System]()
+
+Regenerate the hardware platform by clicking on the graphical **G** (Generate) button. The LatticeMico8 Verilog source code is now configured to use the **prom_init.mem** and **data_init.mem** files that implement **LEDTest**.
 
 
-[Step 4:](#Chapter6_1_4_1) Creating a user Top level Module for our SoC
+
+[Step 5:](#Chapter6_1_5_1) Creating a user Top level Module for our SoC
 
 
 
-[Step 5:](#Chapter6_1_5_1) Programming/Writing JEDEC file to FPGA's Flash
+[Step 6:](#Chapter6_1_6_1) Programming/Writing JEDEC file to FPGA's Flash
 
 
 
