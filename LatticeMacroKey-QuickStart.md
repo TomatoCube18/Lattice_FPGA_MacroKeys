@@ -514,11 +514,11 @@ Let's take a peek at the generated HDL for our mico8 SoC system. Navigate to the
 
 [Step 3:](#Chapter6_1_3_1) Creating the software Application code
 
-Return to the LatticeMico System interface, switch the perspective from **MSB** over to **C/C++** to access the C/C++ software development perspective. (Perspective selection is found in the upper left-hand corner of the MSB main Interface) 
+Return to the LatticeMico System interface and switch from the **MSB** perspective to the **C/C++** perspective. This allows you to access the tools needed for C/C++ software development. You can find the perspective selection in the upper left-hand corner of the MSB main interface.
 
 ![MSB_MSBWindow_MSB_Perspective]()
 
-To create a new **C**/C++ project, we will create a new source file. Choose `[Menu]File > New > Mico Managed Make C Project`, In the New Project dialog box, make the following selections:
+To create a new **C**/C++ project, choose `[Menu]File > New > Mico Managed Make C Project`, In the New Project dialog box, make the following selections:
 
 New Project:
 
@@ -529,9 +529,7 @@ New Project:
 
 ![MSB_NewC_Project]()
 
-Hit **Finish**, a boilerplate barebone code will be presented to us in the center pane. We will be replacing the source code to reflect the hardware we are using. 
-
-Populate the code editor with the following C Source code & hit save.
+Click **Finish**. A basic template code will appear in the center pane. You'll need to replace this code with the source code that matches the hardware you're using. Paste your C source code into the editor and save the file.
 
 ###### new LM8_LEDTest file (\*.c):
 
@@ -584,7 +582,9 @@ int main(void)
 }
 ```
 
-The next step is to build the project, in which tool compiles, assembles, and links your application code using mico8 GCC compiler toolchain. Choose `[Menu]Project > Build Project`. If everything is completed sucessfully, the resulting **LEDTest** application which is generated as an **executable linked format** (ELF) will contains both, code and data (Think EXE for Windows). This ELF file will then be converted in to hexadecimal initialization files, one each for code and data. The initialization file that contains **LEDTest** code is called **prom_init.hex** and is used to initialize the LatticeMico8 PROM. The initialization file that contains LEDTest data is called **scratchpad_init.hex** and is used to initialize the LatticeMico8 Scratchpad.
+Next, it's time to build the project. This step involves compiling, assembling, and linking your application code using the Mico8 GCC compiler toolchain. Choose `[Menu]Project > Build Project`. 
+
+If the build is successful, the output will be an **executable linked format (ELF)** file named `LEDTest`. This ELF file will then be converted in to hexadecimal initialization files, one each for code and data. The initialization file that contains **LEDTest** code is called **prom_init.hex** and is used to initialize the LatticeMico8 PROM. The initialization file that contains LEDTest data is called **scratchpad_init.hex** and is used to initialize the LatticeMico8 Scratchpad.
 
 [Step 4:](#Chapter6_1_4_1) Deploy the software to our SoC
 
