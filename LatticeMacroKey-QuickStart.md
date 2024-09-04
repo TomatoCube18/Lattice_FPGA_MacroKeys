@@ -325,7 +325,204 @@ After the installation, choose `Apps > Lattice Diamond 3.13 > LMS 1.2 for Diamon
 
 ## \[ [Chapter 6](#Chapter6): Creating a SoC using LatticeMico System ]
 ### [6.1](#Chapter6_1) Creating your first SoC system using Lattice Mico8
+
+
+
+Lattice offers two excellent soft-core processors: the Mico8 (8-bit CPU) and Mico32 (32-bit CPU), both of which are compatible with the MachXO2 family of FPGAs. And it doesn't stop there, they also provide a fantastic tool that allows you to design, architect and build your own SoC (System on Chip) running of either Mico8 or Micro32 with minimal effort. In this tutorial, we'll guide you through the steps to create a basic system using the Macro-KeyPad.
+
+This tutorial will walk you through the essentials of using the LatticeMico System software to implement the **LatticeMico8** microcontroller. We’ll also show you how to add some modules to support the connected components, starting with GPIO (General Purpose Input Output), driving the LEDs, Buttons as well as the On-Board buzzer of our Macro-KeyPad.
+
+The LatticeMico System includes three main tools:
+
+- **Mico System Builder (MSB):** Helps you design an embedded microcontroller system on a single FPGA.
+- **C/C++ Software Project Environment (C/C++ SPE):** Allows you to write and debug software or firmware for your new soft processor.
+- **Debugger:** Assists in troubleshooting your embedded software and refining your design.
+
+Using such design methodology & tools, you can build a microcontroller system directly on your FPGA, reducing cost by minimizing the need for additional board space & FPGA development time.
+
+To get started with this tutorial, you'll need both Lattice Diamond and the "LatticeMico System for Diamond" installed on your computer.
+
+
+
 #### [6.1.1](#Chapter6_1_1) Mico8 Tutorial #1**: Reading Button Input & Driving LED Output with a C program [Button & LED]**
+
+> 💡The following tutorial loosely follows the official guide/tutorial from Lattice Semi, with modifications made to suit our specific hardware. For a more detailed understanding, it's recommended to also read through the official [LatticeMico8 Tutorial - Dec 2013](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/LatticeMico8Tutorial-2013-12.pdf).
+
+##### [Step 1:](#Chapter6_1_1_1) Creating a new Project
+
+Launch the Lattice Diamond Software if it is not already running. Click on the *Project: New* option found in the *Start Page* panel.
+
+![Diamond Main Screen](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-02-Diamond_mainWindow.png?raw=true)
+
+Hit **Next >** in the *New Project* Dialog window.
+
+![Diamond New Project Window](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-03-Diamond_newProject.png?raw=true)
+
+In the second *New Project - Project Name* Dialog window, populate the fields with the following information:
+
+- Project:
+  - Name: _platform1_
+  - Location: _Folder of your choice, e.g. \<Path\>/mico8_blink_
+- Implementation:
+  - Name: _platform1_
+  - Location: _Folder of your choice, e.g. \<Path\>/mico8_blink/platform1_
+
+![MSB_Diamond Project File Name]()
+
+Hit **Next >** and since we are not importing any existing source code, we will  Hit **Next >** again.
+
+In the *New Project - Select Device* Dialog window, populate the fields with the following information:
+
+- Select Device:
+  - Family: _MachXO2_
+  - Device: _LCXO2-1200HC_
+  - Package Type: _TQFP100_
+  - Performance Grade: _4_
+  - Operating Condition: _Commercial_
+
+![Diamond Select FPGA device](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-06-Diamond_SelectDevice.png?raw=true)
+
+Please verify that the derived Part number is _LCMXO2-1200HC-4TG100C_, corresponding to the printing on the FPGA on our Macro-KeyPad. Hit **Next >** 
+
+![Diamond Select Synthesis Tool](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-07-Diamond_SynthesisTool.png?raw=true)
+
+Leave the option on the Systhesis Tool as _Lattice LSE_ when prompted by the *New Project - Select Synthesis Tool* Dialog window. Hit **Next >**
+
+![Diamond New Project Summary](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-08-Diamond_ProjectSummary.png?raw=true)
+
+In the final dialog window *New Project - Project Information*, verify that all the information are entered correctly. Hit **Finish** & our new skeleton project is created targetting our exact FPGA.
+
+
+
+[Step 2:](#Chapter6_1_2_1) Creating a LatticeMico8 SoC Platform
+
+In Step 1, you created a blank Diamond project, which serves as a placeholder for our LatticeMico8 microcontroller platform. Now, we'll use the **LatticeMico System Builder (MSB)** to design the microcontroller system and add the necessary components. The final output from MSB is a bunch of generated Verilog code needed to create a System-on-a-Chip (SoC) for your FPGA. Finally, you'll build this Verilog HDL code in Diamond to produce the bitstream that configures the MachXO2 FPGA.
+
+Launch the LatticeMicoSystem Builder, **LMS 1.2**. Since this tool is build on top of the Eclipse IDE, a lot of you might be familiar with the flow involved.
+
+To get started, launch the **LatticeMico System Builder (LMS 1.2)**. If you're familiar with the Eclipse IDE, you'll find the interface and workflow similar. When prompted for an Eclipse Workspace, you can leave the default setting. However, if you're using other Eclipse-based tools, like Android Studio, I would recommed choosing a different path to avoid conflicts between the environments.
+
+In the *Workspace Launcher* Dialog window, populate the fields with the following information:
+
+- Workspace: _Folder of your choice, e.g. \<Path\>/mico8_blink/MSBEnvironment_
+
+![MSB_MSBEnvironment]()
+
+Hit **OK** to launch us to the LatticeMico System interface.
+
+
+
+In the LatticeMico System interface, ensure **MSB** is selected in the upper left-hand corner (not **C/C++**) to access the MSB perspective.
+
+![MSB_MSBWindow_MSB_Perspective]()
+
+
+
+Choose `[Menu]File > New Platform`, In the **New Platform Wizard** dialog box, populate the textbox with the following:
+
+- Platform Name: _platform1_
+- Directory: _Folder of your choice, e.g. \<Path\>/mico8_blink_
+- Processor: _LM8_
+- Board Frequency: _12.09_
+- Arbitration Scheme: _Shared Bus_ [verify]
+- Family: _MachXO2_
+- Device: _LCXO2-1200HC_
+- Performance Grade: _4_
+- Package Type: _TQFP100_
+- Platform Templates: _blank_ [verify]
+
+![MSB_NewPlatform Wizard]()
+
+Hit **Finish** , The MSB perspective now appears, with a bunch of selections to construct your Mico8 SoC.
+
+Let's add the most essential component, our microcontroller core. In the **Available Components** tab under **CPU**, double-click **LatticeMico8**. Double-click **LatticeMico8** to bring up the configuration needed for our microcontroller core. For ease of completing this tutorial, in the **Add LatticeMico8** dialog pop-up, please populate the textfields with the following information.
+
+PROM Settings
+
+- PROM Size: _2048_
+
+Scratchpad Settings
+
+-  Internal ScratchPad:  _Checked ✔︎_
+- Size: _0x0000800_
+
+![MSB_NewLatticeMico8]()
+
+Hit **OK** to add our component with the desired configuration into our skeleton system, When you are back in the MSB main window, You'll see the new **LM8** component appear under the **platform1** tab.
+
+![MSB_LatticeMico8_LM8]()
+
+Now we proceed to add the peripheral components to our mico8 SoC. First, we will add the memory-mapped WISHBONE based **GPIO**(general-purpose I/O) for driving the LED through our microcontroller into our system. To add the **GPIO** to the platform, In the **Available Components** tab under **IO**, double-click **GPIO**. When prompted with the **Add GPIO** dialog pop-up, please populate the textfields with the following information. 
+
+-  Instance Name:  _LED_
+-  Port Type: _Output Port Only_
+-  Data Width: _1_
+-  WISHBONE Data Bus Width: _8_
+
+![MSB_GPIO WishBone]()
+
+Hit **OK** to allow MSB to add the GPIO Module to our system configuration. Now I want you to add 2 additional **GPIO** modules, one for our on-board buttons & another for our on-board speaker. Lastly, we will also add in an **UART** core while we are at it. 
+
+Use the following configuration to complete those components/modules.
+
+**Button GPIO Module**
+
+-  Instance Name:  _BUTTON_
+-  Port Type: _Input Port Only_
+-  Data Width: _7_
+-  WISHBONE Data Bus Width: _8_
+
+**Speaker GPIO Module**
+
+-  Instance Name:  _SPEAKER_
+-  Port Type: _Output Port Only_
+-  Data Width: _1_
+-  WISHBONE Data Bus Width: _8_
+
+**UART GPIO Module**
+
+-  Stick with Default
+
+After completing these components, the MSB system should look like this:
+
+![MSB_Completed_b4_connection]()
+
+Next, you need to connect the **master** and **slave** ports between your components in your SoC:
+
+1. **LED, Button, Speaker** - Connect the data port of the LatticeMico8 microcontroller to the LatticeMico LED, Button & Speaker slave port by clicking the circle in the WISHBONE Connection column of the GPIO Port row.
+2. **UART** - The same, connect the data port of the LatticeMico8 microcontroller to the LatticeMico UART slave port by clicking the circle in the WISHBONE Connection column of the UART Port row.
+
+Once done, the MSB should appear as follows:
+
+![MSB_Completed_after_connection]()
+
+Now instead of manually setting all the connection parameters between Master & Slave, you can streamline the process using MSB's automatic generation/assignment feature. At the top of the MSB interface, below the menu bar, you will find four buttons labeled **A**, **I**, **D**, and **G**. These are located at the end of the row of graphical menu buttons.
+
+ The four graphical button tools are:
+
+- **A:** Address Generation tool.
+- **I:** Interrupt request priority Generation tool.
+- **D:** Perform a Design rule check, it is for verifying that components in the platform have valid base addresses & interrupt request values, which they most definitely are.
+- **G**: Generate the microcontroller SoC Platform.
+
+Click the buttons  in the following sequence **A**→ **I**→ **D**→ **G**, and you are all good to go! (Well, at least check the **Console** tab to verify that the generation is completed sucessfully with the following message, **Finish Generation**)
+
+[Step 3:](#Chapter6_1_3_1) Creating the software Application code
+
+
+
+[Step 4:](#Chapter6_1_4_1) Creating a user Top level Module for our SoC
+
+
+
+[Step 5:](#Chapter6_1_5_1) Programming/Writing JEDEC file to FPGA's Flash
+
+
+
+
+
+
+
 ### [6.2](#Chapter6_2) Additional Mico8 Tutorial : Using EFB & the other peripherals onboard the Macro-KeyPad
 
 [Lattice]:(https://www.latticesemi.com)
