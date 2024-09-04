@@ -37,7 +37,7 @@ To get started, we need to import the I2C Memory Controller module, which will h
 
 ###### I2C Memory Controller Module File (*.v):
 
-Download the I2C Memory Controller source code from our [repository: i2c_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_6/Files/Tutorial06-01-i2c_controller.v) and add it to your project folder alongside your Top-Level Verilog file.
+Download the I2C Memory Controller source code from our [repository: i2c_controller.v](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_6/Files/Tutorial06-02-i2c_controller.v) and add it to your project folder alongside your Top-Level Verilog file.
 
 This module takes care of generating the I2C clock, managing data transfers, and handling start/stop conditions—all essential components of I2C communication, on top of that, the module will also be responsible for sending the correct sequence of I2C commands to access the EEPROM's memory, abstracting away the intricacies of the I2C protocol. With that said, It is not going to be a universal I2C Master controller like the others in the market as this code is designed with the purpose of keeping it consise & specific to our EEPROM in order to keep it simple for our digital design tutorial. 
 
