@@ -15,21 +15,25 @@
 #  Modification Date: 31st August 2024       
 #  Modification Content:
 # ******************************************************************************************
- 
+
 from tkinter import *
 from tkinter import ttk
+from tkcolorpicker import askcolor
 
 # import threading
 import hid as HID
 
 root = Tk()
 root.title("TomatoCube HID-CH9329 Sender")
-root.geometry("465x200")
+root.geometry("465x220")
 
 # devs = hid.enumerate()
 device = HID.device()
 devFound = ""
 
+redVal = "2F"
+greenVal = "10"
+blueVal = "00"
 send_var=StringVar(root, "08 07 DE AD BE EF 2F 10 00")
 
 # send_var=StringVar()
@@ -67,6 +71,21 @@ def sendHID():
     print(type(bytes_result))
     print("".join([f"\\x{u:02x}" for u in bytes_result]))
     device.write(bytearray.fromhex(sendEntry.get()))
+
+def chooseColor():
+    global redVal
+    global greenVal
+    global blueVal
+    # variable to store hexadecimal code of color
+    color_code = askcolor((int(redVal, 16),int(greenVal, 16),int(blueVal, 16)), title ="Choose color") 
+    print (color_code[1])
+    if color_code[1] is not None:
+        chosenColor.config(text=str("Selected Color: " + color_code[1] ))
+        redVal = color_code[1][1:3]
+        greenVal = color_code[1][3:5]
+        blueVal = color_code[1][5:7]
+        print("red: " + redVal + "\n" + "green: " + greenVal + "\n" "blue: " + blueVal)
+        send_var.set("08 07 DE AD BE EF " + redVal + " " + greenVal + " " + blueVal)
 
 # def timer1():
 #     t = threading.Timer(1.0, timer1)
@@ -107,6 +126,11 @@ sendEntry = ttk.Entry(root, textvariable=send_var, width=23)
 sendEntry.place(x=200, y=120)
 
 
+chosenColor = ttk.Label(root, text="Selected Color: None")
+chosenColor.place(x=200,y=165)
+
+choose_button = ttk.Button(root, text="Choose Color", width=10 , command=chooseColor)
+choose_button.place(x=50,y=160)
 
  
 # timer1()
