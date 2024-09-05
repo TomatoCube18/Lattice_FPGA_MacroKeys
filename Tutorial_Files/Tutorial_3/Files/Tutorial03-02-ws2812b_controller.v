@@ -12,7 +12,7 @@
 **                      educational exchange.
 **---------------------------Related Information of Modified Files------------------------
 ** Modifier: Percy Chen
-** Modification Date: 31st August 2024       
+** Modification Date: 5th September 2024       
 ** Modification Content:
 ******************************************************************************************/
 
@@ -28,12 +28,12 @@ module ws2812b_controller #(
 );
 
     // WS2812B timing parameters (in clock cycles)
-    localparam T0H = (SYS_FREQ * 4) / 10000000;			// (SYS_FREQ * 0.4) / 1000000;  //  High time for "0" bit (0.4 µs)
+    localparam T0H = (SYS_FREQ * 3) / 10000000;			// (SYS_FREQ * 0.3) / 1000000;  //  High time for "0" bit (0.3 µs)
     localparam T1H = (SYS_FREQ * 8) / 10000000;    		// (SYS_FREQ * 0.8) / 1000000;  //  High time for "1" bit (0.8 µs)
-    localparam T0L = (SYS_FREQ * 85) / 100000000;    	// (SYS_FREQ * 0.85) / 1000000; //  Low time for "0" bit (0.85 µs)
-    localparam T1L = (SYS_FREQ * 45) / 100000000;     	// (SYS_FREQ * 0.45) / 1000000; //  Low time for "1" bit (0.45 µs)
+    localparam T0L = (SYS_FREQ * 8) / 10000000;    	    // (SYS_FREQ * 0.8) / 1000000; //  Low time for "0" bit (0.8 µs)
+    localparam T1L = (SYS_FREQ * 3) / 10000000;     	// (SYS_FREQ * 0.3) / 1000000; //  Low time for "1" bit (0.3 µs)
     localparam RESET_TIME = (SYS_FREQ * 50) / 1000000; 	// (SYS_FREQ * 50) / 1000000;   //  Reset time (50 µs)
-    
+ 
     reg [7:0] bit_counter;    // Counts the bits in the color data
     reg [15:0] clk_counter;   // Clock cycle counter for timing
     reg [23:0] shift_reg;     // Shift register to hold color data
@@ -71,8 +71,7 @@ module ws2812b_controller #(
                 
                 LOAD: begin
                     // Load the first bit and transition to SEND state
-                    data_out <= shift_reg[23];
-                    shift_reg <= {shift_reg[22:0], 1'b0};
+                    data_out <= 1;
                     clk_counter <= 0;
                     state <= SEND;
                 end
