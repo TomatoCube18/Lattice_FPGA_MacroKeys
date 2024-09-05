@@ -648,19 +648,19 @@ module platform1_top
     OSCH #( .NOM_FREQ("12.09")) IOSC
     (
         .STDBY		(1'b0	),
-        .OSC			(clk	),
+        .OSC		(clk	),
         .SEDSTDBY	(			)
     );
     
  
     platform1 platform1_u
     (
-        .clk_i				(clk	),
-        .reset_n			(swU	),
+        .clk_i			(clk	),
+        .reset_n		(swU	),
         .LEDPIO_OUT		(led	),
         .BUTTONPIO_IN	(button_in),
-        .uartSIN			(rx		),
-        .uartSOUT			(tx		)
+        .uartSIN		(rx		),
+        .uartSOUT		(tx		)
     );
  
 endmodule
