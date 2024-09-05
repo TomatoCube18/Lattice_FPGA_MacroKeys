@@ -566,7 +566,7 @@ int main(void)
    /* Blink the LEDs, every 100 or 250 msecs controlled by Button_U forever */
    while(1){
           MICO_GPIO_WRITE_DATA_BYTE0 (led->base, ledVal);
-     			MICO_GPIO_READ_DATA_BYTE0 (buttons->base, buttonsVal);
+          MICO_GPIO_READ_DATA_BYTE0 (buttons->base, buttonsVal);
      
           MicoSleepMilliSecs((buttonsVal & 0x40)?100:250);
 
