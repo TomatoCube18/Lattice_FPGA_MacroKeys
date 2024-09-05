@@ -691,6 +691,13 @@ Below is the location of the user LED & Switch on the Macro-KeyPad.
 
 ![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-15-UserButton_MXF_LED_Location.png?raw=true)
 
-### [6.2](#Chapter6_2) Additional Mico8 Tutorial : Using EFB & the other peripherals onboard the Macro-KeyPad
+### [6.2](#Chapter6_2) Additional Mico8 Tutorial : Using the other peripherals onboard the Macro-KeyPad
+
+More tutorial around mico8 in the pipe-line, stay tuned 📣
+
+* Mico8 Code Tutorial #2: Recreating the Warbling siren tutorial but using mico8 SoC [CherryMX Switch, Buzzer]
+* Mico8 Code Tutorial #3: Using UART component in mico8 to send a KeyStroke [UART TX to USB HID IC CH9329]
+* Mico8 Code Tutorial #4: Using EFB & the other peripherals onboard the Macro-KeyPad [I2C EEPROM & I2C Temperature Sensor]
+* Mico8 Code Tutorial #5: Making a WISHBONE compatible NeoPixel Module & interface with mico8 SoC [WS2812b]
 
 [Lattice]:(https://www.latticesemi.com)
