@@ -103,7 +103,7 @@ disconnButton.place(x=50,y=80)
 sendButton = ttk.Button(root, text ="Send HID", width=10 , command = sendHID)
 sendButton.place(x=50,y=120)
 
-sendEntry = ttk.Entry(root, textvariable=send_var, width=23)
+sendEntry = ttk.Entry(root, textvariable=send_var, width=25)
 sendEntry.place(x=200, y=120)
 
 

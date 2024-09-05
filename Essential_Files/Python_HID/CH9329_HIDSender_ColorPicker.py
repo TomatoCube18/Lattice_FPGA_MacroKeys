@@ -19,10 +19,10 @@
 from tkinter import *
 from tkinter import ttk
 from tkcolorpicker import askcolor
-# import colorsys
 
 # import threading
 import hid as HID
+# import colorsys
 
 root = Tk()
 root.title("TomatoCube HID-CH9329 Color Sender")
@@ -97,6 +97,7 @@ def slider_changed(event):
 
 def updateSendHIDValue():
     (redVal_adj,greenVal_adj,blueVal_adj) = adjust_brightness(int(redVal, 16),int(greenVal, 16),int(blueVal, 16),(brightness_value.get()/100))
+    # (redVal_adj,greenVal_adj,blueVal_adj) = adjust_brightness_hsv(int(redVal, 16),int(greenVal, 16),int(blueVal, 16),(brightness_value.get()/100))
     send_var.set("08 07 DE AD BE EF " + format(redVal_adj,'02X') + " " + format(greenVal_adj,'02X') + " " + format(blueVal_adj,'02X'))
 
 def adjust_brightness(r, g, b, brightness):
@@ -165,7 +166,7 @@ disconnButton.place(x=50,y=80)
 sendButton = ttk.Button(root, text ="Send HID", width=10 , command = sendHID)
 sendButton.place(x=50,y=120)
 
-sendEntry = ttk.Entry(root, textvariable=send_var, width=23)
+sendEntry = ttk.Entry(root, textvariable=send_var, width=25)
 sendEntry.place(x=200, y=120)
 
 
