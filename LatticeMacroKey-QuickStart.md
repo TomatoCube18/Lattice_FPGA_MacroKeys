@@ -469,7 +469,7 @@ Use the following configuration to complete those components/modules.
 
 -  Instance Name:  _BUTTON_
 -  Port Type: _Input Port Only_
--  Data Width: _7_
+-  Data Width: _6_
 -  WISHBONE Data Bus Width: _8_
 
 **Speaker GPIO Module**
@@ -568,7 +568,7 @@ int main(void)
           MICO_GPIO_WRITE_DATA_BYTE0 (led->base, ledVal);
           MICO_GPIO_READ_DATA_BYTE0 (buttons->base, buttonsVal);
      
-          MicoSleepMilliSecs((buttonsVal & 0x40)?100:250);
+          MicoSleepMilliSecs((buttonsVal & 0x20)?100:250);
 
           ledVal = (ledVal == 0x01) ? 0x00 : 0x01;
    }
@@ -595,7 +595,7 @@ When the **Software Deployment Tools** dialog now displays a Mico8 memory deploy
 
 Hit on **Apply** follow with **Start**. The two initialization files **prom_init.mem** and **scratchpad_init.mem** should now be saved within the output folder specified. We will now initialize LatticeMico8 with **LEDTest** initialization files. 
 
-Return to the **MSB** perspective & Double-click on **LM8** instance within the platform. In the **Modifiy LatticeMico8** dialog box window, make changes to the PROM & Scratchpad settings as follows.
+Return to the **LMS** perspective & Double-click on **LM8** instance within the platform. In the **Modifiy LatticeMico8** dialog box window, make changes to the PROM & Scratchpad settings as follows.
 
 PROM Settings
 
@@ -640,7 +640,7 @@ module platform1_top
     output led
 );
  
-    wire [6:0] button_in = {swU,swF,swE,swD,swC,swB,swA};
+    wire [5:0] button_in = {swF,swE,swD,swC,swB,swA};
  
     // MachX02 internal oscillator generates platform clock
     wire clk;
@@ -685,11 +685,11 @@ Click on  `([Menu]Tools > Programmer)`, in the *Programmer: Getting Started* dia
 
 ![MSB-Burning JED](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter06-06-MSB-BurningJED%20Cable.png?raw=true)
 
-After the JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. You will be able to see the user LED flashing periodically & upon pressing on the user Button, the rate of the LED flashes will change.
+After the JEDEC has been programmed into the FPGA, the HDL configuration will take into effect. You will be able to see the user LED flashing periodically & upon pressing on the **CherryMx Switch F**, the rate of the User LED flashes will change.
 
 Below is the location of the user LED & Switch on the Macro-KeyPad.
 
-![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-13-UserButton_LED_Location.png?raw=true)
+![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter04-15-UserButton_MXF_LED_Location.png?raw=true)
 
 ### [6.2](#Chapter6_2) Additional Mico8 Tutorial : Using EFB & the other peripherals onboard the Macro-KeyPad
 
