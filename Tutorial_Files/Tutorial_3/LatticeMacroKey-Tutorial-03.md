@@ -4,7 +4,7 @@ Coming from an embedded design background focused on low-cost & low-power microc
 
 In this tutorial, we'll work with a type of individually-addressable RGB LED known as **NeoPixels (WS2812b)**, which are popular in the maker community. These LEDs have a small amount of built-in intelligence (Tiny Brain 🧠), allowing them to be daisy-chained running off a single data line while displaying a wide range of colors 🌈. The NeoPixel's asynchronous data input requires a timing-based protocol that is, in my opinion, both efficient and robust, especially considering it's all driven by a single GPIO pin.
 
-One can read more about the data protocol from the [WS2812b official data-sheet](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WorldSemi-WS2812B.pdf)
+One can read more about the data protocol from the [WS2812b official data-sheet](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Relevant_Docs_DataSheets/WorldSemi-WS2812B-Mini.pdf)
 
 #### Here is the gist of the protocol specification:
 
@@ -111,75 +111,84 @@ Populate the code editor with the following Top-Level file implementation & hit 
 ###### Verilog Top-level file (\*.v):
 ```verilog
 `timescale 1ns / 1ps
-
-    module NeoPixel(swA,swB,swC,swD,swE,swF,swU,neopixel);
-    input wire swA;	
-    input wire swB;
-    input wire swC;
-    input wire swD;
-    input wire swE;
-    input wire swF;	
-    input wire swU;
-
-    output wire neopixel;
-
-    parameter SYS_FREQ = 12_090_000;
-
-    // Neopixel
-    reg [11:0]neo_count;
-    wire neo_refresh = neo_count[11];
-    reg [23:0] test_color;	/// = 24'b000000000001111100000000;
-    reg [23:0] test_color2;
-
-    // Internal OSC setting (12.09 MHz)
-    OSCH #( .NOM_FREQ("12.09")) IOSC (
+ 
+module NeoPixel(swA,swB,swC,swD,swE,swF,swU,neopixel);
+  input wire swA;	
+  input wire swB;
+  input wire swC;
+  input wire swD;
+  input wire swE;
+  input wire swF;	
+  input wire swU;
+  
+  output wire neopixel;
+  
+  parameter SYS_FREQ = 12_090_000;
+   
+	// Neopixel
+  reg [11:0] neo_count;
+  reg neo_refresh;
+  reg [23:0] test_color;
+  reg [23:0] test_color2;
+   
+  // Internal OSC setting (12.09 MHz)
+  OSCH #( .NOM_FREQ("12.09")) IOSC (
         .STDBY		(1'b0	),
         .OSC			(clk	),
-        .SEDSTDBY	(	)
-    );
+        .SEDSTDBY	(			)
+  );
+  
+  // Instatiate NeoPixel Controller
+  ws2812b_controller #(SYS_FREQ) ws2812b_controller_u (
+        .clk     		(clk    ), 
+    		.rst_n   		(swU    ),
+        .rgb_data_0	(test_color),			// RGB color data for LED 0 (8 bits for each of R, G, B)
+    		.rgb_data_1	(test_color2),		// RGB color data for LED 1
+				.start_n		(!neo_refresh	),	// Start signal to send data
+				.data_out		(neopixel)				// WS2812B data line        
+  );
+  
+	// NeoPixel Control
+  always @(posedge clk or negedge swU) begin	 
+		if(swU == 0) begin
+			neo_refresh <= 0;
+			neo_count <= 0;
+		end else begin			
+			neo_count <= neo_count + 1;		
+			if(neo_count == 0)
+				neo_refresh <= 1;
+			else
+				neo_refresh <= 0;
+		end
+  end
+  
+	always @(posedge clk) begin
+    if (swD == 0) begin							//Pressing Switch-D will Copy Color from LED 0 -> LED 1
+			test_color2 <= test_color;		
+		end 
+		
+		if (swA == 0) begin
+			test_color <= 24'h00_00_7F;	//Blue		
+		end 
+    else if (swB == 0) begin
+			test_color <= 24'h00_7F_00;	//Green			
+		end 
+    else if (swC == 0) begin
+			test_color <= 24'h7F_00_00;	//Red 	
+		end 
+		else if (swE == 0) begin
+			test_color <= 24'h7F_00_7F;	//Red + Blue
+		end 
+    else if (swF == 0) begin
+			test_color <= 24'b0;	//Off
+		end 
 
-    // Instatiate NeoPixel Controller
-    ws2812b_controller #(SYS_FREQ) ws2812b_controller_u (
-        .clk     	(clk    ), 
-        .rst_n   	(swU    ),
-        .rgb_data_0	(test_color),	// RGB color data for LED 0 (8 bits for each of R, G, B)
-        .rgb_data_1	(test_color2),	// RGB color data for LED 1
-      	.start_n	(!neo_refresh),	// Start signal to send data
-      	.data_out	(neopixel)	// WS2812B data line        
-    );
-
-    // NeoPixel Control
-    always @(posedge clk) begin			// Stupid Code just to refresh the color!!
-        neo_count <= neo_count + 1;		// Proper way would be do detect State Trasition
-    end
-
-    always @(posedge clk) begin
-        if (swD == 0) begin			//Pressing Switch-D will Copy Color from LED 0 -> LED 1
-		test_color2 <= test_color;		
-        end 
-
-        if (swA == 0) begin
-		test_color <= 24'h00_00_3F;	//Blue		
-        end 
-        else if (swB == 0) begin
-		test_color <= 24'h00_3F_00;	//Green			
-        end 
-        else if (swC == 0) begin
-		test_color <= 24'h3F_00_00;	//Red 	
-        end 
-        else if (swE == 0) begin
-		test_color <= 24'h3F_00_3F;	//Red + Blue
-        end 
-        else if (swF == 0) begin
-		test_color <= 24'b0;		//Black -> Off
-        end 
-
-    end
-
+	end
+ 
 endmodule
 ```
 
-> NeoPixels are capable of shining super bright light, but just like everything in this universe, 'The flame that burns Twice as bright burns half as long.' Try not to use full-intensity on any of the color channel. And if you are diplaying white (or Grey), try to lower the combined intensity.
+> 💡NeoPixels are capable of shining super bright light, but just like everything in this universe, 'The flame that burns Twice as bright burns half as long.' Try not to use full-intensity on any of the color channel. And if you are diplaying white (or Grey), try to lower the combined intensity.
 
 
 
