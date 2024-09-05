@@ -647,20 +647,20 @@ module platform1_top
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC
     (
-        .STDBY		(1'b0	),
-        .OSC		(clk	),
-        .SEDSTDBY	(			)
+        .STDBY      (1'b0    ),
+        .OSC        (clk     ),
+        .SEDSTDBY   (        )
     );
     
  
     platform1 platform1_u
     (
-        .clk_i			(clk	),
-        .reset_n		(swU	),
-        .LEDPIO_OUT		(led	),
-        .BUTTONPIO_IN	(button_in),
-        .uartSIN		(rx		),
-        .uartSOUT		(tx		)
+        .clk_i			(clk        ),
+        .reset_n		(swU        ),
+        .LEDPIO_OUT		(led        ),
+        .BUTTONPIO_IN	(button_in    ),
+        .uartSIN		(rx		    ),
+        .uartSOUT		(tx		    )
     );
  
 endmodule
