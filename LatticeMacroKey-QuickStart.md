@@ -570,11 +570,7 @@ int main(void)
      
           MicoSleepMilliSecs((buttonsVal & 0x40)?100:250);
 
-          if(ledVal == 0x01){
-             ledVal = 0x00;
-          }else{
-             ledVal = 0x01;
-          }
+          ledVal = (ledVal == 0x01) ? 0x00 : 0x01;
    }
    
    /* all done */
@@ -644,27 +640,27 @@ module platform1_top
     output led
 );
  
-  	wire [6:0] button_in = {swU,swF,swE,swD,swC,swB,swA};
+    wire [6:0] button_in = {swU,swF,swE,swD,swC,swB,swA};
  
     // MachX02 internal oscillator generates platform clock
     wire clk;
     // Internal OSC setting (12.09 MHz)
     OSCH #( .NOM_FREQ("12.09")) IOSC
     (
-        .STDBY		(1'b0),
-        .OSC			(clk),
-        .SEDSTDBY	(		)
+        .STDBY		(1'b0	),
+        .OSC			(clk	),
+        .SEDSTDBY	(			)
     );
     
  
     platform1 platform1_u
     (
-        .clk_i 				(clk),
-        .reset_n 			(swU	),
-        .LEDPIO_OUT 	(led	),
-        .BUTTONPIO_IN (button_in),
-        .uartSIN 			(rx		),
-        .uartSOUT 		(tx		)
+        .clk_i				(clk	),
+        .reset_n			(swU	),
+        .LEDPIO_OUT		(led	),
+        .BUTTONPIO_IN	(button_in),
+        .uartSIN			(rx		),
+        .uartSOUT			(tx		)
     );
  
 endmodule
