@@ -100,7 +100,7 @@ To use the KeyStroke sender code, you only need to understand the Ports of our K
 ```verilog
 module ch9329_keystroke_sender #(
     parameter SYS_FREQ = 12_090_000,    	// System clock frequency (in Hz - Def:12.09 MHz)
-    parameter BAUD_RATE = 9600,     			// UART baud rate
+    parameter BAUD_RATE = 9600,     		// UART baud rate
     parameter DELAY_CYCLES = SYS_FREQ / 4	// 0.25-second delay between keystroke and release
 )(
     input wire clk,             // System clock
