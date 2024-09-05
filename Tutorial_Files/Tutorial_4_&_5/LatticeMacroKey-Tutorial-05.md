@@ -209,6 +209,8 @@ Here is a screen-shot of a modified application in action.
 
 ![ColorPicker HID Sender](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_&_5/Images/Tutorial04-04-CH9329_HIDColorSender_Py.png?raw=true)
 
+(Hint: You can check out the updated source code with the color picker from the [repository here](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Essential_Files/Python_HID/CH9329_HIDSender_ColorPicker.py).)
+
 
 
 ###### [4.5.2.2:](#Chapter4_5_2_2) Converting Python script to executable (\*.exe):

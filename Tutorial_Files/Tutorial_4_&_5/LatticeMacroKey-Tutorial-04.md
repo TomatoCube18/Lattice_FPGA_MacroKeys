@@ -264,10 +264,11 @@ After programming the generated JEDEC file into the FPGA, the HDL configuration 
 ### [4.4.2](#Chapter4_4_2) Additional Challenge
 Once you've confirmed that the above code works, please proceed with the following tasks:
 
-1. Detect both rising and falling edges of the CherryMX key press.
-2. Modify the code to send a key release only when the switch is released (instead of relying on a timer).
+1. Detect both key press & release of the CherryMX Switches, modify the code to send a key press & release accordingly.
+   (Hint: You can check out one possible implementation posted on the [repository here](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_%26_5/Files/Tutorial04-05-ch9329_keystroke_noAutorelease.v).)
 3. Map HID codes to all six CherryMX switches on your development board.
-4. *(Optional)* Explore the possibility of sending multimedia/consumer UART command frames to the CH9329 IC.
+3. Explore the possibility of sending multimedia/consumer UART command frames to the CH9329 IC.
+   
 
 
 
