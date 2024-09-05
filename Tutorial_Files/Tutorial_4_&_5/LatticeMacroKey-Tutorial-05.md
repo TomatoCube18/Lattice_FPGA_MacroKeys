@@ -201,9 +201,20 @@ Using our **CH9329_HIDSender** Python script to the Macro-KeyPad. send the follo
 
 ### [4.5.2](#Chapter4_5_2) Additional Challenge
 
-###### Converting Python script to executable (\*.exe):
+###### [4.5.2.1:](#Chapter4_5_2_1) Exploring other Tkinter Widget:
 
-Use [PyInstaller](https://pypi.org/project/pyinstaller/) to convert the Python script into an executable file if needed.
+Typing in the RGB value might be rather tedious in the long run, it will be a lot easier if we modify the Python application/script to use a color picker instead. Check up the Tkinter Color picker [documentation](https://pypi.org/project/tkcolorpicker/1.0.1/) & [repository](https://github.com/j4321/tkColorPicker) for more information.
+
+Here is a screen-shot of a modified application in action.
+
+![ColorPicker HID Sender](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_4_&_5/Images/Tutorial04-04-CH9329_HIDColorSender_Py.png?raw=true)
+
+
+
+###### [4.5.2.2:](#Chapter4_5_2_2) Converting Python script to executable (\*.exe):
+
+Wouldn't it be wonderful if you can run the HID Sender application on a machine without Python installed? 
+We can use [PyInstaller](https://pypi.org/project/pyinstaller/) to convert the Python script into an executable file, so all the dependencies needed to run your Python application is packaged nicely in an executable file.
 
 
 
