@@ -655,12 +655,12 @@ module platform1_top
  
     platform1 platform1_u
     (
-        .clk_i			(clk        ),
-        .reset_n		(swU        ),
-        .LEDPIO_OUT		(led        ),
-        .BUTTONPIO_IN	(button_in    ),
-        .uartSIN		(rx		    ),
-        .uartSOUT		(tx		    )
+        .clk_i          (clk        ),
+        .reset_n        (swU        ),
+        .LEDPIO_OUT     (led        ),
+        .BUTTONPIO_IN   (button_in  ),
+        .uartSIN        (rx         ),
+        .uartSOUT       (tx         )
     );
  
 endmodule
