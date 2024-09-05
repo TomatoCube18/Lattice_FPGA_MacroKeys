@@ -72,7 +72,7 @@ To use the HID receiver code, you only need to understand the ports of our HID r
 ```verilog
 module ch9329_HID_receiver #(
     parameter SYS_FREQ = 12_090_000,		// System clock frequency (in Hz - Def:12.09 MHz)
-    parameter BAUD_RATE = 9600     			// UART baud rate
+    parameter BAUD_RATE = 9600     		// UART baud rate
 )(
     input clk,                  // System clock
     input rst_n,                // Active low reset
@@ -126,11 +126,11 @@ module USB_RGB_Light(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel);
     wire [7:0] r_color;
     wire [7:0] g_color;
     wire [7:0] b_color;
-	wire data_valid;
-	reg data_valid_prev;
+    wire data_valid;
+    reg data_valid_prev;
   
-  	// Neopixel
-	reg neo_refresh;
+    // Neopixel
+    reg neo_refresh;
     reg [23:0] test_color;	/// = 24'b000000000001111100000000;
     //reg [23:0] test_color2;
 
@@ -138,39 +138,39 @@ module USB_RGB_Light(swA,swB,swC,swD,swE,swF,swU,rx,tx,tx2,neopixel);
     OSCH #( .NOM_FREQ("12.09")) IOSC (
         .STDBY		(1'b0	),
         .OSC		(clk	),
-        .SEDSTDBY	(	    )
+        .SEDSTDBY	(	)
     );
 
   	// Instatiate NeoPixel Controller
     ws2812b_controller #(SYS_FREQ) ws2812b_controller_u (
-        .clk     		(clk    ), 
-        .rst_n   		(swU    ),
-        .rgb_data_0	    (test_color),		// RGB color data for LED 0 (8 bits for R, G, B)
-        .rgb_data_1	    (test_color),		// RGB color data for LED 1
-        .start_n		(neo_refresh),	    // Start signal to send data
-        .data_out		(neopixel)			// WS2812B data line        
+        .clk		(clk    ), 
+        .rst_n   	(swU    ),
+        .rgb_data_0	(test_color),	// RGB color data for LED 0 (8 bits for R, G, B)
+        .rgb_data_1	(test_color),	// RGB color data for LED 1
+        .start_n	(neo_refresh),	// Start signal to send data
+        .data_out	(neopixel)	// WS2812B data line        
     );
 
     // NeoPixel Control
     always @(posedge clk) begin	
     	if (!swU) begin		// Reset aka Button_U pressed
-			data_valid_prev <= 0;
+            data_valid_prev <= 0;
         end else begin
-			data_valid_prev <= data_valid;
+            data_valid_prev <= data_valid;
             neo_refresh <= !(data_valid && !data_valid_prev);
-    		test_color <= {r_color[7:0], g_color[7:0], b_color[7:0]};
-		end
+            test_color <= {r_color[7:0], g_color[7:0], b_color[7:0]};
+        end
     end
     
   	// UART Receiver	
     ch9329_HID_receiver #(SYS_FREQ) ch9329_HID_receiver_u (
         .clk		(clk	),      // System clock
-        .rst_n	    (swU	),      // Active low reset
-        .rx			(rx		),      // UART receive pin
+        .rst_n	    	(swU	),      // Active low reset
+        .rx		(rx	),      // UART receive pin
         .data_byte1	(r_color	),	// Array to store 3 bytes of data
         .data_byte2	(g_color	), 
         .data_byte3	(b_color	), 
-        .data_valid	(data_valid )	// Flag to indicate valid data reception 
+        .data_valid	(data_valid 	)	// Flag to indicate valid data reception 
     );
 
 endmodule
