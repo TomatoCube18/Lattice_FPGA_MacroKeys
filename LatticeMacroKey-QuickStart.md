@@ -190,7 +190,7 @@ Hit **Next >** and since we are not importing any existing source code, we will 
 In the *New Project - Select Device* Dialog window, populate the fields with the following information:
 - Select Device:
     - Family: _MachXO2_
-    - Device: _LCXO2-1200HC_
+    - Device: _LCMXO2-1200HC_
     - Package Type: _TQFP100_
     - Performance Grade: _4_
     - Operating Condition: _Commercial_
