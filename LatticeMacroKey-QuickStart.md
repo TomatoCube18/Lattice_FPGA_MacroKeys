@@ -1,36 +1,5 @@
 # Lattice MachXO2 6-Key Macro-KeyPad Development Board - QuickStart Guide
 
-
-## Table of Contents
-
-- [Chapter 1: Introduction](#Chapter1)
-- [Chapter 2: Hardware](#Chapter2)
-  - [2.1: Chosen FPGA Chip/Device & its data-sheet](#Chapter2_1)
-  - [2.2: On-Board Peripherals](#Chapter2_2)
-    - [2.2.1: Macro-KeyPad PCB Top Layer](#Chapter2_2_1)
-    - [2.2.2: Macro-KeyPad PCB Bottom Layer](#Chapter2_2_2)
-    - [2.2.3: Macro-KeyPad With Enclosure](#Chapter2_2_3)
-  - [2.3: Macro-Keypad Onboard Peripherals Pin Assignments](#Chapter2_3)
-  - [2.4: FPGA JTAG Programming Hardware Dongles](#Chapter2_4)
-  - [2.5: Programming Connector & Pins Specification](#Chapter2_5)
-- [Chapter 3: Software - Lattice Development Tool - Diamond](#Chapter3)
-  - [3.1: Installation of Diamond 3.13 in Windows](#Chapter3_1)
-  - [3.2: Getting the License for your Diamond Software](#Chapter3_2)
-  - [3.3: Running your Diamond Software](#Chapter3_3)
-- [Chapter 4: Writing Code & Programming your FPGA](#Chapter4)
-  - [4.1: Creating your first Lattice Diamond Project](#Chapter4_1)
-    - [4.1.1: HDL Code Tutorial #1: Reading Button Input & Driving LED Output](#Chapter4_1_1)
-  - [4.2: Additional HDL Code Tutorial: Using the other peripherals onboard the Macro-KeyPad](#Chapter4_2)
-- [Chapter 5: Software - SoC Development Tool - LatticeMico System](#Chapter5)
-  - [5.1: Installation of LatticeMico System in Windows](#Chapter5_1)
-  - [5.2: Running your LatticeMico System Software](#Chapter5_2)
-- [Chapter 6: Creating a SoC using LatticeMico System](#Chapter6)
-  - [6.1: Creating your first SoC system using Lattice Mico8](#Chapter6_1)
-    - [6.1.1: Mico8 Tutorial #1: Reading Button Input & Driving LED Output with a C program](#Chapter6_1_1)
-  - [6.2: Additional Mico8 Tutorial: Using the other peripherals onboard the Macro-KeyPad](#Chapter6_2)
-
-
-
 ## [ [Chapter 1](#Chapter1): Introduction ]
 
 The 6-Key FPGA Macro-Keypad Development Board is a compact, dual-purpose device designed to boost productivity and serve as an entry point into FPGA development.
@@ -340,7 +309,7 @@ Tutorials to control the other components found onboard the Macro-Key have been 
 
 
 
-## \[ [Chapter 5](#Chapter5): Software - SOC Development Tool - LatticeMico System]
+## \[ [Chapter 5](#Chapter5): Software - SoC Development Tool - LatticeMico System]
 ### [5.1](#Chapter5_1) Installation of LatticeMico System in Windows
 ~~The Lattice MicoSystem software is available for download from the [LatticeMico System Development Tools web page](https://www.latticesemi.com/Products/DesignSoftwareAndIP/EmbeddedDesignSoftware/LatticeMicoSystem).  Scroll down to the download section for the Windows Operating System &~~ Click on the [LatticeMico System for Diamond 3.13 Windows](https://www.latticesemi.com/FileExplorer?media=%7B958D44F3-065D-4BB4-81B4-3F4002E2791E%7D&document_id=54020) download link.
 
