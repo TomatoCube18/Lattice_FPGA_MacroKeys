@@ -218,7 +218,22 @@ After programming the generated JEDEC file into the FPGA, the HDL configuration 
 
 
 ### [4.3.2](#Chapter4_3_2) Additional Challenge
-* ...
+###### [4.3.2.1:](#Chapter4_2_2_1) Aurora Ambient Lighting – Colors of the Northern Lights
+
+Imagine relaxing as the ambient lighting mimics the ever-changing colors of the Northern Lights. With the ability to create a full spectrum of visible colors using the NeoPixels, you can design a soothing, dynamic light show that fades through the soft hues of an aurora.
+
+Using the two on-board NeoPixels, create a smooth, fading transition between colors inspired by the aurora borealis. Below is a sample color palette with corresponding hex codes:
+
+**Aurora Color Palette (Lakeside Aurora Borealis)**
+(Reference: [paperheartdesign](https://paperheartdesign.com/blog/color-palette-northern-lights))
+
+- \#1d1640
+- \#3d276f
+- \#001d83
+- \#39977f
+- \#b4dac3
+
+![LakeSide Aurora](https://images.squarespace-cdn.com/content/v1/5720ede5555986b16f146642/9f6bfb85-1341-4fcf-af5b-05ce1be2b87e/Northern+Lights+4.jpg?format=2500w)
 
 
 

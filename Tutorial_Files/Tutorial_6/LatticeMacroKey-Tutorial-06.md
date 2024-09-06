@@ -311,7 +311,7 @@ By the end of this tutorial, you'll have a functional FPGA design capable of rea
 
 ### [4.6.2](#Chapter4_6_2) Additional Challenge
 
-...
+More tutorial in the pipe-line, stay tuned 📣
 
 
 

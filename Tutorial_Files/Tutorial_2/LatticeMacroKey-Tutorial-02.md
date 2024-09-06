@@ -75,7 +75,17 @@ After the generated JEDEC has been programmed into the FPGA, the HDL configurati
 ![user LED & Button Location](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Tutorial_Files/Tutorial_2/Images/Tutorial02-03-CherryMX_Speaker_Location.png?raw=true)
 
 ### [4.2.2](#Chapter4_2_2) Additional Challenge
-* ...
+###### [4.2.2.1:](#Chapter4_2_2_1) 6-Frequency Tone Generator
+
+The six keys on the Macro-KeyPad correspond to the six strings of an acoustic guitar 🎸.
+
+Why not turn the Macro-KeyPad development board into a digital tuner or tuning fork for your guitarist friend? It’s a simple yet useful application.
+
+The frequencies of the guitar strings are:
+**82 Hz, 110 Hz, 147 Hz, 196 Hz, 247 Hz,** and **330 Hz.**
+(Reference: [Guitar Tuning](https://en.wikipedia.org/wiki/Guitar_tunings))
+
+These tones can be easily generated using the FPGA.
 
 
 

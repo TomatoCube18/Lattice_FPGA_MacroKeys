@@ -12,7 +12,9 @@
 **                      educational exchange.
 **---------------------------Related Information of Modified Files------------------------
 ** Modifier: Percy Chen
-** Modification Date: 31st August 2024       
+** Modification Date: 31st August 2024 - Work-In-Progress - I2C Timing Optimization work
+**                                                          in Progress, Parameters is not
+**                                                          functional yet...
 ** Modification Content:
 ******************************************************************************************/
 
@@ -38,7 +40,6 @@ module i2c_eeprom #(
 	`define DEVICE_READ     8'b1010_0001    // Device address (read operation)
 	`define DEVICE_WRITE    8'b1010_0000    // Device address (write operation)
 	//`define WRITE_DATA      8'b0000_0001    // Data written to EEPROM
-	//`define WRITE_DATA      8'b0010_1111    
 	//`define BYTE_ADDR       8'b0000_0011    // Address register for writing/reading EEPROM 
 	
 	reg[7:0] db_r;        // Data register transmitted on IIC
@@ -109,15 +110,13 @@ module i2c_eeprom #(
 	parameter     ACK1     = 4'd3;
 	parameter     ADD2     = 4'd4;
 	parameter     ACK2     = 4'd5;
-	parameter     START2     = 4'd6;
-	
+	parameter     START2     = 4'd6;	
 	parameter     ADD3     = 4'd7;
 	parameter     ACK3    = 4'd8;
 	parameter     DATA     = 4'd9;
 	parameter     ACK4    = 4'd10;
 	parameter     STOP1     = 4'd11;
-	parameter     STOP2     = 4'd12;
-	
+	parameter     STOP2     = 4'd12;	
 	//parameter     RESET     = 4'd13;
 	 
 	reg [3:0] cstate;     // State register
