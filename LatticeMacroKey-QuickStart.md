@@ -60,7 +60,7 @@ The following diagrams show the Top & Bottom layer view of the Macro-KeyPad PCB.
 #### [2.2.3](#Chapter2_2_3) Macro-KeyPad With Enclosure:
 
 And here is the completed KeyPad with 3 layers of acrylic forming the enclosure needed to protect the electronics.
-Click here for the [assembly guide](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Assembly_Guide/MacroKeyPad_AssemblyGuide.md) 🪛
+> Click here for the [assembly guide](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Assembly_Guide/MacroKeyPad_AssemblyGuide.md) 🪛
 
 ![KeyPad with Enclosure](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter02-04-EnclosureKeyPad.png?raw=true)
 
