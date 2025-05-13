@@ -88,7 +88,7 @@
 
 #### 11. Insert Cherry Switches
 
-- Align the two pins on each Cherry switch with the corresponding holes in the macro-keypad. Gently press the switches into place, ensuring a firm connection.
+- Align the two pins on each Cherry switch with the corresponding holes in the macro-keypad. Gently press the switches into place, ensuring a firm connection. ❗Do not force it in, as it might bend the pins or break them off inside the connector.
 
   <img src=".\assets\11.jpg" align="left" alt="02_NutsInserted" style="zoom: 35%;"  />
 
