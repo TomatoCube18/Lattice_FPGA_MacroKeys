@@ -2,17 +2,29 @@
 ### Checklist
 
 
-- 3 x acrylic sheets (Top, Middle, and Bottom layers)
-- 4 x M2 screws
-- 4 x black nylon standoffs
-- 4 x sleeve nuts
-- 4 x silicone feet
 - 6 x Cherry switches (of your choice)
+
 - 5 x keycaps
-- 1 x Lattice FPGA Macro-Keypad Development Board
-- 1 x micro-USB cable
+
+- 3 x acrylic sheets (Top, Middle, and Bottom layers)
+
 - 1 x screwdriver
-- 1 x Masking Tape
+
+- 4 x silicone feet
+
+- 4 x sleeve nuts
+
+- 4 x M2 screws
+
+- 4 x black nylon standoffs
+
+- 1 x micro-USB cable
+
+- 1 x Lattice FPGA Macro-Keypad Development Board
+
+  <img src=".\assets\00.png" align="left" style="zoom: 66%;"  />
+
+  
 
 ------
 
@@ -32,9 +44,7 @@
 
   <img src=".\assets\02.jpg" align="left" alt="02_SleeveNutsInserted" style="zoom: 80%;"  />
 
-- Secure the sleeve nuts in place with masking tape to prevent them from falling when you flip the acrylic sheet.
-
-  <img src=".\assets\02b.jpg" align="left" alt="03_MaskingTape" style="zoom: 66%;"  />
+  
 
 #### 3. Flip the Bottom Layer
 
