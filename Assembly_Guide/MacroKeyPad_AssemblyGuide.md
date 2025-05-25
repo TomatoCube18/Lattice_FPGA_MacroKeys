@@ -102,29 +102,25 @@
   
   
 
-#### 9. Remove Masking Tape
-
-- Once all screws are securely fastened, remove the masking tape used to hold the sleeve nuts in place during assembly.
 
 
+#### 9. Apply Silicone Feet
 
-#### 10. Apply Silicone Feet
-
-- Stick the silicone feet to the bottom of the sleeve nuts to provide a non-slip surface for your macropad.
+- Stick the silicone feet to the bottom of the sleeve nuts to provide a non-slip surface for your macro-Keypad.
 
   <img src=".\assets\10.jpg" alt="02_NutsInserted" style="zoom: 80%;"  />
   
   
 
-#### 11. Insert Cherry Switches
+#### 10. Insert Cherry Switches
 
-- Align the two pins on each Cherry switch with the corresponding holes in the macro-keypad. Gently press the switches into place, ensuring a firm connection. ❗Do not force it in, as it might bend the pins or break them off inside the connector.
+- Align the two pins on each Cherry switch with the corresponding holes in the macro-keypad. Gently press the switches into place, ensuring a firm connection. ❗Do not force it in, as it might bend the pins or break them off inside the connector. 🚨
 
   <img src=".\assets\11.jpg" alt="02_NutsInserted" style="zoom: 35%;"  />
   
   
 
-#### 12. Attach Keycaps	
+#### 11. Attach Keycaps	
 
 - Place each keycap onto its corresponding Cherry switch. The keycaps are R3 style, with one side slightly slanted. For a consistent look, ensure the slanted side faces toward you.
 
@@ -132,7 +128,7 @@
   
   
 
-#### 13. Connect the USB Cable
+#### 12. Connect the USB Cable
 
 - Connect the micro-USB cable to the macropad (micro-USB end) and the other end (USB Type-A connector) to your computer.
 
@@ -142,7 +138,7 @@
 
 ------
 
-Your 6-key macropad is now fully assembled, connected, and ready for use! 🎉
+Your 6-key macro-Keypad is now fully assembled, connected, and ready for use! 🎉
 
 
 
