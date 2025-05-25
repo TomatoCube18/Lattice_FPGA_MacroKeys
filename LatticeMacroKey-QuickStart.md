@@ -61,6 +61,8 @@ The following diagrams show the Top & Bottom layer view of the Macro-KeyPad PCB.
 
 And here is the completed KeyPad with 3 layers of acrylic forming the enclosure needed to protect the electronics.
 
+> Click here for the [assembly guide](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Assembly_Guide/MacroKeyPad_AssemblyGuide.md) 🪛
+
 ![KeyPad with Enclosure](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter02-04-EnclosureKeyPad.png?raw=true)
 
 
@@ -190,7 +192,7 @@ Hit **Next >** and since we are not importing any existing source code, we will 
 In the *New Project - Select Device* Dialog window, populate the fields with the following information:
 - Select Device:
     - Family: _MachXO2_
-    - Device: _LCXO2-1200HC_
+    - Device: _LCMXO2-1200HC_
     - Package Type: _TQFP100_
     - Performance Grade: _4_
     - Operating Condition: _Commercial_
