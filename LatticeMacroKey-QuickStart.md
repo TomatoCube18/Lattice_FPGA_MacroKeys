@@ -60,6 +60,7 @@ The following diagrams show the Top & Bottom layer view of the Macro-KeyPad PCB.
 #### [2.2.3](#Chapter2_2_3) Macro-KeyPad With Enclosure:
 
 And here is the completed KeyPad with 3 layers of acrylic forming the enclosure needed to protect the electronics.
+
 > Click here for the [assembly guide](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Assembly_Guide/MacroKeyPad_AssemblyGuide.md) 🪛
 
 ![KeyPad with Enclosure](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/blob/main/Images/Chapter02-04-EnclosureKeyPad.png?raw=true)
@@ -308,6 +309,43 @@ Tutorials to control the other components found onboard the Macro-Key have been 
 * HDL Code Tutorial #5: [USB Custom HID upstream transfer using Python Code [UART RX from USB HID IC CH9329]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_4_&_5/LatticeMacroKey-Tutorial-05.md)
 * HDL Code Tutorial #6: [Reading & Writing of I2C EEPROM Memory [i2C EEPROM]](https://github.com/TomatoCube18/Lattice_FPGA_MacroKeys/tree/main/Tutorial_Files/Tutorial_6/LatticeMacroKey-Tutorial-06.md)
 
+
+
+### [4.3](#Chapter4_3) Final Project: Completing a Consumer-Ready Macro-Keypad with Reconfigurable Key Mapping using the onBoard EEPROM memory
+
+In this final HDL section, you'll integrate everything you've learned to complete a fully functional Macro-Keypad device that behaves like a consumer product. Users won't need to tinker with HDL code - they can easily reconfigure key mappings using a simple Python application, with the custom settings stored in the onboard EEPROM memory.
+
+#### 🧠 Project Objective Summary
+
+**Enable the Macro-Keypad to:**
+
+* Store custom key mappings in the onboard I2C EEPROM.
+* Allow key-mapping configurations to be reprogrammed via a Python utility on a host computer.
+* Use the CH9329 USB HID upstream interface to receive key-mapping configuration data from the PC.
+* When a key is pressed, retrieve and process key mappings via the FPGA (MachXO2).
+* Use the CH9329 USB HID interface to send key commands to the PC.
+
+Completing these objectives makes the Macro-Keypad flexible and user-friendly, allowing non-technical users to personalize their macros without editing HDL code or using Lattice Diamond. This transforms the Macro-Keypad development board into a practical, customizable, and end-user-ready hardware product.
+
+```mermaid
+
+flowchart LR
+    PC["Computer\n(Python Tool)"] <--"USB/Write Config"--> HID
+    subgraph "Macro-KeyPad"
+        HID["CH9329"] <--"UART"--> FPGA["MachXO2"]
+        FPGA <-- GPIO --> SCAN["Key Matrix"]
+        FPGA <-- I2C --> EEPROM["AT24C04\n(EEPROM)"]
+    end
+
+````
+
+
+#### 🧩 How It should ideally works 
+
+* On power-up, the FPGA continuously scans the key matrix to detect any pressed key.
+* When a key is detected, the FPGA retrieves the corresponding command code from the EEPROM over I2C.
+* The command is then sent via UART to the CH9329, which emulates a USB keyboard and sends the key event to the host PC.
+* To change the key mappings, the user simply runs a Python configuration tool, which uses the CH9329's HID upstream transfer capability to receive & ultimately update the EEPROM with new key macros.
 
 
 ## \[ [Chapter 5](#Chapter5): Software - SoC Development Tool - LatticeMico System]
